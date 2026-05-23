@@ -6,7 +6,7 @@ export function Footer() {
   const year = new Date().getFullYear()
 
   return (
-    <footer className="bg-canvas-subtle border-t border-line mt-auto">
+    <footer className="bg-navy mt-auto">
       <div className="max-w-6xl mx-auto px-6 lg:px-8 py-12 lg:py-16">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 lg:gap-16">
 
@@ -18,17 +18,17 @@ export function Footer() {
                 alt={siteConfig.name}
                 width={140}
                 height={52}
-                className="h-10 w-auto"
+                className="h-10 w-auto brightness-0 invert opacity-80"
               />
             </Link>
-            <p className="text-sm text-ink-muted leading-relaxed max-w-xs">
+            <p className="text-sm text-white/50 leading-relaxed max-w-xs">
               Project consulting and development management in Thailand, supporting international clients across multiple sectors.
             </p>
           </div>
 
           {/* Navigation column */}
           <div>
-            <p className="text-xs font-medium text-ink-muted uppercase tracking-widest mb-4">
+            <p className="text-xs font-medium text-white/35 uppercase tracking-widest mb-4">
               Navigation
             </p>
             <nav aria-label="Footer navigation">
@@ -37,7 +37,7 @@ export function Footer() {
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      className="text-sm text-ink-muted hover:text-ink transition-colors duration-150"
+                      className="text-sm text-white/55 hover:text-white transition-colors duration-150"
                     >
                       {link.label}
                     </Link>
@@ -49,19 +49,19 @@ export function Footer() {
 
           {/* Contact column */}
           <div>
-            <p className="text-xs font-medium text-ink-muted uppercase tracking-widest mb-4">
+            <p className="text-xs font-medium text-white/35 uppercase tracking-widest mb-4">
               Contact
             </p>
             <ul className="flex flex-col gap-2">
               <li>
                 <a
                   href={`mailto:${siteConfig.email}`}
-                  className="text-sm text-ink-muted hover:text-ink transition-colors duration-150"
+                  className="text-sm text-white/55 hover:text-white transition-colors duration-150"
                 >
                   {siteConfig.email}
                 </a>
               </li>
-              <li className="text-sm text-ink-muted">
+              <li className="text-sm text-white/50">
                 {siteConfig.location}
               </li>
             </ul>
@@ -69,11 +69,11 @@ export function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-12 pt-6 border-t border-line flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
-          <p className="text-xs text-ink-muted">
+        <div className="mt-12 pt-6 border-t border-white/10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+          <p className="text-xs text-white/30">
             &copy; {year} {siteConfig.name}. All rights reserved.
           </p>
-          <p className="text-xs text-ink-muted">
+          <p className="text-xs text-white/30">
             {siteConfig.location}
           </p>
         </div>

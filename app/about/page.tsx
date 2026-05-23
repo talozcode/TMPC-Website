@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import Image from 'next/image'
 import { siteConfig } from '@/lib/data'
 
 export const metadata: Metadata = {
@@ -58,40 +57,23 @@ export default function AboutPage() {
   return (
     <>
       {/* 1. Hero */}
-      <section className="bg-canvas py-20 lg:py-28">
+      <section className="bg-navy py-24 lg:py-36">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-            <div>
-              <p className="text-xs font-medium text-accent uppercase tracking-widest mb-6 animate-fade-in">
-                About TMPC
-              </p>
-              <h1
-                className="text-4xl sm:text-5xl lg:text-[3.25rem] font-semibold text-ink tracking-tight leading-[1.13] mb-6 animate-fade-up"
-                style={{ animationDelay: '0.1s' }}
-              >
-                Strategic Project Consulting and Development Management
-              </h1>
-              <p
-                className="text-lg text-ink-muted leading-relaxed animate-fade-up"
-                style={{ animationDelay: '0.22s' }}
-              >
-                TMPC supports commercial, industrial, hospitality, wellness, and real estate projects across Thailand through structured coordination, development management, and execution oversight.
-              </p>
-            </div>
-            <div
-              className="hidden lg:block relative min-h-[520px] rounded-sm overflow-hidden animate-fade-in"
-              style={{ animationDelay: '0.15s' }}
-            >
-              <Image
-                src="/images/hero-about.jpg"
-                alt="Project coordination and professional management team"
-                fill
-                className="object-cover"
-                sizes="(min-width: 1024px) 50vw, 0px"
-                priority
-              />
-            </div>
-          </div>
+          <p className="text-xs font-medium text-accent-soft uppercase tracking-[0.2em] mb-8 animate-fade-in">
+            About TMPC
+          </p>
+          <h1
+            className="font-display text-5xl sm:text-6xl lg:text-[4.5rem] font-bold text-white tracking-tight leading-[1.08] max-w-3xl mb-8 animate-fade-up"
+            style={{ animationDelay: '0.1s' }}
+          >
+            Strategic Project Consulting and Development Management
+          </h1>
+          <p
+            className="text-lg text-white/60 leading-relaxed max-w-2xl animate-fade-up"
+            style={{ animationDelay: '0.22s' }}
+          >
+            TMPC supports commercial, industrial, hospitality, wellness, and real estate projects across Thailand through structured coordination, development management, and execution oversight.
+          </p>
         </div>
       </section>
 
@@ -182,30 +164,30 @@ export default function AboutPage() {
       </section>
 
       {/* 5. Leadership */}
-      <section className="bg-canvas-subtle border-y border-line py-16 lg:py-24">
+      <section className="bg-navy py-16 lg:py-24">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <div className="mb-10 lg:mb-14">
-            <p className="text-xs font-medium text-accent uppercase tracking-widest mb-3">
+            <p className="text-xs font-medium text-accent-soft uppercase tracking-widest mb-3">
               Our Team
             </p>
-            <h2 className="text-2xl lg:text-3xl font-semibold text-ink tracking-tight">
+            <h2 className="text-2xl lg:text-3xl font-semibold text-white tracking-tight">
               Leadership
             </h2>
-            <p className="mt-3 text-base text-ink-muted leading-relaxed max-w-2xl">
+            <p className="mt-3 text-base text-white/55 leading-relaxed max-w-2xl">
               TMPC combines project development, operational coordination, and technology-driven management support through a multidisciplinary leadership structure.
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-line border border-line overflow-hidden max-w-3xl">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-white/10 border border-white/10 overflow-hidden max-w-3xl">
             {leadership.map((person) => (
-              <div key={person.name} className="bg-canvas p-8 lg:p-10 transition-colors duration-200 hover:bg-canvas-subtle">
-                <div className="w-7 h-px bg-accent mb-7" />
-                <p className="text-lg font-semibold text-ink mb-1">
+              <div key={person.name} className="bg-navy-light p-8 lg:p-10 hover:bg-navy transition-colors duration-200">
+                <div className="w-7 h-0.5 bg-accent-soft mb-7" />
+                <p className="text-lg font-semibold text-white mb-1">
                   {person.name}
                 </p>
-                <p className="text-xs font-medium text-accent uppercase tracking-wider mb-5">
+                <p className="text-xs font-medium text-accent-soft uppercase tracking-wider mb-5">
                   {person.title}
                 </p>
-                <p className="text-sm text-ink-muted leading-relaxed">
+                <p className="text-sm text-white/55 leading-relaxed">
                   {person.description}
                 </p>
               </div>
@@ -215,23 +197,23 @@ export default function AboutPage() {
       </section>
 
       {/* 6. Closing */}
-      <section className="bg-canvas py-20 lg:py-28">
+      <section className="bg-navy py-20 lg:py-28">
         <div className="max-w-2xl mx-auto px-6 lg:px-8 text-center">
-          <h2 className="text-2xl lg:text-3xl font-semibold text-ink tracking-tight mb-6 leading-snug">
+          <h2 className="font-display text-2xl lg:text-3xl font-bold text-white tracking-tight mb-6 leading-snug">
             Built Around Coordination, Execution, and Long-Term Project Support
           </h2>
-          <p className="text-base text-ink-muted leading-relaxed mb-4">
+          <p className="text-base text-white/55 leading-relaxed mb-4">
             TMPC supports projects through structured planning, practical coordination, and execution-focused management across Thailand.
           </p>
-          <p className="text-base text-ink-muted leading-relaxed mb-4">
+          <p className="text-base text-white/55 leading-relaxed mb-4">
             Whether supporting a commercial renovation, operational facility, hospitality concept, industrial environment, or development project, our focus remains the same:
           </p>
-          <p className="text-base font-medium text-ink mb-10">
+          <p className="text-base font-medium text-white mb-10">
             Clear communication. Organized coordination. Practical execution support.
           </p>
           <Link
             href="/contact"
-            className="inline-flex items-center text-sm font-medium bg-ink text-canvas px-6 py-3 rounded hover:bg-ink-secondary transition-colors duration-150"
+            className="inline-flex items-center text-sm font-semibold bg-white text-navy px-7 py-3.5 rounded hover:bg-canvas transition-colors duration-200"
           >
             Discuss Your Project
           </Link>

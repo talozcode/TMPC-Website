@@ -25,6 +25,7 @@
 
   /* Font */
   --font-sans: var(--font-inter), 'Inter', system-ui, -apple-system, sans-serif;
+  --font-display: var(--font-playfair), 'Playfair Display', Georgia, serif;
 
   /* Animations */
   --animate-fade-up:   fade-up 0.7s ease-out both;

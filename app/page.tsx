@@ -54,54 +54,50 @@ export default function HomePage() {
   return (
     <>
       {/* 1. Hero */}
-      <section className="relative min-h-[88vh] flex items-center bg-canvas overflow-hidden">
-        <div className="absolute inset-y-0 right-0 w-[50vw] hidden lg:block overflow-hidden">
+      <section className="relative min-h-screen flex items-end lg:items-center bg-navy overflow-hidden">
+        <div className="absolute inset-0">
           <Image
             src="/images/hero-home.jpg"
-            alt="Project coordination and development management in Thailand"
+            alt=""
             fill
-            className="object-cover"
-            sizes="50vw"
+            className="object-cover opacity-15"
+            sizes="100vw"
             priority
           />
-          <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-canvas to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-b from-navy/70 via-navy/50 to-navy" />
         </div>
-        <div className="relative z-10 max-w-6xl mx-auto px-6 lg:px-8 w-full py-24 lg:py-32">
-          <div className="grid lg:grid-cols-2">
-            <div>
-              <p className="text-xs font-medium text-accent uppercase tracking-widest mb-7 animate-fade-in">
-                TMPC Development Co., Ltd.
-              </p>
-              <h1
-                className="text-4xl sm:text-5xl lg:text-[3.6rem] font-semibold text-ink tracking-tight leading-[1.13] max-w-lg mb-7 animate-fade-up"
-                style={{ animationDelay: '0.1s' }}
-              >
-                Your Project Development Partner in Thailand
-              </h1>
-              <p
-                className="text-lg text-ink-muted leading-relaxed max-w-md mb-10 animate-fade-up"
-                style={{ animationDelay: '0.22s' }}
-              >
-                TMPC provides project consulting, coordination, and execution oversight across commercial, industrial, hospitality, wellness, and real estate projects.
-              </p>
-              <div
-                className="flex flex-wrap gap-3 animate-fade-up"
-                style={{ animationDelay: '0.36s' }}
-              >
-                <Link
-                  href="/contact"
-                  className="inline-flex items-center text-sm font-medium bg-ink text-canvas px-6 py-3 rounded hover:bg-ink-secondary transition-colors duration-150"
-                >
-                  Discuss Your Project
-                </Link>
-                <Link
-                  href="/services"
-                  className="inline-flex items-center text-sm font-medium border border-line text-ink px-6 py-3 rounded hover:border-ink transition-colors duration-150"
-                >
-                  Explore Services
-                </Link>
-              </div>
-            </div>
+        <div className="relative z-10 max-w-6xl mx-auto px-6 lg:px-8 w-full pt-32 pb-20 lg:py-0">
+          <p className="text-xs font-medium text-accent-soft uppercase tracking-[0.2em] mb-8 animate-fade-in">
+            TMPC Development Co., Ltd.
+          </p>
+          <h1
+            className="font-display text-5xl sm:text-6xl lg:text-[5.5rem] font-bold text-white tracking-tight leading-[1.06] max-w-4xl mb-8 animate-fade-up"
+            style={{ animationDelay: '0.1s' }}
+          >
+            Your Project Development Partner in Thailand
+          </h1>
+          <p
+            className="text-lg text-white/60 leading-relaxed max-w-xl mb-12 animate-fade-up"
+            style={{ animationDelay: '0.22s' }}
+          >
+            TMPC provides project consulting, coordination, and execution oversight across commercial, industrial, hospitality, wellness, and real estate projects.
+          </p>
+          <div
+            className="flex flex-wrap gap-4 animate-fade-up"
+            style={{ animationDelay: '0.36s' }}
+          >
+            <Link
+              href="/contact"
+              className="inline-flex items-center text-sm font-semibold bg-white text-navy px-7 py-3.5 rounded hover:bg-canvas transition-colors duration-200"
+            >
+              Discuss Your Project
+            </Link>
+            <Link
+              href="/services"
+              className="inline-flex items-center text-sm font-medium border border-white/30 text-white px-7 py-3.5 rounded hover:bg-white/10 transition-colors duration-200"
+            >
+              Explore Services
+            </Link>
           </div>
         </div>
       </section>
@@ -131,8 +127,9 @@ export default function HomePage() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-line border border-line overflow-hidden">
             {homeServices.map((service, i) => (
-              <div key={service.title} className="bg-canvas p-8 lg:p-9 transition-colors duration-200 hover:bg-canvas-subtle">
-                <p className="text-xs text-ink-muted mb-5 tabular-nums">
+              <div key={service.title} className="bg-canvas p-8 lg:p-10 transition-colors duration-200 hover:bg-canvas-subtle">
+                <div className="w-6 h-0.5 bg-accent mb-6" />
+                <p className="text-xs font-medium text-accent mb-4 tabular-nums">
                   0{i + 1}
                 </p>
                 <h3 className="text-[0.9375rem] font-semibold text-ink mb-3 leading-snug">
@@ -156,13 +153,13 @@ export default function HomePage() {
       </section>
 
       {/* 4. Sectors */}
-      <section className="bg-canvas-subtle border-y border-line py-16 lg:py-20">
+      <section className="bg-navy py-16 lg:py-20">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <div className="mb-8 lg:mb-10">
-            <p className="text-xs font-medium text-accent uppercase tracking-widest mb-3">
+            <p className="text-xs font-medium text-accent-soft uppercase tracking-widest mb-3">
               Where We Work
             </p>
-            <h2 className="text-2xl lg:text-3xl font-semibold text-ink tracking-tight">
+            <h2 className="text-2xl lg:text-3xl font-semibold text-white tracking-tight">
               Sectors
             </h2>
           </div>
@@ -170,7 +167,7 @@ export default function HomePage() {
             {homeSectors.map((sector) => (
               <span
                 key={sector}
-                className="text-sm text-ink-secondary border border-line bg-canvas px-5 py-2.5 rounded"
+                className="text-sm text-white/70 border border-white/20 bg-white/5 px-5 py-2.5 rounded hover:border-white/50 hover:text-white transition-colors duration-200"
               >
                 {sector}
               </span>
@@ -190,7 +187,7 @@ export default function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10 lg:gap-14">
             {whyItems.map((item) => (
               <div key={item.title}>
-                <div className="w-7 h-px bg-accent mb-7" />
+                <div className="w-7 h-0.5 bg-accent mb-7" />
                 <h3 className="text-[0.9375rem] font-semibold text-ink mb-3 leading-snug">
                   {item.title}
                 </h3>
@@ -204,24 +201,24 @@ export default function HomePage() {
       </section>
 
       {/* 6. CTA */}
-      <section className="bg-canvas-subtle border-t border-line py-20 lg:py-28">
+      <section className="bg-navy py-20 lg:py-28">
         <div className="max-w-xl mx-auto px-6 lg:px-8 text-center">
-          <h2 className="text-3xl lg:text-4xl font-semibold text-ink tracking-tight mb-4">
+          <h2 className="font-display text-3xl lg:text-4xl font-bold text-white tracking-tight mb-5">
             Discuss Your Project
           </h2>
-          <p className="text-base text-ink-muted leading-relaxed mb-8">
+          <p className="text-base text-white/60 leading-relaxed mb-10">
             TMPC supports projects across planning, coordination, and execution phases throughout Thailand.
           </p>
-          <div className="flex flex-wrap justify-center gap-3">
+          <div className="flex flex-wrap justify-center gap-4">
             <Link
               href="/contact"
-              className="inline-flex items-center text-sm font-medium bg-ink text-canvas px-6 py-3 rounded hover:bg-ink-secondary transition-colors duration-150"
+              className="inline-flex items-center text-sm font-semibold bg-white text-navy px-7 py-3.5 rounded hover:bg-canvas transition-colors duration-200"
             >
               Schedule a Consultation
             </Link>
             <Link
               href="/contact"
-              className="inline-flex items-center text-sm font-medium border border-line text-ink px-6 py-3 rounded hover:border-ink transition-colors duration-150"
+              className="inline-flex items-center text-sm font-medium border border-white/30 text-white px-7 py-3.5 rounded hover:bg-white/10 transition-colors duration-200"
             >
               Contact TMPC
             </Link>

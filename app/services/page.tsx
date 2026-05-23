@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import Image from 'next/image'
 import { siteConfig } from '@/lib/data'
 
 export const metadata: Metadata = {
@@ -161,40 +160,23 @@ export default function ServicesPage() {
   return (
     <>
       {/* 1. Hero */}
-      <section className="bg-canvas py-20 lg:py-28">
+      <section className="bg-navy py-24 lg:py-36">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-            <div>
-              <p className="text-xs font-medium text-accent uppercase tracking-widest mb-6 animate-fade-in">
-                Our Services
-              </p>
-              <h1
-                className="text-4xl sm:text-5xl lg:text-[3.25rem] font-semibold text-ink tracking-tight leading-[1.13] mb-6 animate-fade-up"
-                style={{ animationDelay: '0.1s' }}
-              >
-                Project Consulting and Development Management
-              </h1>
-              <p
-                className="text-lg text-ink-muted leading-relaxed animate-fade-up"
-                style={{ animationDelay: '0.22s' }}
-              >
-                TMPC supports projects across planning, coordination, development management, and execution oversight throughout Thailand.
-              </p>
-            </div>
-            <div
-              className="hidden lg:block relative min-h-[500px] rounded-sm overflow-hidden animate-fade-in"
-              style={{ animationDelay: '0.15s' }}
-            >
-              <Image
-                src="/images/hero-services.jpg"
-                alt="Project consulting and development management workspace"
-                fill
-                className="object-cover"
-                sizes="(min-width: 1024px) 50vw, 0px"
-                priority
-              />
-            </div>
-          </div>
+          <p className="text-xs font-medium text-accent-soft uppercase tracking-[0.2em] mb-8 animate-fade-in">
+            Our Services
+          </p>
+          <h1
+            className="font-display text-5xl sm:text-6xl lg:text-[4.5rem] font-bold text-white tracking-tight leading-[1.08] max-w-3xl mb-8 animate-fade-up"
+            style={{ animationDelay: '0.1s' }}
+          >
+            Project Consulting and Development Management
+          </h1>
+          <p
+            className="text-lg text-white/60 leading-relaxed max-w-2xl animate-fade-up"
+            style={{ animationDelay: '0.22s' }}
+          >
+            TMPC supports projects across planning, coordination, development management, and execution oversight throughout Thailand.
+          </p>
         </div>
       </section>
 
@@ -329,7 +311,7 @@ export default function ServicesPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10 lg:gap-14">
             {whyItems.map((item) => (
               <div key={item.title}>
-                <div className="w-7 h-px bg-accent mb-7" />
+                <div className="w-7 h-0.5 bg-accent mb-7" />
                 <h3 className="text-[0.9375rem] font-semibold text-ink mb-3 leading-snug">
                   {item.title}
                 </h3>
@@ -343,24 +325,24 @@ export default function ServicesPage() {
       </section>
 
       {/* 7. Closing CTA */}
-      <section className="bg-canvas py-20 lg:py-28">
+      <section className="bg-navy py-20 lg:py-28">
         <div className="max-w-xl mx-auto px-6 lg:px-8 text-center">
-          <h2 className="text-3xl lg:text-4xl font-semibold text-ink tracking-tight mb-4">
+          <h2 className="font-display text-3xl lg:text-4xl font-bold text-white tracking-tight mb-5">
             Discuss Your Project
           </h2>
-          <p className="text-base text-ink-muted leading-relaxed mb-8">
+          <p className="text-base text-white/60 leading-relaxed mb-10">
             TMPC supports projects across planning, coordination, development management, and execution oversight throughout Thailand.
           </p>
-          <div className="flex flex-wrap justify-center gap-3">
+          <div className="flex flex-wrap justify-center gap-4">
             <Link
               href="/contact"
-              className="inline-flex items-center text-sm font-medium bg-ink text-canvas px-6 py-3 rounded hover:bg-ink-secondary transition-colors duration-150"
+              className="inline-flex items-center text-sm font-semibold bg-white text-navy px-7 py-3.5 rounded hover:bg-canvas transition-colors duration-200"
             >
               Schedule a Consultation
             </Link>
             <Link
               href="/contact"
-              className="inline-flex items-center text-sm font-medium border border-line text-ink px-6 py-3 rounded hover:border-ink transition-colors duration-150"
+              className="inline-flex items-center text-sm font-medium border border-white/30 text-white px-7 py-3.5 rounded hover:bg-white/10 transition-colors duration-200"
             >
               Contact TMPC
             </Link>

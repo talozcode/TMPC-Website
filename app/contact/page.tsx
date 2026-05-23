@@ -57,19 +57,19 @@ export default function ContactPage() {
   return (
     <>
       {/* 1. Hero */}
-      <section className="bg-canvas py-20 lg:py-28">
+      <section className="bg-navy py-24 lg:py-36">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
-          <p className="text-xs font-medium text-accent uppercase tracking-widest mb-6 animate-fade-in">
+          <p className="text-xs font-medium text-accent-soft uppercase tracking-[0.2em] mb-8 animate-fade-in">
             Get in Touch
           </p>
           <h1
-            className="text-4xl sm:text-5xl lg:text-[3.25rem] font-semibold text-ink tracking-tight leading-[1.13] max-w-2xl mb-6 animate-fade-up"
+            className="font-display text-5xl sm:text-6xl lg:text-[4.5rem] font-bold text-white tracking-tight leading-[1.08] max-w-3xl mb-8 animate-fade-up"
             style={{ animationDelay: '0.1s' }}
           >
             Discuss Your Project
           </h1>
           <p
-            className="text-lg text-ink-muted leading-relaxed max-w-xl animate-fade-up"
+            className="text-lg text-white/60 leading-relaxed max-w-xl animate-fade-up"
             style={{ animationDelay: '0.22s' }}
           >
             Whether you are planning a commercial, industrial, hospitality, wellness, operational, or real estate project, TMPC can support the planning, coordination, and execution process across Thailand.
@@ -152,17 +152,17 @@ export default function ContactPage() {
       </section>
 
       {/* 6. Final CTA */}
-      <section className="bg-canvas-subtle border-t border-line py-20 lg:py-24">
+      <section className="bg-navy py-20 lg:py-24">
         <div className="max-w-xl mx-auto px-6 lg:px-8 text-center">
-          <h2 className="text-2xl lg:text-3xl font-semibold text-ink tracking-tight mb-4 leading-snug">
+          <h2 className="font-display text-2xl lg:text-3xl font-bold text-white tracking-tight mb-5 leading-snug">
             Structured Coordination. Practical Execution Support.
           </h2>
-          <p className="text-base text-ink-muted leading-relaxed mb-8">
+          <p className="text-base text-white/60 leading-relaxed mb-10">
             TMPC supports projects throughout Thailand with a focus on communication clarity, organized coordination, and execution-focused management support.
           </p>
           <Link
             href="#inquiry-form"
-            className="inline-flex items-center text-sm font-medium bg-ink text-canvas px-6 py-3 rounded hover:bg-ink-secondary transition-colors duration-150"
+            className="inline-flex items-center text-sm font-semibold bg-white text-navy px-7 py-3.5 rounded hover:bg-canvas transition-colors duration-200"
           >
             Discuss Your Project
           </Link>
