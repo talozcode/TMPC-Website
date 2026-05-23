@@ -15,7 +15,7 @@ const contactMethods = [
     action: (
       <a
         href={`mailto:${siteConfig.email}`}
-        className="text-sm font-medium text-ink underline underline-offset-4 hover:text-ink-secondary transition-colors duration-150 break-all"
+        className="text-sm font-semibold text-ink underline underline-offset-4 decoration-accent/40 hover:decoration-accent transition-colors duration-150 break-all"
       >
         {siteConfig.email}
       </a>
@@ -25,14 +25,13 @@ const contactMethods = [
     label: 'WhatsApp',
     description: 'Direct communication for initial project discussions and coordination inquiries.',
     action: (
-      // Replace +66XXXXXXXXX with the actual WhatsApp number before launch
       <a
         href="https://wa.me/66XXXXXXXXX"
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex items-center text-sm font-medium bg-ink text-canvas px-4 py-2 rounded hover:bg-ink-secondary transition-colors duration-150"
+        className="inline-flex items-center gap-2 text-sm font-medium bg-accent text-white px-5 py-2.5 hover:bg-accent-light transition-colors duration-200"
       >
-        Chat on WhatsApp
+        Chat on WhatsApp <span aria-hidden="true">&#8594;</span>
       </a>
     ),
   },
@@ -40,7 +39,7 @@ const contactMethods = [
     label: 'Location',
     description: 'Thailand-based coordination and project management support.',
     action: (
-      <p className="text-sm font-medium text-ink">{siteConfig.location}</p>
+      <p className="text-sm font-semibold text-ink">{siteConfig.location}</p>
     ),
   },
 ]
@@ -57,23 +56,26 @@ export default function ContactPage() {
   return (
     <>
       {/* 1. Hero */}
-      <section className="bg-navy py-24 lg:py-36">
+      <section className="bg-canvas py-24 lg:py-32">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
-          <p className="text-xs font-medium text-accent-soft uppercase tracking-[0.2em] mb-8 animate-fade-in">
-            Get in Touch
-          </p>
-          <h1
-            className="font-display text-5xl sm:text-6xl lg:text-[4.5rem] font-bold text-white tracking-tight leading-[1.08] max-w-3xl mb-8 animate-fade-up"
-            style={{ animationDelay: '0.1s' }}
-          >
-            Discuss Your Project
-          </h1>
-          <p
-            className="text-lg text-white/60 leading-relaxed max-w-xl animate-fade-up"
-            style={{ animationDelay: '0.22s' }}
-          >
-            Whether you are planning a commercial, industrial, hospitality, wellness, operational, or real estate project, TMPC can support the planning, coordination, and execution process across Thailand.
-          </p>
+          <div className="max-w-3xl">
+            <div className="w-8 h-0.5 bg-accent mb-6" />
+            <p className="text-xs font-semibold text-accent uppercase tracking-[0.25em] mb-6 animate-fade-in">
+              Get in Touch
+            </p>
+            <h1
+              className="font-display text-5xl sm:text-6xl lg:text-[4.5rem] text-ink leading-[1.06] mb-8 animate-fade-up"
+              style={{ animationDelay: '0.1s' }}
+            >
+              Discuss Your Project
+            </h1>
+            <p
+              className="text-lg text-ink-muted leading-relaxed max-w-xl animate-fade-up"
+              style={{ animationDelay: '0.2s' }}
+            >
+              Whether you are planning a commercial, industrial, hospitality, wellness, operational, or real estate project, TMPC can support the planning, coordination, and execution process across Thailand.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -94,8 +96,8 @@ export default function ContactPage() {
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-line border border-line overflow-hidden">
             {contactMethods.map((method) => (
-              <div key={method.label} className="bg-canvas p-8 lg:p-10 transition-colors duration-200 hover:bg-canvas-subtle">
-                <p className="text-xs font-medium text-accent uppercase tracking-widest mb-4">
+              <div key={method.label} className="bg-canvas p-8 lg:p-10 hover:bg-canvas-subtle transition-colors duration-200">
+                <p className="text-xs font-semibold text-accent uppercase tracking-[0.2em] mb-4">
                   {method.label}
                 </p>
                 <p className="text-sm text-ink-muted leading-relaxed mb-5">
@@ -113,7 +115,8 @@ export default function ContactPage() {
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <div className="grid lg:grid-cols-[280px_1fr] gap-12 lg:gap-20">
             <div className="pt-1">
-              <h2 className="text-2xl lg:text-3xl font-semibold text-ink tracking-tight mb-3">
+              <div className="w-8 h-0.5 bg-accent mb-4" />
+              <h2 className="font-display text-2xl lg:text-3xl text-ink mb-3">
                 Start a Conversation
               </h2>
               <p className="text-sm text-ink-muted leading-relaxed">
@@ -128,7 +131,8 @@ export default function ContactPage() {
       {/* 5. How We Typically Work */}
       <section className="bg-canvas py-16 lg:py-24">
         <div className="max-w-2xl mx-auto px-6 lg:px-8">
-          <h2 className="text-2xl lg:text-3xl font-semibold text-ink tracking-tight mb-8">
+          <div className="w-8 h-0.5 bg-accent mb-4" />
+          <h2 className="font-display text-2xl lg:text-3xl text-ink mb-8">
             How We Typically Work
           </h2>
           <p className="text-base text-ink leading-relaxed mb-5">
@@ -140,7 +144,7 @@ export default function ContactPage() {
           <ul className="space-y-3 mb-8">
             {approachItems.map((item) => (
               <li key={item} className="flex items-center gap-3 text-sm text-ink-secondary">
-                <span className="w-1.5 h-1.5 rounded-full bg-accent flex-shrink-0" />
+                <span className="w-1 h-1 rounded-full bg-accent flex-shrink-0" />
                 {item}
               </li>
             ))}
@@ -152,17 +156,17 @@ export default function ContactPage() {
       </section>
 
       {/* 6. Final CTA */}
-      <section className="bg-navy py-20 lg:py-24">
+      <section className="bg-canvas-dark py-20 lg:py-24">
         <div className="max-w-xl mx-auto px-6 lg:px-8 text-center">
-          <h2 className="font-display text-2xl lg:text-3xl font-bold text-white tracking-tight mb-5 leading-snug">
+          <h2 className="font-display text-2xl lg:text-3xl text-canvas leading-tight mb-5">
             Structured Coordination. Practical Execution Support.
           </h2>
-          <p className="text-base text-white/60 leading-relaxed mb-10">
+          <p className="text-base text-canvas/55 leading-relaxed mb-10">
             TMPC supports projects throughout Thailand with a focus on communication clarity, organized coordination, and execution-focused management support.
           </p>
           <Link
             href="#inquiry-form"
-            className="inline-flex items-center text-sm font-semibold bg-white text-navy px-7 py-3.5 rounded hover:bg-canvas transition-colors duration-200"
+            className="inline-flex items-center text-sm font-medium bg-canvas text-canvas-dark px-7 py-3.5 hover:bg-canvas-subtle transition-colors duration-200"
           >
             Discuss Your Project
           </Link>

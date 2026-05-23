@@ -2,45 +2,36 @@
 
 @theme {
   /* Backgrounds */
-  --color-canvas:        #F9F8F6;
-  --color-canvas-subtle: #F0ECE8;
+  --color-canvas:        #F2EDE6;
+  --color-canvas-subtle: #EDE7DF;
+  --color-canvas-dark:   #1C1C1A;
 
   /* Text */
-  --color-ink:           #1C1C1A;
-  --color-ink-secondary: #3E3D3A;
-  --color-ink-muted:     #7A756F;
+  --color-ink:           #2C2C2A;
+  --color-ink-secondary: #4A4845;
+  --color-ink-muted:     #7A746E;
 
-  /* Accent - muted olive / sage */
-  --color-accent:        #4A5E3C;
-  --color-accent-dark:   #3A4C2E;
-  --color-accent-soft:   #8A9E7A;
-
-  /* Brand navy - matches logo */
-  --color-navy:          #162D3A;
-  --color-navy-light:    #1E3D4E;
+  /* Forest green accent */
+  --color-accent:        #2D5016;
+  --color-accent-light:  #4A7A26;
+  --color-accent-muted:  #8CAE72;
 
   /* Borders */
-  --color-line:          #E0DAD3;
-  --color-line-subtle:   #EDE9E4;
+  --color-line:          #D6CFC7;
+  --color-line-subtle:   #E4DDD5;
 
-  /* Font */
-  --font-sans: var(--font-inter), 'Inter', system-ui, -apple-system, sans-serif;
-  --font-display: var(--font-playfair), 'Playfair Display', Georgia, serif;
+  /* Fonts */
+  --font-sans:    var(--font-dm-sans), 'DM Sans', system-ui, sans-serif;
+  --font-display: var(--font-dm-serif), 'DM Serif Display', Georgia, serif;
 
   /* Animations */
-  --animate-fade-up:   fade-up 0.7s ease-out both;
-  --animate-fade-in:   fade-in 0.6s ease-out both;
+  --animate-fade-up: fade-up 0.65s ease-out both;
+  --animate-fade-in: fade-in 0.5s ease-out both;
 }
 
 @keyframes fade-up {
-  from {
-    opacity: 0;
-    transform: translateY(22px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes fade-in {
@@ -63,6 +54,6 @@
   *:focus-visible {
     outline: 2px solid var(--color-accent);
     outline-offset: 3px;
-    border-radius: 2px;
+    border-radius: 1px;
   }
 }

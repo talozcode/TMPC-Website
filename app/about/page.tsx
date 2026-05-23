@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import Image from 'next/image'
 import { siteConfig } from '@/lib/data'
 
 export const metadata: Metadata = {
@@ -57,32 +58,56 @@ export default function AboutPage() {
   return (
     <>
       {/* 1. Hero */}
-      <section className="bg-navy py-24 lg:py-36">
+      <section className="bg-canvas py-24 lg:py-32">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
-          <p className="text-xs font-medium text-accent-soft uppercase tracking-[0.2em] mb-8 animate-fade-in">
-            About TMPC
-          </p>
-          <h1
-            className="font-display text-5xl sm:text-6xl lg:text-[4.5rem] font-bold text-white tracking-tight leading-[1.08] max-w-3xl mb-8 animate-fade-up"
-            style={{ animationDelay: '0.1s' }}
-          >
-            Strategic Project Consulting and Development Management
-          </h1>
-          <p
-            className="text-lg text-white/60 leading-relaxed max-w-2xl animate-fade-up"
-            style={{ animationDelay: '0.22s' }}
-          >
-            TMPC supports commercial, industrial, hospitality, wellness, and real estate projects across Thailand through structured coordination, development management, and execution oversight.
-          </p>
+          <div className="grid lg:grid-cols-[1fr_360px] gap-16 lg:gap-20 items-start">
+            <div>
+              <div className="w-8 h-0.5 bg-accent mb-6" />
+              <p className="text-xs font-semibold text-accent uppercase tracking-[0.25em] mb-6 animate-fade-in">
+                About TMPC
+              </p>
+              <h1
+                className="font-display text-5xl sm:text-6xl lg:text-[4.5rem] text-ink leading-[1.06] mb-8 animate-fade-up"
+                style={{ animationDelay: '0.1s' }}
+              >
+                Strategic Project Consulting and Development Management
+              </h1>
+              <p
+                className="text-lg text-ink-muted leading-relaxed max-w-xl animate-fade-up"
+                style={{ animationDelay: '0.2s' }}
+              >
+                TMPC supports commercial, industrial, hospitality, wellness, and real estate projects across Thailand through structured coordination, development management, and execution oversight.
+              </p>
+            </div>
+
+            {/* Photo with offset border */}
+            <div
+              className="hidden lg:block relative mt-8 animate-fade-in"
+              style={{ animationDelay: '0.2s' }}
+            >
+              <div className="relative h-[480px] overflow-hidden">
+                <Image
+                  src="/images/hero-about.jpg"
+                  alt="Project coordination and professional management"
+                  fill
+                  className="object-cover"
+                  sizes="360px"
+                  priority
+                />
+              </div>
+              <div className="absolute -bottom-4 -left-4 w-full h-full border border-accent/25 pointer-events-none" />
+            </div>
+          </div>
         </div>
       </section>
 
       {/* 2. Who We Are */}
-      <section className="bg-canvas border-t border-line py-16 lg:py-24">
+      <section className="bg-canvas-subtle border-y border-line py-16 lg:py-24">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
-          <div className="grid lg:grid-cols-[280px_1fr] gap-12 lg:gap-20">
+          <div className="grid lg:grid-cols-[260px_1fr] gap-12 lg:gap-20">
             <div className="pt-1">
-              <h2 className="text-2xl lg:text-3xl font-semibold text-ink tracking-tight">
+              <div className="w-8 h-0.5 bg-accent mb-4" />
+              <h2 className="font-display text-2xl lg:text-3xl text-ink">
                 Who We Are
               </h2>
             </div>
@@ -105,11 +130,12 @@ export default function AboutPage() {
       </section>
 
       {/* 3. Our Approach */}
-      <section className="bg-canvas-subtle border-y border-line py-16 lg:py-24">
+      <section className="bg-canvas py-16 lg:py-24">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
-          <div className="grid lg:grid-cols-[280px_1fr] gap-12 lg:gap-20">
+          <div className="grid lg:grid-cols-[260px_1fr] gap-12 lg:gap-20">
             <div className="pt-1">
-              <h2 className="text-2xl lg:text-3xl font-semibold text-ink tracking-tight">
+              <div className="w-8 h-0.5 bg-accent mb-4" />
+              <h2 className="font-display text-2xl lg:text-3xl text-ink">
                 Our Approach
               </h2>
             </div>
@@ -120,11 +146,11 @@ export default function AboutPage() {
               <p className="text-base text-ink-muted leading-relaxed mb-8">
                 TMPC focuses on building clear coordination systems between stakeholders, consultants, suppliers, contractors, and operational teams to help projects move forward in an organized and practical way.
               </p>
-              <p className="text-sm font-medium text-ink mb-4">We prioritize:</p>
+              <p className="text-sm font-semibold text-ink mb-5 uppercase tracking-wider">We prioritize</p>
               <ul className="space-y-3 mb-8">
                 {approachPriorities.map((item) => (
                   <li key={item} className="flex items-center gap-3 text-sm text-ink-secondary">
-                    <span className="w-1.5 h-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="w-1 h-1 rounded-full bg-accent flex-shrink-0" />
                     {item}
                   </li>
                 ))}
@@ -138,23 +164,27 @@ export default function AboutPage() {
       </section>
 
       {/* 4. Project Types & Sectors */}
-      <section className="bg-canvas py-16 lg:py-24">
+      <section className="bg-canvas-subtle border-y border-line py-16 lg:py-24">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <div className="mb-10 lg:mb-14">
-            <p className="text-xs font-medium text-accent uppercase tracking-widest mb-3">
-              Our Scope
-            </p>
-            <h2 className="text-2xl lg:text-3xl font-semibold text-ink tracking-tight">
+            <div className="w-8 h-0.5 bg-accent mb-4" />
+            <h2 className="font-display text-3xl lg:text-4xl text-ink">
               Project Types & Sectors
             </h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-line border border-line overflow-hidden">
-            {projectTypes.map((type) => (
-              <div key={type.title} className="bg-canvas p-8 transition-colors duration-200 hover:bg-canvas-subtle">
-                <h3 className="text-[0.9375rem] font-semibold text-ink mb-3 leading-snug">
+            {projectTypes.map((type, i) => (
+              <div key={type.title} className="bg-canvas-subtle p-8 hover:bg-canvas transition-colors duration-200 relative overflow-hidden">
+                <span
+                  className="absolute -top-1 right-3 font-display text-8xl text-accent leading-none select-none opacity-[0.05]"
+                  aria-hidden="true"
+                >
+                  {i + 1}
+                </span>
+                <h3 className="text-[0.9375rem] font-semibold text-ink mb-3 leading-snug relative">
                   {type.title}
                 </h3>
-                <p className="text-sm text-ink-muted leading-relaxed">
+                <p className="text-sm text-ink-muted leading-relaxed relative">
                   {type.description}
                 </p>
               </div>
@@ -164,30 +194,28 @@ export default function AboutPage() {
       </section>
 
       {/* 5. Leadership */}
-      <section className="bg-navy py-16 lg:py-24">
+      <section className="bg-canvas py-16 lg:py-24">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <div className="mb-10 lg:mb-14">
-            <p className="text-xs font-medium text-accent-soft uppercase tracking-widest mb-3">
-              Our Team
-            </p>
-            <h2 className="text-2xl lg:text-3xl font-semibold text-white tracking-tight">
+            <div className="w-8 h-0.5 bg-accent mb-4" />
+            <h2 className="font-display text-3xl lg:text-4xl text-ink">
               Leadership
             </h2>
-            <p className="mt-3 text-base text-white/55 leading-relaxed max-w-2xl">
+            <p className="mt-3 text-base text-ink-muted leading-relaxed max-w-2xl">
               TMPC combines project development, operational coordination, and technology-driven management support through a multidisciplinary leadership structure.
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-white/10 border border-white/10 overflow-hidden max-w-3xl">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-line border border-line overflow-hidden max-w-3xl">
             {leadership.map((person) => (
-              <div key={person.name} className="bg-navy-light p-8 lg:p-10 hover:bg-navy transition-colors duration-200">
-                <div className="w-7 h-0.5 bg-accent-soft mb-7" />
-                <p className="text-lg font-semibold text-white mb-1">
+              <div key={person.name} className="bg-canvas p-8 lg:p-10 hover:bg-canvas-subtle transition-colors duration-200">
+                <div className="w-8 h-0.5 bg-accent mb-7" />
+                <p className="font-display text-2xl text-ink mb-1">
                   {person.name}
                 </p>
-                <p className="text-xs font-medium text-accent-soft uppercase tracking-wider mb-5">
+                <p className="text-xs font-semibold text-accent uppercase tracking-wider mb-5">
                   {person.title}
                 </p>
-                <p className="text-sm text-white/55 leading-relaxed">
+                <p className="text-sm text-ink-muted leading-relaxed">
                   {person.description}
                 </p>
               </div>
@@ -196,24 +224,21 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* 6. Closing */}
-      <section className="bg-navy py-20 lg:py-28">
+      {/* 6. Closing CTA */}
+      <section className="bg-canvas-dark py-20 lg:py-28">
         <div className="max-w-2xl mx-auto px-6 lg:px-8 text-center">
-          <h2 className="font-display text-2xl lg:text-3xl font-bold text-white tracking-tight mb-6 leading-snug">
+          <h2 className="font-display text-3xl lg:text-4xl text-canvas leading-tight mb-6">
             Built Around Coordination, Execution, and Long-Term Project Support
           </h2>
-          <p className="text-base text-white/55 leading-relaxed mb-4">
+          <p className="text-base text-canvas/55 leading-relaxed mb-4">
             TMPC supports projects through structured planning, practical coordination, and execution-focused management across Thailand.
           </p>
-          <p className="text-base text-white/55 leading-relaxed mb-4">
-            Whether supporting a commercial renovation, operational facility, hospitality concept, industrial environment, or development project, our focus remains the same:
-          </p>
-          <p className="text-base font-medium text-white mb-10">
+          <p className="text-base font-medium text-canvas/80 mb-10">
             Clear communication. Organized coordination. Practical execution support.
           </p>
           <Link
             href="/contact"
-            className="inline-flex items-center text-sm font-semibold bg-white text-navy px-7 py-3.5 rounded hover:bg-canvas transition-colors duration-200"
+            className="inline-flex items-center text-sm font-medium bg-canvas text-canvas-dark px-7 py-3.5 hover:bg-canvas-subtle transition-colors duration-200"
           >
             Discuss Your Project
           </Link>

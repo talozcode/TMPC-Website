@@ -41,7 +41,7 @@ export function Header() {
                 className={cn(
                   'text-sm transition-colors duration-150',
                   pathname === link.href
-                    ? 'text-ink font-medium'
+                    ? 'text-accent font-medium'
                     : 'text-ink-muted hover:text-ink'
                 )}
               >
@@ -54,7 +54,7 @@ export function Header() {
           <div className="flex items-center gap-3">
             <Link
               href="/contact"
-              className="hidden md:inline-flex items-center text-sm font-medium bg-ink text-canvas px-4 py-2 rounded hover:bg-ink-secondary transition-colors duration-150"
+              className="hidden md:inline-flex items-center text-sm font-medium bg-accent text-white px-4 py-2 hover:bg-accent-light transition-colors duration-200"
             >
               Discuss Your Project
             </Link>
@@ -104,7 +104,7 @@ export function Header() {
                 className={cn(
                   'py-2 text-sm',
                   pathname === link.href
-                    ? 'text-ink font-medium'
+                    ? 'text-accent font-medium'
                     : 'text-ink-muted'
                 )}
               >
@@ -116,7 +116,7 @@ export function Header() {
             <Link
               href="/contact"
               onClick={() => setMenuOpen(false)}
-              className="block text-center text-sm font-medium bg-ink text-canvas px-4 py-2.5 rounded"
+              className="block text-center text-sm font-medium bg-accent text-white px-4 py-2.5 hover:bg-accent-light transition-colors duration-200"
             >
               Discuss Your Project
             </Link>

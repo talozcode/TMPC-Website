@@ -12,7 +12,7 @@ const projectTypeOptions = [
 ]
 
 const inputClass =
-  'w-full border border-line bg-canvas text-ink text-sm px-4 py-3 rounded outline-none focus:border-ink transition-colors duration-150 placeholder:text-ink-muted'
+  'w-full border border-line bg-canvas text-ink text-sm px-4 py-3 outline-none focus:border-accent transition-colors duration-150 placeholder:text-ink-muted'
 
 export function ContactForm() {
   const [submitted, setSubmitted] = useState(false)
@@ -158,7 +158,7 @@ export function ContactForm() {
       <div className="pt-1">
         <button
           type="submit"
-          className="inline-flex items-center text-sm font-medium bg-ink text-canvas px-6 py-3 rounded hover:bg-ink-secondary transition-colors duration-150"
+          className="inline-flex items-center text-sm font-medium bg-accent text-white px-7 py-3.5 hover:bg-accent-light transition-colors duration-200"
         >
           Discuss Your Project
         </button>

@@ -84,33 +84,6 @@ const coreServices = [
   },
 ]
 
-const projectTypes = [
-  {
-    title: 'Commercial Projects',
-    description: 'Retail, office, mixed-use, and business-related environments.',
-  },
-  {
-    title: 'Industrial & Factory Setup',
-    description:
-      'Industrial coordination, operational facilities, warehouse environments, and factory-related project support.',
-  },
-  {
-    title: 'Real Estate & Renovation',
-    description:
-      'Condominium renovations, property upgrades, villa improvements, and development-related coordination.',
-  },
-  {
-    title: 'Wellness & Hospitality',
-    description:
-      'Hospitality concepts, wellness facilities, boutique environments, and operational hospitality projects.',
-  },
-  {
-    title: 'Warehousing & Operations',
-    description:
-      'Warehouse environments, logistics support spaces, and operational project coordination.',
-  },
-]
-
 const processSteps = [
   {
     number: '01',
@@ -138,50 +111,35 @@ const processSteps = [
   },
 ]
 
-const whyItems = [
-  {
-    title: 'Strategic Coordination',
-    description:
-      'Structured project coordination focused on communication clarity and execution flow.',
-  },
-  {
-    title: 'Multi-Sector Perspective',
-    description:
-      'Experience supporting operational, industrial, hospitality, commercial, and development-oriented projects.',
-  },
-  {
-    title: 'Thailand-Based Execution Support',
-    description:
-      'Local coordination experience combined with internationally aligned communication and project management standards.',
-  },
-]
-
 export default function ServicesPage() {
   return (
     <>
       {/* 1. Hero */}
-      <section className="bg-navy py-24 lg:py-36">
+      <section className="bg-canvas py-24 lg:py-32">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
-          <p className="text-xs font-medium text-accent-soft uppercase tracking-[0.2em] mb-8 animate-fade-in">
-            Our Services
-          </p>
-          <h1
-            className="font-display text-5xl sm:text-6xl lg:text-[4.5rem] font-bold text-white tracking-tight leading-[1.08] max-w-3xl mb-8 animate-fade-up"
-            style={{ animationDelay: '0.1s' }}
-          >
-            Project Consulting and Development Management
-          </h1>
-          <p
-            className="text-lg text-white/60 leading-relaxed max-w-2xl animate-fade-up"
-            style={{ animationDelay: '0.22s' }}
-          >
-            TMPC supports projects across planning, coordination, development management, and execution oversight throughout Thailand.
-          </p>
+          <div className="max-w-3xl">
+            <div className="w-8 h-0.5 bg-accent mb-6" />
+            <p className="text-xs font-semibold text-accent uppercase tracking-[0.25em] mb-6 animate-fade-in">
+              Our Services
+            </p>
+            <h1
+              className="font-display text-5xl sm:text-6xl lg:text-[4.5rem] text-ink leading-[1.06] mb-8 animate-fade-up"
+              style={{ animationDelay: '0.1s' }}
+            >
+              Project Consulting and Development Management
+            </h1>
+            <p
+              className="text-lg text-ink-muted leading-relaxed animate-fade-up"
+              style={{ animationDelay: '0.2s' }}
+            >
+              TMPC supports projects across planning, coordination, development management, and execution oversight throughout Thailand. We do not operate as a construction contractor.
+            </p>
+          </div>
         </div>
       </section>
 
       {/* 2. Introduction */}
-      <section className="bg-canvas-subtle border-y border-line py-16 lg:py-20">
+      <section className="bg-canvas-subtle border-y border-line py-14 lg:py-16">
         <div className="max-w-2xl mx-auto px-6 lg:px-8">
           <p className="text-base text-ink leading-relaxed mb-5">
             TMPC provides project consulting and development management support across commercial, industrial, hospitality, wellness, operational, and real estate projects.
@@ -198,11 +156,9 @@ export default function ServicesPage() {
       {/* 3. Core Services */}
       <section className="bg-canvas py-16 lg:py-24">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
-          <div className="mb-10 lg:mb-14">
-            <p className="text-xs font-medium text-accent uppercase tracking-widest mb-3">
-              What We Do
-            </p>
-            <h2 className="text-2xl lg:text-3xl font-semibold text-ink tracking-tight">
+          <div className="mb-12 lg:mb-16">
+            <div className="w-8 h-0.5 bg-accent mb-4" />
+            <h2 className="font-display text-3xl lg:text-4xl text-ink">
               Core Services
             </h2>
           </div>
@@ -211,14 +167,18 @@ export default function ServicesPage() {
             {coreServices.map((service) => (
               <div
                 key={service.title}
-                className="py-12 lg:py-16 grid lg:grid-cols-2 gap-8 lg:gap-20"
+                className="py-12 lg:py-16 grid lg:grid-cols-[80px_1fr_1fr] gap-8 lg:gap-12"
               >
-                {/* Left: number, title, description */}
+                {/* Number */}
                 <div>
-                  <p className="text-xs text-ink-muted tabular-nums mb-5">
+                  <p className="font-display text-4xl text-accent opacity-30 leading-none tabular-nums">
                     {service.number}
                   </p>
-                  <h3 className="text-2xl lg:text-[1.75rem] font-semibold text-ink tracking-tight leading-tight mb-5">
+                </div>
+
+                {/* Title + description */}
+                <div>
+                  <h3 className="font-display text-2xl lg:text-3xl text-ink mb-5 leading-snug">
                     {service.title}
                   </h3>
                   <p className="text-base text-ink-muted leading-relaxed">
@@ -226,14 +186,15 @@ export default function ServicesPage() {
                   </p>
                 </div>
 
-                {/* Right: scope */}
-                <div className="lg:pt-10">
-                  <p className="text-xs font-medium text-ink-muted uppercase tracking-widest mb-4">
+                {/* Scope */}
+                <div className="lg:pt-1">
+                  <p className="text-xs font-semibold text-accent uppercase tracking-[0.2em] mb-4">
                     Scope Includes
                   </p>
-                  <ul className="border-l border-line pl-5 space-y-2.5">
+                  <ul className="space-y-2.5">
                     {service.scope.map((item) => (
-                      <li key={item} className="text-sm text-ink-muted leading-snug">
+                      <li key={item} className="flex items-start gap-2.5 text-sm text-ink-muted">
+                        <span className="w-1 h-1 rounded-full bg-accent-muted mt-2 flex-shrink-0" />
                         {item}
                       </li>
                     ))}
@@ -245,47 +206,19 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* 4. Project Types */}
+      {/* 4. How TMPC Works */}
       <section className="bg-canvas-subtle border-y border-line py-16 lg:py-24">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <div className="mb-10 lg:mb-14">
-            <p className="text-xs font-medium text-accent uppercase tracking-widest mb-3">
-              Scope of Work
-            </p>
-            <h2 className="text-2xl lg:text-3xl font-semibold text-ink tracking-tight">
-              Projects We Support
-            </h2>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-line border border-line overflow-hidden">
-            {projectTypes.map((type) => (
-              <div key={type.title} className="bg-canvas-subtle p-7">
-                <h3 className="text-[0.9375rem] font-semibold text-ink mb-2.5 leading-snug">
-                  {type.title}
-                </h3>
-                <p className="text-sm text-ink-muted leading-relaxed">
-                  {type.description}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 5. How TMPC Works */}
-      <section className="bg-canvas py-16 lg:py-24">
-        <div className="max-w-6xl mx-auto px-6 lg:px-8">
-          <div className="mb-10 lg:mb-14">
-            <p className="text-xs font-medium text-accent uppercase tracking-widest mb-3">
-              Our Process
-            </p>
-            <h2 className="text-2xl lg:text-3xl font-semibold text-ink tracking-tight">
+            <div className="w-8 h-0.5 bg-accent mb-4" />
+            <h2 className="font-display text-3xl lg:text-4xl text-ink">
               How TMPC Works
             </h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-line border border-line overflow-hidden">
             {processSteps.map((step) => (
-              <div key={step.title} className="bg-canvas p-8 transition-colors duration-200 hover:bg-canvas-subtle">
-                <p className="text-xs text-ink-muted tabular-nums mb-5">
+              <div key={step.title} className="bg-canvas-subtle p-8 hover:bg-canvas transition-colors duration-200">
+                <p className="font-display text-3xl text-accent opacity-25 mb-5 tabular-nums leading-none">
                   {step.number}
                 </p>
                 <h3 className="text-[0.9375rem] font-semibold text-ink mb-3 leading-snug">
@@ -300,51 +233,27 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* 6. Why TMPC */}
-      <section className="bg-canvas-subtle border-y border-line py-16 lg:py-24">
-        <div className="max-w-6xl mx-auto px-6 lg:px-8">
-          <div className="mb-12 lg:mb-16">
-            <p className="text-xs font-medium text-accent uppercase tracking-widest">
-              Why TMPC
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 lg:gap-14">
-            {whyItems.map((item) => (
-              <div key={item.title}>
-                <div className="w-7 h-0.5 bg-accent mb-7" />
-                <h3 className="text-[0.9375rem] font-semibold text-ink mb-3 leading-snug">
-                  {item.title}
-                </h3>
-                <p className="text-sm text-ink-muted leading-relaxed">
-                  {item.description}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 7. Closing CTA */}
-      <section className="bg-navy py-20 lg:py-28">
+      {/* 5. Closing CTA */}
+      <section className="bg-canvas-dark py-20 lg:py-28">
         <div className="max-w-xl mx-auto px-6 lg:px-8 text-center">
-          <h2 className="font-display text-3xl lg:text-4xl font-bold text-white tracking-tight mb-5">
+          <h2 className="font-display text-3xl lg:text-[2.75rem] text-canvas leading-tight mb-5">
             Discuss Your Project
           </h2>
-          <p className="text-base text-white/60 leading-relaxed mb-10">
+          <p className="text-base text-canvas/55 leading-relaxed mb-10">
             TMPC supports projects across planning, coordination, development management, and execution oversight throughout Thailand.
           </p>
-          <div className="flex flex-wrap justify-center gap-4">
+          <div className="flex flex-wrap justify-center items-center gap-6">
             <Link
               href="/contact"
-              className="inline-flex items-center text-sm font-semibold bg-white text-navy px-7 py-3.5 rounded hover:bg-canvas transition-colors duration-200"
+              className="inline-flex items-center text-sm font-medium bg-canvas text-canvas-dark px-7 py-3.5 hover:bg-canvas-subtle transition-colors duration-200"
             >
               Schedule a Consultation
             </Link>
             <Link
               href="/contact"
-              className="inline-flex items-center text-sm font-medium border border-white/30 text-white px-7 py-3.5 rounded hover:bg-white/10 transition-colors duration-200"
+              className="text-sm text-canvas/55 hover:text-canvas flex items-center gap-1.5 transition-colors duration-150"
             >
-              Contact TMPC
+              Contact TMPC <span aria-hidden="true">&#8594;</span>
             </Link>
           </div>
         </div>
