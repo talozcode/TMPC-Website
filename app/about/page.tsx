@@ -35,22 +35,21 @@ export default function AboutPage() {
   return (
     <>
       {/* 1. Hero */}
-      <section className="bg-canvas-dark py-24 lg:py-32 relative overflow-hidden">
-        <div className="absolute inset-0 bg-grid-dots pointer-events-none" />
-        <div className="relative z-10 max-w-6xl mx-auto px-6 lg:px-8">
+      <section className="bg-canvas border-b border-line py-20 lg:py-28 relative overflow-hidden">
+        <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <div className="grid lg:grid-cols-[1fr_360px] gap-16 lg:gap-20 items-start">
             <div>
               <p className="text-xs font-semibold text-accent uppercase tracking-[0.25em] mb-6 animate-fade-in">
                 About TMPC
               </p>
               <h1
-                className="font-display font-bold text-5xl sm:text-6xl lg:text-[4.5rem] text-white leading-[1.08] tracking-tight mb-8 animate-fade-up"
+                className="font-display font-bold text-5xl sm:text-6xl lg:text-[4.5rem] text-ink leading-[1.08] tracking-tight mb-8 animate-fade-up"
                 style={{ animationDelay: '0.1s' }}
               >
                 Strategic Project Consulting in Bangkok
               </h1>
               <p
-                className="text-lg text-white/55 leading-relaxed max-w-xl animate-fade-up"
+                className="text-lg text-ink-secondary leading-relaxed max-w-xl animate-fade-up"
                 style={{ animationDelay: '0.2s' }}
               >
                 TMPC supports commercial, industrial, hospitality, wellness, and real estate projects across Thailand through structured coordination, development management, and execution oversight.
@@ -66,13 +65,13 @@ export default function AboutPage() {
                   src="/images/hero-about.jpg"
                   alt="Project planning and coordination"
                   fill
-                  className="object-cover opacity-80"
+                  className="object-cover"
                   sizes="360px"
                   priority
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-canvas-dark/60 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
               </div>
-              <div className="absolute -bottom-3 -right-3 w-full h-full border border-accent/20 pointer-events-none" />
+              <div className="absolute -bottom-3 -right-3 w-full h-full border border-accent/25 pointer-events-none" />
             </div>
           </div>
         </div>

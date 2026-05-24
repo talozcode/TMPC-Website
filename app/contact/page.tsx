@@ -48,24 +48,23 @@ export default function ContactPage() {
   return (
     <>
       {/* 1. Hero */}
-      <section className="bg-canvas-dark py-24 lg:py-32 relative overflow-hidden">
-        <div className="absolute inset-0 bg-grid-dots pointer-events-none" />
-        <div className="relative z-10 max-w-6xl mx-auto px-6 lg:px-8">
+      <section className="bg-canvas border-b border-line py-20 lg:py-28">
+        <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <div className="max-w-3xl">
             <p className="text-xs font-semibold text-accent uppercase tracking-[0.25em] mb-6 animate-fade-in">
               Get in Touch
             </p>
             <h1
-              className="font-display font-bold text-5xl sm:text-6xl lg:text-[4.5rem] text-white leading-[1.08] tracking-tight mb-8 animate-fade-up"
+              className="font-display font-bold text-5xl sm:text-6xl lg:text-[4.5rem] text-ink leading-[1.08] tracking-tight mb-8 animate-fade-up"
               style={{ animationDelay: '0.1s' }}
             >
               Discuss Your Project
             </h1>
             <p
-              className="text-lg text-white/55 leading-relaxed max-w-xl animate-fade-up"
+              className="text-lg text-ink-secondary leading-relaxed max-w-xl animate-fade-up"
               style={{ animationDelay: '0.2s' }}
             >
-              Whether you are planning a commercial, industrial, hospitality, wellness, operational, or real estate project, TMPC can support the planning, coordination, and execution process across Thailand.
+              Whether you are planning a commercial, industrial, hospitality, wellness, or real estate project, TMPC can support the planning, coordination, and execution process across Thailand.
             </p>
           </div>
         </div>
