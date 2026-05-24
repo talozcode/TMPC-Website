@@ -80,6 +80,11 @@
   to   { stroke-dashoffset: -40; }
 }
 
+@keyframes sonar-out {
+  0%   { transform: translate(-50%, -50%) scale(0.15); opacity: 0.5; }
+  100% { transform: translate(-50%, -50%) scale(1);    opacity: 0; }
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;

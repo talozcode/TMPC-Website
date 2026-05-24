@@ -114,7 +114,7 @@ export default function HeroConceptsPage() {
         </Link>
         <span className="text-xs text-ink-muted">Design review: scroll to compare, then tell me which to deploy</span>
         <nav className="ml-auto hidden md:flex items-center gap-5 text-xs text-ink-muted">
-          {['A', 'B', 'C', 'D', 'E'].map((c) => (
+          {['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'].map((c) => (
             <a key={c} href={`#concept-${c}`} className="hover:text-accent transition-colors font-medium">
               {c}
             </a>
@@ -531,11 +531,321 @@ export default function HeroConceptsPage() {
         </section>
       </div>
 
+      {/* ─────────────────────────────────────────────────────────── */}
+      {/* CONCEPT F: Orbital B + Sonar Pulse + Radial Web            */}
+      {/* ─────────────────────────────────────────────────────────── */}
+      <div id="concept-F">
+        <Label letter="F" title="Orbital + sonar broadcast" note="Concept B with radiating pulses and connection lines from TMPC outward" />
+        <section className="bg-[#0A1628] border-b border-white/[0.08] overflow-hidden relative">
+          <div className="absolute inset-0 bg-grid-dots pointer-events-none opacity-35" />
+          <div className="relative z-10 max-w-6xl mx-auto px-6 lg:px-8 w-full py-20 lg:py-16">
+            <div className="grid lg:grid-cols-[1fr_560px] gap-12 items-center">
+              <div>
+                <div className="inline-flex items-center gap-2 border border-white/15 px-3 py-1.5 text-xs text-white/50 mb-8 tracking-[0.2em] uppercase">
+                  <span className="w-1.5 h-1.5 rounded-full bg-accent animate-dot-blink flex-shrink-0" />
+                  Bangkok, Thailand
+                </div>
+                <h1 className="font-display font-bold text-5xl lg:text-[4.5rem] text-white leading-[1.06] tracking-tight mb-7">
+                  Project Consulting and Development Management in Thailand
+                </h1>
+                <p className="text-lg text-white/50 leading-relaxed max-w-md mb-10">
+                  TMPC continuously broadcasts structure, coordination, and clarity to every party in the project system.
+                </p>
+                <div className="flex flex-wrap items-center gap-4">
+                  <span className="inline-flex text-sm font-semibold bg-accent text-white px-7 py-3.5">Discuss Your Project</span>
+                  <span className="text-sm text-white/45 flex items-center gap-1.5">Our Services &#8594;</span>
+                </div>
+              </div>
+
+              <div className="hidden lg:flex items-center justify-center py-8">
+                <div className="relative" style={{ width: '520px', height: '520px' }}>
+
+                  {/* Radial glow */}
+                  <div className="absolute inset-0 rounded-full pointer-events-none" style={{ background: 'radial-gradient(circle at 50% 50%, rgba(8,145,178,0.10) 0%, transparent 60%)' }} />
+
+                  {/* Sonar pulse rings expanding from center */}
+                  {[0, 1.1, 2.2].map((delay) => (
+                    <div
+                      key={delay}
+                      className="absolute rounded-full border border-accent/40 pointer-events-none"
+                      style={{
+                        width: '490px',
+                        height: '490px',
+                        top: '50%',
+                        left: '50%',
+                        animation: `sonar-out 3.3s ease-out infinite`,
+                        animationDelay: `${delay}s`,
+                      }}
+                    />
+                  ))}
+
+                  {/* Radial connection lines from center */}
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[1] pointer-events-none">
+                    <svg width="520" height="520" viewBox="0 0 520 520" fill="none">
+                      {[22, 67, 112, 157, 202, 247, 292, 337].map((angle, i) => {
+                        const rad = (angle * Math.PI) / 180
+                        return (
+                          <line
+                            key={angle}
+                            x1="260" y1="260"
+                            x2={260 + 245 * Math.sin(rad)}
+                            y2={260 - 245 * Math.cos(rad)}
+                            stroke="#0891B2"
+                            strokeWidth="0.8"
+                            strokeDasharray="3 9"
+                            opacity="0.25"
+                            style={{ animation: `dash-flow 2.4s linear infinite`, animationDelay: `${i * 0.3}s` }}
+                          />
+                        )
+                      })}
+                    </svg>
+                  </div>
+
+                  {/* Orbital rings */}
+                  <OrbRing radius={238} dur="22s" dir="cw" borderOpacity="rgba(8,145,178,0.14)" nodeW={80} nodeH={24}
+                    nodes={[{ label: 'Government', angle: 30 }, { label: 'Operations', angle: 120 }, { label: 'Suppliers', angle: 210 }, { label: 'Finance', angle: 300 }]}
+                  />
+                  <OrbRing radius={170} dur="15s" dir="ccw" borderOpacity="rgba(8,145,178,0.24)" nodeW={98} nodeH={24}
+                    nodes={[{ label: 'Owner / Investor', angle: 60 }, { label: 'Main Contractor', angle: 180 }, { label: 'Subcontractors', angle: 300 }]}
+                  />
+                  <OrbRing radius={105} dur="9s" dir="cw" borderOpacity="rgba(8,145,178,0.42)" nodeW={90} nodeH={24}
+                    nodes={[{ label: 'Architect', angle: 0 }, { label: 'MEP Engineers', angle: 120 }, { label: 'Interior Design', angle: 240 }]}
+                  />
+
+                  {/* TMPC center */}
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30">
+                    <div className="border-2 border-accent bg-[#0A1628] flex flex-col items-center justify-center animate-hub-glow" style={{ width: '96px', height: '96px' }}>
+                      <p className="text-[0.42rem] text-accent uppercase tracking-[0.28em] mb-1">Hub</p>
+                      <p className="font-display font-bold text-[1.6rem] text-white leading-none tracking-tight">TMPC</p>
+                      <div className="flex gap-1 mt-2">
+                        {[0, 0.5, 1].map((d) => (
+                          <span key={d} className="w-1 h-1 rounded-full bg-accent animate-dot-blink" style={{ animationDelay: `${d}s` }} />
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      {/* ─────────────────────────────────────────────────────────── */}
+      {/* CONCEPT G: Full-Bleed Immersive Orbital                     */}
+      {/* ─────────────────────────────────────────────────────────── */}
+      <div id="concept-G">
+        <Label letter="G" title="Full-bleed immersive orbital" note="The diagram fills the entire hero. Text overlays. No panel split." />
+        <section className="bg-[#0A1628] border-b border-white/[0.08] overflow-hidden relative" style={{ minHeight: '92vh' }}>
+          <div className="absolute inset-0 bg-grid-dots pointer-events-none opacity-35" />
+
+          {/* Orbital fills the right half, slightly bleeds off-screen */}
+          <div className="absolute top-1/2 right-[-80px] z-10" style={{ transform: 'translateY(-50%)' }}>
+            <div className="relative" style={{ width: '680px', height: '680px' }}>
+              <div className="absolute inset-0 rounded-full pointer-events-none" style={{ background: 'radial-gradient(circle at 50% 50%, rgba(8,145,178,0.09) 0%, transparent 60%)' }} />
+
+              {/* Sonar pulses */}
+              {[0, 1.2, 2.4].map((delay) => (
+                <div
+                  key={delay}
+                  className="absolute rounded-full border border-accent/30 pointer-events-none"
+                  style={{
+                    width: '640px',
+                    height: '640px',
+                    top: '50%',
+                    left: '50%',
+                    animation: `sonar-out 3.6s ease-out infinite`,
+                    animationDelay: `${delay}s`,
+                  }}
+                />
+              ))}
+
+              <OrbRing radius={308} dur="26s" dir="cw" borderOpacity="rgba(8,145,178,0.10)" nodeW={84} nodeH={24}
+                nodes={[{ label: 'Government', angle: 20 }, { label: 'Operations', angle: 100 }, { label: 'Suppliers', angle: 200 }, { label: 'Finance', angle: 290 }]}
+              />
+              <OrbRing radius={222} dur="17s" dir="ccw" borderOpacity="rgba(8,145,178,0.20)" nodeW={100} nodeH={24}
+                nodes={[{ label: 'Owner / Investor', angle: 55 }, { label: 'Main Contractor', angle: 175 }, { label: 'Subcontractors', angle: 295 }]}
+              />
+              <OrbRing radius={136} dur="10s" dir="cw" borderOpacity="rgba(8,145,178,0.38)" nodeW={90} nodeH={24}
+                nodes={[{ label: 'Architect', angle: 355 }, { label: 'MEP Engineers', angle: 118 }, { label: 'Interior Design', angle: 238 }]}
+              />
+
+              {/* TMPC center */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30">
+                <div className="border-2 border-accent bg-[#0A1628] flex flex-col items-center justify-center animate-hub-glow" style={{ width: '112px', height: '112px' }}>
+                  <p className="text-[0.44rem] text-accent uppercase tracking-[0.28em] mb-1.5">Hub</p>
+                  <p className="font-display font-bold text-[1.9rem] text-white leading-none tracking-tight">TMPC</p>
+                  <div className="flex gap-1 mt-2">
+                    {[0, 0.5, 1].map((d) => (
+                      <span key={d} className="w-1.5 h-1.5 rounded-full bg-accent animate-dot-blink" style={{ animationDelay: `${d}s` }} />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Left fade so text stays readable */}
+          <div className="absolute inset-y-0 left-0 w-1/2 pointer-events-none" style={{ background: 'linear-gradient(to right, #0A1628 55%, transparent)' }} />
+
+          {/* Text overlays left side */}
+          <div className="relative z-20 max-w-6xl mx-auto px-6 lg:px-8 flex items-center" style={{ minHeight: '92vh' }}>
+            <div className="max-w-xl">
+              <div className="inline-flex items-center gap-2 border border-white/15 px-3 py-1.5 text-xs text-white/50 mb-8 tracking-[0.2em] uppercase">
+                <span className="w-1.5 h-1.5 rounded-full bg-accent animate-dot-blink flex-shrink-0" />
+                Bangkok, Thailand
+              </div>
+              <h1 className="font-display font-bold text-6xl lg:text-[5.25rem] text-white leading-[1.04] tracking-tight mb-8">
+                Project Consulting and Development Management in Thailand
+              </h1>
+              <div className="w-16 h-0.5 bg-accent mb-8" />
+              <p className="text-lg text-white/50 leading-relaxed mb-12">
+                One coordination layer. Every party aligned. Bangkok-based. Internationally fluent.
+              </p>
+              <div className="flex flex-wrap items-center gap-4">
+                <span className="inline-flex text-sm font-semibold bg-accent text-white px-8 py-4">Discuss Your Project</span>
+                <span className="text-sm text-white/40 flex items-center gap-1.5">Our Services &#8594;</span>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      {/* ─────────────────────────────────────────────────────────── */}
+      {/* CONCEPT H: Orbital + Live Mission Control Panel             */}
+      {/* ─────────────────────────────────────────────────────────── */}
+      <div id="concept-H">
+        <Label letter="H" title="Orbital + mission control readout" note="Orbital center + live coordination data panel on the right" />
+        <section className="bg-[#0A1628] border-b border-white/[0.08] overflow-hidden relative">
+          <div className="absolute inset-0 bg-grid-dots pointer-events-none opacity-35" />
+          <div className="relative z-10 max-w-6xl mx-auto px-6 lg:px-8 w-full py-16 lg:py-20">
+            <div className="grid lg:grid-cols-[380px_1fr_260px] gap-8 items-center">
+
+              {/* Left: text */}
+              <div>
+                <div className="inline-flex items-center gap-2 border border-white/15 px-3 py-1.5 text-xs text-white/50 mb-8 tracking-[0.2em] uppercase">
+                  <span className="w-1.5 h-1.5 rounded-full bg-accent animate-dot-blink flex-shrink-0" />
+                  Bangkok, Thailand
+                </div>
+                <h1 className="font-display font-bold text-4xl lg:text-[3.25rem] text-white leading-[1.07] tracking-tight mb-6">
+                  Project Consulting and Development Management in Thailand
+                </h1>
+                <p className="text-sm text-white/45 leading-relaxed mb-8">
+                  Structured coordination for complex multi-party projects across Thailand.
+                </p>
+                <div className="flex flex-col gap-3">
+                  <span className="inline-flex text-sm font-semibold bg-accent text-white px-7 py-3.5 self-start">Discuss Your Project</span>
+                  <span className="text-sm text-white/40 flex items-center gap-1.5">Our Services &#8594;</span>
+                </div>
+              </div>
+
+              {/* Center: orbital (smaller) */}
+              <div className="hidden lg:flex items-center justify-center py-4">
+                <div className="relative" style={{ width: '440px', height: '440px' }}>
+                  <div className="absolute inset-0 rounded-full pointer-events-none" style={{ background: 'radial-gradient(circle at 50% 50%, rgba(8,145,178,0.08) 0%, transparent 60%)' }} />
+
+                  {[0, 1, 2].map((d) => (
+                    <div
+                      key={d}
+                      className="absolute rounded-full border border-accent/30 pointer-events-none"
+                      style={{
+                        width: '414px',
+                        height: '414px',
+                        top: '50%',
+                        left: '50%',
+                        animation: `sonar-out 3s ease-out infinite`,
+                        animationDelay: `${d}s`,
+                      }}
+                    />
+                  ))}
+
+                  <OrbRing radius={200} dur="22s" dir="cw" borderOpacity="rgba(8,145,178,0.12)" nodeW={76} nodeH={22}
+                    nodes={[{ label: 'Government', angle: 30 }, { label: 'Operations', angle: 120 }, { label: 'Suppliers', angle: 210 }, { label: 'Finance', angle: 300 }]}
+                  />
+                  <OrbRing radius={144} dur="15s" dir="ccw" borderOpacity="rgba(8,145,178,0.24)" nodeW={92} nodeH={22}
+                    nodes={[{ label: 'Owner / Investor', angle: 60 }, { label: 'Main Contractor', angle: 180 }, { label: 'Subcontractors', angle: 300 }]}
+                  />
+                  <OrbRing radius={88} dur="9s" dir="cw" borderOpacity="rgba(8,145,178,0.42)" nodeW={84} nodeH={22}
+                    nodes={[{ label: 'Architect', angle: 0 }, { label: 'MEP Engineers', angle: 120 }, { label: 'Interior Design', angle: 240 }]}
+                  />
+
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30">
+                    <div className="border-2 border-accent bg-[#0A1628] flex flex-col items-center justify-center animate-hub-glow" style={{ width: '84px', height: '84px' }}>
+                      <p className="text-[0.38rem] text-accent uppercase tracking-[0.25em] mb-1">Hub</p>
+                      <p className="font-display font-bold text-[1.4rem] text-white leading-none tracking-tight">TMPC</p>
+                      <div className="flex gap-1 mt-1.5">
+                        {[0, 0.5, 1].map((d) => (
+                          <span key={d} className="w-1 h-1 rounded-full bg-accent animate-dot-blink" style={{ animationDelay: `${d}s` }} />
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right: mission control panel */}
+              <div className="hidden lg:block border border-white/[0.09] bg-white/[0.02] p-5">
+
+                <div className="flex items-center gap-2 mb-5 pb-4 border-b border-white/[0.08]">
+                  <span className="w-1.5 h-1.5 rounded-full bg-accent animate-dot-blink flex-shrink-0" />
+                  <p className="text-[0.52rem] text-accent uppercase tracking-[0.25em]">Active Coordination</p>
+                </div>
+
+                <p className="text-[0.5rem] text-white/25 uppercase tracking-[0.2em] mb-2">Phase Status</p>
+                <div className="space-y-1.5 mb-5">
+                  {[
+                    { label: 'Project Review', done: true },
+                    { label: 'Planning', done: true },
+                    { label: 'Coordination', done: false, active: true },
+                    { label: 'Execution', done: false },
+                    { label: 'Handover', done: false },
+                  ].map(({ label, done, active }) => (
+                    <div key={label} className="flex items-center gap-2">
+                      <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${done ? 'bg-accent' : active ? 'bg-accent animate-dot-blink' : 'bg-white/15'}`} />
+                      <span className={`text-[0.62rem] ${active ? 'text-white font-semibold' : done ? 'text-white/45' : 'text-white/20'}`}>{label}</span>
+                      {active && <span className="ml-auto text-[0.48rem] text-accent uppercase tracking-wider">Live</span>}
+                    </div>
+                  ))}
+                </div>
+
+                <div className="h-px bg-white/[0.07] mb-4" />
+
+                <p className="text-[0.5rem] text-white/25 uppercase tracking-[0.2em] mb-2">Parties Engaged</p>
+                <div className="space-y-1 mb-5">
+                  {['Owner / Investor', 'Architect', 'MEP Engineers', 'Contractor', 'Operations'].map((p) => (
+                    <div key={p} className="flex items-center justify-between">
+                      <span className="text-[0.62rem] text-white/50">{p}</span>
+                      <span className="w-1 h-1 rounded-full bg-accent/70" />
+                    </div>
+                  ))}
+                </div>
+
+                <div className="h-px bg-white/[0.07] mb-4" />
+
+                <div className="space-y-2">
+                  {[
+                    { label: 'Workstreams', value: '5 active' },
+                    { label: 'Parties aligned', value: '10 total' },
+                    { label: 'Location', value: 'Bangkok, TH' },
+                  ].map(({ label, value }) => (
+                    <div key={label} className="flex items-center justify-between">
+                      <span className="text-[0.52rem] text-white/25 uppercase tracking-wider">{label}</span>
+                      <span className="text-[0.62rem] text-white/60 font-medium">{value}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </section>
+      </div>
+
       {/* Footer */}
       <div className="bg-canvas-subtle border-t border-line px-6 py-6 text-center">
         <p className="text-sm text-ink-muted mb-3">Which concept do you want to deploy?</p>
         <div className="flex flex-wrap justify-center gap-3">
-          {['A', 'B', 'C', 'D', 'E'].map((c) => (
+          {['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'].map((c) => (
             <a key={c} href={`#concept-${c}`} className="text-xs font-semibold border border-line px-4 py-2 text-ink-muted hover:border-accent hover:text-accent transition-all duration-150">
               Concept {c}
             </a>
