@@ -134,22 +134,7 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* 2. Introduction */}
-      <section className="bg-canvas border-b border-line py-14 lg:py-16">
-        <div className="max-w-2xl mx-auto px-6 lg:px-8">
-          <p className="text-base text-ink leading-relaxed mb-5">
-            TMPC provides project consulting and development management support across commercial, industrial, hospitality, wellness, operational, and real estate projects.
-          </p>
-          <p className="text-base text-ink-muted leading-relaxed mb-5">
-            Our role is to help structure, coordinate, and support projects through organized planning, communication management, consultant coordination, and execution oversight.
-          </p>
-          <p className="text-base text-ink-muted leading-relaxed">
-            TMPC does not operate as a construction contractor. We work as a strategic project partner focused on coordination, oversight, and practical execution support.
-          </p>
-        </div>
-      </section>
-
-      {/* 3. Core Services */}
+      {/* 2. Core Services */}
       <section className="bg-canvas-subtle border-b border-line py-16 lg:py-24">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <div className="mb-12 lg:mb-16">

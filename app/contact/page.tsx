@@ -44,14 +44,6 @@ const contactMethods = [
   },
 ]
 
-const approachItems = [
-  'Planning and structuring',
-  'Consultant coordination',
-  'Project oversight',
-  'Operational setup support',
-  'Execution management',
-]
-
 export default function ContactPage() {
   return (
     <>
@@ -79,19 +71,7 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* 2. Intro */}
-      <section className="bg-canvas border-b border-line py-14 lg:py-16">
-        <div className="max-w-2xl mx-auto px-6 lg:px-8">
-          <p className="text-base text-ink leading-relaxed mb-4">
-            TMPC works with businesses, investors, operators, and project owners across multiple industries and project environments.
-          </p>
-          <p className="text-base text-ink-muted leading-relaxed">
-            We welcome early-stage discussions, project inquiries, and coordination consultations related to projects throughout Thailand.
-          </p>
-        </div>
-      </section>
-
-      {/* 3. Contact Methods */}
+      {/* 2. Contact Methods */}
       <section className="bg-canvas-subtle border-b border-line py-16 lg:py-20">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -130,36 +110,7 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* 5. How We Work */}
-      <section className="bg-canvas-subtle border-b border-line py-16 lg:py-24">
-        <div className="max-w-2xl mx-auto px-6 lg:px-8">
-          <p className="text-xs font-semibold text-accent uppercase tracking-[0.25em] mb-4">
-            Process
-          </p>
-          <h2 className="font-display font-semibold text-2xl lg:text-3xl text-ink tracking-tight mb-8">
-            How We Typically Work
-          </h2>
-          <p className="text-base text-ink leading-relaxed mb-5">
-            Most projects begin with an initial discussion to understand scope, operational requirements, timelines, and coordination needs.
-          </p>
-          <p className="text-base text-ink-muted leading-relaxed mb-6">
-            Depending on the project, TMPC may support:
-          </p>
-          <ul className="space-y-3 mb-8">
-            {approachItems.map((item) => (
-              <li key={item} className="flex items-center gap-3 text-sm text-ink-secondary">
-                <span className="w-1.5 h-1.5 rounded-full bg-accent flex-shrink-0" />
-                {item}
-              </li>
-            ))}
-          </ul>
-          <p className="text-base text-ink-muted leading-relaxed">
-            Every project is approached individually based on scope and complexity.
-          </p>
-        </div>
-      </section>
-
-      {/* 6. CTA */}
+      {/* 5. CTA */}
       <section className="bg-canvas-dark py-20 lg:py-24">
         <div className="max-w-xl mx-auto px-6 lg:px-8 text-center">
           <p className="text-xs font-semibold text-accent uppercase tracking-[0.25em] mb-6">

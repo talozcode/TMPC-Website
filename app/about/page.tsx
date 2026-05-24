@@ -8,29 +8,6 @@ export const metadata: Metadata = {
   description: `${siteConfig.name} is a Thailand-based project consulting and development management company supporting clients across commercial, industrial, hospitality, wellness, and real estate projects.`,
 }
 
-const projectTypes = [
-  {
-    title: 'Commercial Projects',
-    description: 'Retail, office, mixed-use, and business-related environments.',
-  },
-  {
-    title: 'Industrial & Factory Setup',
-    description: 'Industrial coordination, warehouse environments, and operational project support.',
-  },
-  {
-    title: 'Real Estate & Renovation',
-    description: 'Condominium renovations, property upgrades, villa improvements, and development support.',
-  },
-  {
-    title: 'Wellness & Hospitality',
-    description: 'Hospitality concepts, wellness spaces, boutique developments, and operational environments.',
-  },
-  {
-    title: 'Warehousing & Operations',
-    description: 'Operational facilities, logistics-related spaces, and project coordination support.',
-  },
-]
-
 const leadership = [
   {
     name: 'Tom',
@@ -167,39 +144,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* 4. Project Types */}
-      <section className="bg-canvas border-b border-line py-16 lg:py-24">
-        <div className="max-w-6xl mx-auto px-6 lg:px-8">
-          <div className="mb-10 lg:mb-14">
-            <p className="text-xs font-semibold text-accent uppercase tracking-[0.25em] mb-4">
-              Sectors
-            </p>
-            <h2 className="font-display font-bold text-3xl lg:text-4xl text-ink tracking-tight">
-              Project Types & Sectors
-            </h2>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {projectTypes.map((type, i) => (
-              <div key={type.title} className="border border-line bg-canvas p-7 hover:border-accent/40 hover:shadow-sm transition-all duration-200 relative">
-                <span
-                  className="absolute top-4 right-5 font-display font-bold text-6xl text-accent leading-none select-none opacity-[0.06]"
-                  aria-hidden="true"
-                >
-                  {i + 1}
-                </span>
-                <h3 className="font-display font-semibold text-base text-ink mb-3 leading-snug tracking-tight relative">
-                  {type.title}
-                </h3>
-                <p className="text-sm text-ink-muted leading-relaxed relative">
-                  {type.description}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 5. Leadership */}
+      {/* 4. Leadership */}
       <section className="bg-canvas-subtle border-b border-line py-16 lg:py-24">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <div className="mb-10 lg:mb-14">
