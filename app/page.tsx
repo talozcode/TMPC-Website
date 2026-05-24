@@ -9,6 +9,15 @@ export const metadata: Metadata = {
   description: siteConfig.description,
 }
 
+const ganttPhases = [
+  { label: 'Planning',     start:  0, width: 18, delay: 0.35 },
+  { label: 'Design',       start:  8, width: 36, delay: 0.55 },
+  { label: 'Approvals',    start: 24, width: 26, delay: 0.75 },
+  { label: 'Procurement',  start: 33, width: 34, delay: 0.95 },
+  { label: 'Construction', start: 50, width: 42, delay: 1.15 },
+  { label: 'Handover',     start: 84, width: 16, delay: 1.35 },
+]
+
 const challengeInput = [
   'Owner / Investor', 'Architect', 'MEP Engineers', 'Interior Design',
   'Main Contractor', 'Subcontractors', 'Suppliers', 'Government Bodies',
@@ -88,61 +97,101 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Right: image panel */}
-            <div
-              className="hidden lg:block relative overflow-hidden animate-fade-in"
-              style={{ animationDelay: '0.15s', minHeight: '580px' }}
-            >
-              <Image
-                src="/images/hero-about.jpg"
-                alt="Project planning and coordination"
-                fill
-                className="object-cover"
-                style={{ animation: 'img-drift 8s ease-in-out infinite' }}
-                sizes="480px"
-                priority
-              />
-              <div className="absolute inset-0 bg-gradient-to-br from-[#0A1628]/30 via-transparent to-transparent" />
-              <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-[#0A1628]/55 to-transparent" />
+            {/* Right: animated Gantt chart */}
+            <div className="hidden lg:flex flex-col justify-center animate-fade-in" style={{ animationDelay: '0.2s' }}>
+              <div className="bg-[#0C1A2E] border border-white/[0.07] p-5 lg:p-6">
 
-              {/* Coordination overlay */}
-              <div
-                className="absolute bottom-8 left-6 right-6"
-                style={{ animation: 'fade-in 0.5s ease-out 0.65s both' }}
-              >
-                <div className="bg-[#0A1628]/90 border border-white/[0.1] p-5">
-                  <p className="text-[0.48rem] font-bold text-accent uppercase tracking-[0.3em] mb-4">
-                    TMPC Coordination Layer
-                  </p>
-                  <div className="mb-4">
-                    {['Planning', 'Coordination', 'Oversight'].map((item, i) => (
-                      <div
-                        key={item}
-                        style={{ animation: `fade-in 0.4s ease-out ${0.8 + i * 0.15}s both` }}
-                      >
-                        <div className="flex items-center gap-3">
-                          <div className="w-1.5 h-1.5 rounded-full bg-accent flex-shrink-0" />
-                          <span className="text-[0.8rem] font-semibold text-white/80 uppercase tracking-[0.1em]">{item}</span>
-                        </div>
-                        {i < 2 && (
+                {/* Card header */}
+                <div className="flex items-start justify-between mb-5 pb-4 border-b border-white/[0.06]">
+                  <div>
+                    <p className="text-[0.46rem] font-bold text-accent uppercase tracking-[0.28em] mb-1.5">
+                      Project Programme
+                    </p>
+                    <p className="text-sm font-semibold text-white/60 tracking-tight leading-snug">
+                      12-Month Delivery Timeline
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-1.5 mt-0.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-accent animate-dot-blink flex-shrink-0" />
+                    <span className="text-[0.44rem] text-white/30 uppercase tracking-[0.2em]">Active</span>
+                  </div>
+                </div>
+
+                {/* Quarter labels */}
+                <div className="flex mb-2.5 pl-[30%]">
+                  {['Q1', 'Q2', 'Q3', 'Q4'].map((q) => (
+                    <div key={q} className="flex-1 border-l border-white/[0.05] pl-1">
+                      <span className="text-[0.4rem] font-semibold text-white/20 uppercase tracking-[0.12em]">{q}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Bar rows — relative container for today marker */}
+                <div className="relative">
+
+                  {/* Today marker at Q3 midpoint (30% label + 60% of 70% bar area = 72%) */}
+                  <div
+                    className="absolute top-0 bottom-0 w-px bg-accent/40 pointer-events-none z-10"
+                    style={{ left: '72%', animation: 'fade-in 0.3s ease-out 1.9s both' }}
+                  >
+                    <div className="absolute -top-1 -left-[2px] w-[5px] h-[5px] rounded-full bg-accent animate-dot-blink" />
+                  </div>
+
+                  {/* Phase rows */}
+                  <div className="space-y-[6px]">
+                    {ganttPhases.map((phase) => (
+                      <div key={phase.label} className="flex items-center">
+                        <span className="text-[0.48rem] text-white/30 w-[30%] text-right pr-3 flex-shrink-0 leading-tight">
+                          {phase.label}
+                        </span>
+                        <div className="flex-1 relative h-[18px]">
                           <div
-                            className="w-px h-4 bg-accent/30 animate-flow-pulse ml-[2.5px]"
-                            style={{ animationDelay: `${i * 0.4}s` }}
+                            className="absolute top-0 bottom-0 bg-[#1C3355]"
+                            style={{
+                              left: `${phase.start}%`,
+                              width: `${phase.width}%`,
+                              transformOrigin: 'left',
+                              animation: `bar-grow 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94) ${phase.delay}s both`,
+                            }}
                           />
-                        )}
+                        </div>
                       </div>
                     ))}
                   </div>
-                  <div
-                    className="pt-3 border-t border-white/[0.08] flex items-center gap-2"
-                    style={{ animation: 'fade-in 0.4s ease-out 1.25s both' }}
-                  >
-                    <span className="w-1.5 h-1.5 rounded-full bg-accent animate-dot-blink flex-shrink-0" />
-                    <span className="text-[0.48rem] font-medium text-white/45 uppercase tracking-[0.22em]">
-                      Project Flow Active
+
+                  {/* TMPC coordination bar */}
+                  <div className="flex items-center mt-3 pt-3 border-t border-white/[0.06]">
+                    <span className="text-[0.46rem] font-bold text-accent w-[30%] text-right pr-3 flex-shrink-0 uppercase tracking-[0.12em]">
+                      TMPC
                     </span>
+                    <div className="flex-1 relative h-[20px]">
+                      <div
+                        className="absolute inset-0 bg-accent/15 border border-accent/35"
+                        style={{
+                          transformOrigin: 'left',
+                          animation: 'bar-grow 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1.55s both',
+                        }}
+                      />
+                      <div className="absolute inset-0 flex items-center justify-evenly px-3 overflow-hidden">
+                        {[0, 0.25, 0.5, 0.75, 1.0].map((d) => (
+                          <span
+                            key={d}
+                            className="w-[3px] h-[3px] rounded-full bg-accent/50 animate-dot-blink flex-shrink-0"
+                            style={{ animationDelay: `${d}s` }}
+                          />
+                        ))}
+                      </div>
+                    </div>
                   </div>
+
                 </div>
+
+                {/* Status footer */}
+                <div className="mt-5 pt-4 border-t border-white/[0.06] flex items-center justify-between">
+                  <span className="text-[0.42rem] text-white/20 uppercase tracking-[0.15em]">Bangkok, Thailand</span>
+                  <span className="text-[0.42rem] text-white/20 uppercase tracking-[0.15em]">Coordination Active</span>
+                </div>
+
               </div>
             </div>
 
