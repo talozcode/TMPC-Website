@@ -10,12 +10,12 @@ export const metadata: Metadata = {
 }
 
 const ganttPhases = [
-  { label: 'Planning',     start:  0, width: 18, delay: 0.35 },
-  { label: 'Design',       start:  8, width: 36, delay: 0.55 },
-  { label: 'Approvals',    start: 24, width: 26, delay: 0.75 },
-  { label: 'Procurement',  start: 33, width: 34, delay: 0.95 },
-  { label: 'Construction', start: 50, width: 42, delay: 1.15 },
-  { label: 'Handover',     start: 84, width: 16, delay: 1.35 },
+  { label: 'Planning',     start:  0, width: 18, delay: 0.35, party: 'Owner / TMPC',  milestone: null },
+  { label: 'Design',       start:  8, width: 36, delay: 0.55, party: 'Architect',      milestone: 44  },
+  { label: 'Approvals',    start: 24, width: 26, delay: 0.75, party: 'Authorities',    milestone: null },
+  { label: 'Procurement',  start: 33, width: 34, delay: 0.95, party: 'Contractors',    milestone: null },
+  { label: 'Construction', start: 50, width: 42, delay: 1.15, party: 'Contractor',     milestone: 50  },
+  { label: 'Handover',     start: 84, width: 16, delay: 1.35, party: 'All Parties',    milestone: 84  },
 ]
 
 const challengeInput = [
@@ -83,34 +83,31 @@ export default function HomePage() {
                 </Link>
               </div>
               <div
-                className="hidden lg:flex items-center pt-6 border-t border-line animate-fade-up"
+                className="hidden lg:flex items-center gap-0 pt-6 border-t border-line animate-fade-up"
                 style={{ animationDelay: '0.4s' }}
               >
-                {['Bangkok-Based', 'Multi-Sector', 'Execution Oversight'].map((tag, i) => (
-                  <span
-                    key={tag}
-                    className={`text-[0.65rem] font-semibold text-ink-muted uppercase tracking-[0.15em] pr-5 ${i > 0 ? 'pl-5 border-l border-line' : ''}`}
-                  >
-                    {tag}
-                  </span>
+                {[
+                  { value: '5+', label: 'Sectors' },
+                  { value: '10+', label: 'Parties per Project' },
+                  { value: '6', label: 'Project Phases' },
+                ].map((stat, i) => (
+                  <div key={stat.label} className={`flex flex-col ${i > 0 ? 'pl-6 border-l border-line ml-6' : ''}`}>
+                    <span className="font-display font-bold text-xl text-ink leading-none mb-1">{stat.value}</span>
+                    <span className="text-[0.56rem] text-ink-muted uppercase tracking-[0.15em]">{stat.label}</span>
+                  </div>
                 ))}
               </div>
             </div>
 
             {/* Right: animated Gantt chart */}
             <div className="hidden lg:flex flex-col justify-center animate-fade-in" style={{ animationDelay: '0.2s' }}>
-              {/* Navy frame */}
               <div className="border-2 border-canvas-dark">
 
-                {/* Navy header strip */}
+                {/* Navy header */}
                 <div className="bg-canvas-dark px-6 py-5 flex items-center justify-between">
                   <div>
-                    <p className="text-[0.44rem] font-bold text-accent uppercase tracking-[0.3em] mb-2">
-                      Project Programme
-                    </p>
-                    <p className="font-display font-bold text-xl text-white tracking-tight leading-none">
-                      Timeline
-                    </p>
+                    <p className="text-[0.44rem] font-bold text-accent uppercase tracking-[0.3em] mb-2">Project Programme</p>
+                    <p className="font-display font-bold text-xl text-white tracking-tight leading-none">Timeline</p>
                   </div>
                   <div className="text-right">
                     <div className="flex items-center justify-end gap-1.5 mb-1.5">
@@ -124,31 +121,38 @@ export default function HomePage() {
                 {/* White chart body */}
                 <div className="bg-white px-6 py-6">
 
-                  {/* Quarter labels aligned to bar area */}
-                  <div className="flex mb-3 pl-[28%]">
-                    {['Q1', 'Q2', 'Q3', 'Q4'].map((q) => (
-                      <div key={q} className="flex-1 border-l-2 border-canvas-dark/10 pl-2">
-                        <span className="text-[0.48rem] font-bold text-ink/30 uppercase tracking-[0.18em]">{q}</span>
-                      </div>
-                    ))}
+                  {/* Column headers: spacer | Q labels | Party header
+                      Layout: 22% label | flex-1 bar (=56%) | 22% party */}
+                  <div className="flex items-end mb-3">
+                    <div className="w-[22%] flex-shrink-0" />
+                    <div className="flex flex-1">
+                      {['Q1', 'Q2', 'Q3', 'Q4'].map((q) => (
+                        <div key={q} className="flex-1 border-l-2 border-canvas-dark/10 pl-2">
+                          <span className="text-[0.48rem] font-bold text-ink/30 uppercase tracking-[0.18em]">{q}</span>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="w-[22%] flex-shrink-0 pl-3">
+                      <span className="text-[0.44rem] font-bold text-ink/25 uppercase tracking-[0.18em]">Party</span>
+                    </div>
                   </div>
 
-                  {/* Relative container: grid lines + today + bars */}
+                  {/* Relative container: grid lines + today marker + all rows */}
                   <div className="relative">
 
-                    {/* Vertical grid lines at Q boundaries (28% label + Q% × 72% bar area) */}
+                    {/* Q boundary grid lines: 22% + pct × 0.56% */}
                     {[25, 50, 75].map((pct) => (
                       <div
                         key={pct}
                         className="absolute top-0 bottom-0 pointer-events-none"
-                        style={{ left: `calc(28% + ${pct * 0.72}%)`, width: '1px', background: 'rgba(10,22,40,0.07)' }}
+                        style={{ left: `calc(22% + ${pct * 0.56}%)`, width: '1px', background: 'rgba(10,22,40,0.06)' }}
                       />
                     ))}
 
-                    {/* Today marker at 60% of timeline = 28% + 0.6×72% = 71.2% */}
+                    {/* Today at 60% of timeline = 22% + 0.6 × 56% = 55.6% */}
                     <div
                       className="absolute top-0 bottom-0 pointer-events-none z-10"
-                      style={{ left: '71.2%', animation: 'fade-in 0.3s ease-out 1.9s both' }}
+                      style={{ left: '55.6%', animation: 'fade-in 0.3s ease-out 1.9s both' }}
                     >
                       <div className="w-[2px] h-full bg-accent/70" />
                       <div className="absolute -top-[3px] -left-[3px] w-2 h-2 rounded-full bg-accent animate-dot-blink" />
@@ -164,11 +168,11 @@ export default function HomePage() {
                         const doneFrac = phaseEnd <= 60 ? 1 : phase.start >= 60 ? 0 : (60 - phase.start) / phase.width
                         return (
                           <div key={phase.label} className="flex items-center">
-                            <span className="text-[0.54rem] font-medium text-ink-muted w-[28%] text-right pr-3 flex-shrink-0 leading-tight">
+                            <span className="text-[0.54rem] font-medium text-ink-muted w-[22%] text-right pr-3 flex-shrink-0 leading-tight">
                               {phase.label}
                             </span>
                             <div className="flex-1 relative h-[22px]">
-                              {/* Animated outer wrapper */}
+                              {/* Bar */}
                               <div
                                 className="absolute top-0 bottom-0 overflow-hidden"
                                 style={{
@@ -178,15 +182,26 @@ export default function HomePage() {
                                   animation: `bar-grow 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94) ${phase.delay}s both`,
                                 }}
                               >
-                                {/* Completed portion: solid navy */}
                                 {doneFrac > 0 && (
                                   <div className="absolute top-0 bottom-0 bg-canvas-dark" style={{ width: `${doneFrac * 100}%` }} />
                                 )}
-                                {/* Remaining portion: outline */}
                                 {doneFrac < 1 && (
                                   <div className="absolute top-0 bottom-0 border border-canvas-dark/25" style={{ left: `${doneFrac * 100}%`, right: 0 }} />
                                 )}
                               </div>
+                              {/* Milestone diamond */}
+                              {phase.milestone !== null && (
+                                <div
+                                  className="absolute top-1/2 z-20 w-[10px] h-[10px] -translate-x-1/2 -translate-y-1/2 rotate-45 bg-white border-2 border-accent"
+                                  style={{ left: `${phase.milestone}%`, animation: `fade-in 0.3s ease-out ${phase.delay + 0.5}s both` }}
+                                />
+                              )}
+                            </div>
+                            {/* Party tag */}
+                            <div className="w-[22%] flex-shrink-0 pl-3">
+                              <span className="text-[0.46rem] font-medium text-ink-muted uppercase tracking-[0.1em] leading-tight">
+                                {phase.party}
+                              </span>
                             </div>
                           </div>
                         )
@@ -195,16 +210,13 @@ export default function HomePage() {
 
                     {/* TMPC coordination bar */}
                     <div className="flex items-center mt-4 pt-4 border-t-2 border-canvas-dark/10">
-                      <span className="text-[0.52rem] font-bold text-accent w-[28%] text-right pr-3 flex-shrink-0 uppercase tracking-[0.18em]">
+                      <span className="text-[0.5rem] font-bold text-accent w-[22%] text-right pr-3 flex-shrink-0 uppercase tracking-[0.18em]">
                         TMPC
                       </span>
                       <div className="flex-1 relative h-[28px]">
                         <div
                           className="absolute inset-0 bg-accent"
-                          style={{
-                            transformOrigin: 'left',
-                            animation: 'bar-grow 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1.55s both',
-                          }}
+                          style={{ transformOrigin: 'left', animation: 'bar-grow 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1.55s both' }}
                         />
                         <div className="absolute inset-0 flex items-center px-3">
                           <span className="text-[0.44rem] font-bold text-white uppercase tracking-[0.22em] whitespace-nowrap">
@@ -212,11 +224,14 @@ export default function HomePage() {
                           </span>
                         </div>
                       </div>
+                      <div className="w-[22%] flex-shrink-0 pl-3">
+                        <span className="text-[0.46rem] font-bold text-accent uppercase tracking-[0.1em]">All Parties</span>
+                      </div>
                     </div>
 
                   </div>
 
-                  {/* Footer strip */}
+                  {/* Footer */}
                   <div className="mt-5 pt-4 border-t border-canvas-dark/[0.08] flex items-center justify-between">
                     <span className="text-[0.42rem] text-ink-muted uppercase tracking-[0.15em]">Commercial &#183; Industrial &#183; Hospitality &#183; Real Estate</span>
                     <span className="text-[0.42rem] text-accent uppercase tracking-[0.15em]">Bangkok</span>
