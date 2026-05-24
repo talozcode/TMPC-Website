@@ -46,7 +46,7 @@ export default function HomePage() {
       {/* ── HERO: Site to Strategy ── */}
       <section className="bg-canvas border-b border-line overflow-hidden">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
-          <div className="grid lg:grid-cols-[1fr_480px] gap-16 items-stretch py-20 lg:py-0">
+          <div className="grid lg:grid-cols-[1fr_520px] gap-16 items-stretch py-20 lg:py-0">
 
             {/* Left: text */}
             <div className="flex flex-col justify-center lg:py-24">
@@ -99,99 +99,130 @@ export default function HomePage() {
 
             {/* Right: animated Gantt chart */}
             <div className="hidden lg:flex flex-col justify-center animate-fade-in" style={{ animationDelay: '0.2s' }}>
-              <div className="bg-[#0C1A2E] border border-white/[0.07] p-5 lg:p-6">
+              {/* Navy frame */}
+              <div className="border-2 border-canvas-dark">
 
-                {/* Card header */}
-                <div className="flex items-start justify-between mb-5 pb-4 border-b border-white/[0.06]">
+                {/* Navy header strip */}
+                <div className="bg-canvas-dark px-6 py-5 flex items-center justify-between">
                   <div>
-                    <p className="text-[0.46rem] font-bold text-accent uppercase tracking-[0.28em] mb-1.5">
+                    <p className="text-[0.44rem] font-bold text-accent uppercase tracking-[0.3em] mb-2">
                       Project Programme
                     </p>
-                    <p className="text-sm font-semibold text-white/60 tracking-tight leading-snug">
-                      12-Month Delivery Timeline
+                    <p className="font-display font-bold text-xl text-white tracking-tight leading-none">
+                      Timeline
                     </p>
                   </div>
-                  <div className="flex items-center gap-1.5 mt-0.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-accent animate-dot-blink flex-shrink-0" />
-                    <span className="text-[0.44rem] text-white/30 uppercase tracking-[0.2em]">Active</span>
-                  </div>
-                </div>
-
-                {/* Quarter labels */}
-                <div className="flex mb-2.5 pl-[30%]">
-                  {['Q1', 'Q2', 'Q3', 'Q4'].map((q) => (
-                    <div key={q} className="flex-1 border-l border-white/[0.05] pl-1">
-                      <span className="text-[0.4rem] font-semibold text-white/20 uppercase tracking-[0.12em]">{q}</span>
+                  <div className="text-right">
+                    <div className="flex items-center justify-end gap-1.5 mb-1.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-accent animate-dot-blink flex-shrink-0" />
+                      <span className="text-[0.44rem] font-semibold text-white/40 uppercase tracking-[0.2em]">Active</span>
                     </div>
-                  ))}
+                    <p className="text-[0.42rem] text-white/20 uppercase tracking-[0.15em]">Bangkok, TH</p>
+                  </div>
                 </div>
 
-                {/* Bar rows — relative container for today marker */}
-                <div className="relative">
+                {/* White chart body */}
+                <div className="bg-white px-6 py-6">
 
-                  {/* Today marker at Q3 midpoint (30% label + 60% of 70% bar area = 72%) */}
-                  <div
-                    className="absolute top-0 bottom-0 w-px bg-accent/40 pointer-events-none z-10"
-                    style={{ left: '72%', animation: 'fade-in 0.3s ease-out 1.9s both' }}
-                  >
-                    <div className="absolute -top-1 -left-[2px] w-[5px] h-[5px] rounded-full bg-accent animate-dot-blink" />
-                  </div>
-
-                  {/* Phase rows */}
-                  <div className="space-y-[6px]">
-                    {ganttPhases.map((phase) => (
-                      <div key={phase.label} className="flex items-center">
-                        <span className="text-[0.48rem] text-white/30 w-[30%] text-right pr-3 flex-shrink-0 leading-tight">
-                          {phase.label}
-                        </span>
-                        <div className="flex-1 relative h-[18px]">
-                          <div
-                            className="absolute top-0 bottom-0 bg-[#1C3355]"
-                            style={{
-                              left: `${phase.start}%`,
-                              width: `${phase.width}%`,
-                              transformOrigin: 'left',
-                              animation: `bar-grow 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94) ${phase.delay}s both`,
-                            }}
-                          />
-                        </div>
+                  {/* Quarter labels aligned to bar area */}
+                  <div className="flex mb-3 pl-[28%]">
+                    {['Q1', 'Q2', 'Q3', 'Q4'].map((q) => (
+                      <div key={q} className="flex-1 border-l-2 border-canvas-dark/10 pl-2">
+                        <span className="text-[0.48rem] font-bold text-ink/30 uppercase tracking-[0.18em]">{q}</span>
                       </div>
                     ))}
                   </div>
 
-                  {/* TMPC coordination bar */}
-                  <div className="flex items-center mt-3 pt-3 border-t border-white/[0.06]">
-                    <span className="text-[0.46rem] font-bold text-accent w-[30%] text-right pr-3 flex-shrink-0 uppercase tracking-[0.12em]">
-                      TMPC
-                    </span>
-                    <div className="flex-1 relative h-[20px]">
+                  {/* Relative container: grid lines + today + bars */}
+                  <div className="relative">
+
+                    {/* Vertical grid lines at Q boundaries (28% label + Q% × 72% bar area) */}
+                    {[25, 50, 75].map((pct) => (
                       <div
-                        className="absolute inset-0 bg-accent/15 border border-accent/35"
-                        style={{
-                          transformOrigin: 'left',
-                          animation: 'bar-grow 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1.55s both',
-                        }}
+                        key={pct}
+                        className="absolute top-0 bottom-0 pointer-events-none"
+                        style={{ left: `calc(28% + ${pct * 0.72}%)`, width: '1px', background: 'rgba(10,22,40,0.07)' }}
                       />
-                      <div className="absolute inset-0 flex items-center justify-evenly px-3 overflow-hidden">
-                        {[0, 0.25, 0.5, 0.75, 1.0].map((d) => (
-                          <span
-                            key={d}
-                            className="w-[3px] h-[3px] rounded-full bg-accent/50 animate-dot-blink flex-shrink-0"
-                            style={{ animationDelay: `${d}s` }}
-                          />
-                        ))}
+                    ))}
+
+                    {/* Today marker at 60% of timeline = 28% + 0.6×72% = 71.2% */}
+                    <div
+                      className="absolute top-0 bottom-0 pointer-events-none z-10"
+                      style={{ left: '71.2%', animation: 'fade-in 0.3s ease-out 1.9s both' }}
+                    >
+                      <div className="w-[2px] h-full bg-accent/70" />
+                      <div className="absolute -top-[3px] -left-[3px] w-2 h-2 rounded-full bg-accent animate-dot-blink" />
+                      <div className="absolute top-3 left-2 text-[0.4rem] font-bold text-accent uppercase tracking-[0.12em] whitespace-nowrap">
+                        Today
                       </div>
                     </div>
+
+                    {/* Phase rows */}
+                    <div className="space-y-[8px]">
+                      {ganttPhases.map((phase) => {
+                        const phaseEnd = phase.start + phase.width
+                        const doneFrac = phaseEnd <= 60 ? 1 : phase.start >= 60 ? 0 : (60 - phase.start) / phase.width
+                        return (
+                          <div key={phase.label} className="flex items-center">
+                            <span className="text-[0.54rem] font-medium text-ink-muted w-[28%] text-right pr-3 flex-shrink-0 leading-tight">
+                              {phase.label}
+                            </span>
+                            <div className="flex-1 relative h-[22px]">
+                              {/* Animated outer wrapper */}
+                              <div
+                                className="absolute top-0 bottom-0 overflow-hidden"
+                                style={{
+                                  left: `${phase.start}%`,
+                                  width: `${phase.width}%`,
+                                  transformOrigin: 'left',
+                                  animation: `bar-grow 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94) ${phase.delay}s both`,
+                                }}
+                              >
+                                {/* Completed portion: solid navy */}
+                                {doneFrac > 0 && (
+                                  <div className="absolute top-0 bottom-0 bg-canvas-dark" style={{ width: `${doneFrac * 100}%` }} />
+                                )}
+                                {/* Remaining portion: outline */}
+                                {doneFrac < 1 && (
+                                  <div className="absolute top-0 bottom-0 border border-canvas-dark/25" style={{ left: `${doneFrac * 100}%`, right: 0 }} />
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        )
+                      })}
+                    </div>
+
+                    {/* TMPC coordination bar */}
+                    <div className="flex items-center mt-4 pt-4 border-t-2 border-canvas-dark/10">
+                      <span className="text-[0.52rem] font-bold text-accent w-[28%] text-right pr-3 flex-shrink-0 uppercase tracking-[0.18em]">
+                        TMPC
+                      </span>
+                      <div className="flex-1 relative h-[28px]">
+                        <div
+                          className="absolute inset-0 bg-accent"
+                          style={{
+                            transformOrigin: 'left',
+                            animation: 'bar-grow 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1.55s both',
+                          }}
+                        />
+                        <div className="absolute inset-0 flex items-center px-3">
+                          <span className="text-[0.44rem] font-bold text-white uppercase tracking-[0.22em] whitespace-nowrap">
+                            Coordination &#183; All Phases
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+
+                  {/* Footer strip */}
+                  <div className="mt-5 pt-4 border-t border-canvas-dark/[0.08] flex items-center justify-between">
+                    <span className="text-[0.42rem] text-ink-muted uppercase tracking-[0.15em]">Commercial &#183; Industrial &#183; Hospitality &#183; Real Estate</span>
+                    <span className="text-[0.42rem] text-accent uppercase tracking-[0.15em]">Bangkok</span>
                   </div>
 
                 </div>
-
-                {/* Status footer */}
-                <div className="mt-5 pt-4 border-t border-white/[0.06] flex items-center justify-between">
-                  <span className="text-[0.42rem] text-white/20 uppercase tracking-[0.15em]">Bangkok, Thailand</span>
-                  <span className="text-[0.42rem] text-white/20 uppercase tracking-[0.15em]">Coordination Active</span>
-                </div>
-
               </div>
             </div>
 
