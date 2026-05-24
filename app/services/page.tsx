@@ -127,7 +127,7 @@ export default function ServicesPage() {
               className="text-lg text-ink-secondary leading-relaxed max-w-2xl animate-fade-up"
               style={{ animationDelay: '0.2s' }}
             >
-              TMPC supports projects across planning, coordination, development management, and execution oversight throughout Thailand. We do not operate as a construction contractor.
+              TMPC provides project planning, coordination, development management, and execution oversight throughout Thailand. Our role is structured management, not construction.
             </p>
           </div>
         </div>

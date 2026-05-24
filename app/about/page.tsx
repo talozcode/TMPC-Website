@@ -52,7 +52,7 @@ export default function AboutPage() {
                 className="text-lg text-ink-secondary leading-relaxed max-w-xl animate-fade-up"
                 style={{ animationDelay: '0.2s' }}
               >
-                TMPC supports commercial, industrial, hospitality, wellness, and real estate projects across Thailand through structured coordination, development management, and execution oversight.
+                We partner with owners, investors, and operators who need a disciplined management structure for complex delivery environments across Thailand.
               </p>
             </div>
 
@@ -97,7 +97,7 @@ export default function AboutPage() {
                 We work closely with project owners, businesses, investors, consultants, and operational teams to help structure, coordinate, and support projects from planning through execution.
               </p>
               <p className="text-base text-ink-muted leading-relaxed">
-                Our role is not construction contracting. TMPC acts as a strategic project partner focused on coordination, communication, oversight, and execution support throughout the project lifecycle.
+                TMPC acts as a strategic project management partner, not a construction contractor. Our focus is coordination, communication, oversight, and execution support across the full project lifecycle.
               </p>
               <p className="text-base text-ink-muted leading-relaxed">
                 We combine local coordination experience with international communication standards and a practical, execution-focused approach.

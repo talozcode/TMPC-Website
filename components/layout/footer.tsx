@@ -21,7 +21,7 @@ export function Footer() {
               />
             </Link>
             <p className="text-sm text-white/40 leading-relaxed max-w-xs">
-              Project consulting and development management in Thailand, supporting clients across commercial, industrial, and real estate projects.
+              Project consulting and development management for commercial, industrial, hospitality, and real estate projects across Thailand.
             </p>
           </div>
 

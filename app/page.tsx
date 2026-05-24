@@ -255,7 +255,7 @@ export default function HomePage() {
               Complex projects need structure.
             </h2>
             <p className="text-base text-ink-muted leading-relaxed">
-              When owners, consultants, suppliers, contractors, timelines, budgets, and operations are all in motion at once, alignment does not happen on its own. Without a dedicated coordination layer, communication fragments, timelines slip, and execution falls behind. TMPC sits between the complexity and the outcome.
+              When owners, consultants, suppliers, contractors, timelines, budgets, and operations are all in motion at once, alignment does not happen on its own. Without a dedicated coordination layer, communication breaks down, timelines slip, and execution falls behind. TMPC provides the coordination layer that keeps every party aligned and the project moving.
             </p>
           </FadeIn>
 

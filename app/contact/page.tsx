@@ -64,7 +64,7 @@ export default function ContactPage() {
               className="text-lg text-ink-secondary leading-relaxed max-w-xl animate-fade-up"
               style={{ animationDelay: '0.2s' }}
             >
-              Whether you are planning a commercial, industrial, hospitality, wellness, or real estate project, TMPC can support the planning, coordination, and execution process across Thailand.
+              Whether you are planning a commercial, industrial, hospitality, wellness, or real estate project in Thailand, TMPC can structure and manage delivery from planning through handover.
             </p>
           </div>
         </div>

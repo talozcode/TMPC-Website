@@ -110,7 +110,7 @@ export default function ProjectsPage() {
               className="text-lg text-ink-secondary leading-relaxed max-w-2xl animate-fade-up"
               style={{ animationDelay: '0.2s' }}
             >
-              TMPC has supported commercial, industrial, wellness, logistics, office, and residential projects across Bangkok and Thailand. The following represent the scope and type of work we manage.
+              TMPC works across commercial, industrial, wellness, logistics, office, and residential projects throughout Bangkok and Thailand. Each project below reflects the coordination complexity and execution depth that define a TMPC engagement.
             </p>
           </div>
         </div>
