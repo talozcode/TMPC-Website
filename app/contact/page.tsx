@@ -15,7 +15,7 @@ const contactMethods = [
     action: (
       <a
         href={`mailto:${siteConfig.email}`}
-        className="text-sm font-semibold text-ink underline underline-offset-4 decoration-accent/40 hover:decoration-accent transition-colors duration-150 break-all"
+        className="text-sm font-semibold text-ink underline underline-offset-4 decoration-clay/40 hover:decoration-clay transition-colors duration-150 break-all"
       >
         {siteConfig.email}
       </a>
@@ -59,8 +59,8 @@ export default function ContactPage() {
       <section className="bg-canvas py-24 lg:py-32">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <div className="max-w-3xl">
-            <div className="w-8 h-0.5 bg-accent mb-6" />
-            <p className="text-xs font-semibold text-accent uppercase tracking-[0.25em] mb-6 animate-fade-in">
+            <div className="w-8 h-0.5 bg-clay mb-6" />
+            <p className="text-xs font-semibold text-clay uppercase tracking-[0.28em] mb-6 animate-fade-in">
               Get in Touch
             </p>
             <h1
@@ -97,7 +97,7 @@ export default function ContactPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-line border border-line overflow-hidden">
             {contactMethods.map((method) => (
               <div key={method.label} className="bg-canvas p-8 lg:p-10 hover:bg-canvas-subtle transition-colors duration-200">
-                <p className="text-xs font-semibold text-accent uppercase tracking-[0.2em] mb-4">
+                <p className="text-xs font-semibold text-clay uppercase tracking-[0.2em] mb-4">
                   {method.label}
                 </p>
                 <p className="text-sm text-ink-muted leading-relaxed mb-5">
@@ -115,7 +115,10 @@ export default function ContactPage() {
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <div className="grid lg:grid-cols-[280px_1fr] gap-12 lg:gap-20">
             <div className="pt-1">
-              <div className="w-8 h-0.5 bg-accent mb-4" />
+              <div className="w-8 h-0.5 bg-clay mb-4" />
+              <p className="text-xs font-semibold text-clay uppercase tracking-[0.28em] mb-4">
+                Inquiry Form
+              </p>
               <h2 className="font-display text-2xl lg:text-3xl text-ink mb-3">
                 Start a Conversation
               </h2>
@@ -131,7 +134,10 @@ export default function ContactPage() {
       {/* 5. How We Typically Work */}
       <section className="bg-canvas py-16 lg:py-24">
         <div className="max-w-2xl mx-auto px-6 lg:px-8">
-          <div className="w-8 h-0.5 bg-accent mb-4" />
+          <div className="w-8 h-0.5 bg-clay mb-4" />
+          <p className="text-xs font-semibold text-clay uppercase tracking-[0.28em] mb-4">
+            Our Process
+          </p>
           <h2 className="font-display text-2xl lg:text-3xl text-ink mb-8">
             How We Typically Work
           </h2>
@@ -144,7 +150,7 @@ export default function ContactPage() {
           <ul className="space-y-3 mb-8">
             {approachItems.map((item) => (
               <li key={item} className="flex items-center gap-3 text-sm text-ink-secondary">
-                <span className="w-1 h-1 rounded-full bg-accent flex-shrink-0" />
+                <span className="w-1 h-1 rounded-full bg-clay flex-shrink-0" />
                 {item}
               </li>
             ))}
@@ -158,6 +164,9 @@ export default function ContactPage() {
       {/* 6. Final CTA */}
       <section className="bg-canvas-dark py-20 lg:py-24">
         <div className="max-w-xl mx-auto px-6 lg:px-8 text-center">
+          <p className="text-xs font-semibold text-clay uppercase tracking-[0.28em] mb-6">
+            Ready to Begin
+          </p>
           <h2 className="font-display text-2xl lg:text-3xl text-canvas leading-tight mb-5">
             Structured Coordination. Practical Execution Support.
           </h2>

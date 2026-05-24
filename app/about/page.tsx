@@ -62,8 +62,8 @@ export default function AboutPage() {
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <div className="grid lg:grid-cols-[1fr_360px] gap-16 lg:gap-20 items-start">
             <div>
-              <div className="w-8 h-0.5 bg-accent mb-6" />
-              <p className="text-xs font-semibold text-accent uppercase tracking-[0.25em] mb-6 animate-fade-in">
+              <div className="w-8 h-0.5 bg-clay mb-6" />
+              <p className="text-xs font-semibold text-clay uppercase tracking-[0.28em] mb-6 animate-fade-in">
                 About TMPC
               </p>
               <h1
@@ -95,7 +95,7 @@ export default function AboutPage() {
                   priority
                 />
               </div>
-              <div className="absolute -bottom-4 -left-4 w-full h-full border border-accent/25 pointer-events-none" />
+              <div className="absolute -bottom-4 -left-4 w-full h-full border border-clay/25 pointer-events-none" />
             </div>
           </div>
         </div>
@@ -106,7 +106,7 @@ export default function AboutPage() {
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <div className="grid lg:grid-cols-[260px_1fr] gap-12 lg:gap-20">
             <div className="pt-1">
-              <div className="w-8 h-0.5 bg-accent mb-4" />
+              <div className="w-8 h-0.5 bg-clay mb-4" />
               <h2 className="font-display text-2xl lg:text-3xl text-ink">
                 Who We Are
               </h2>
@@ -134,7 +134,7 @@ export default function AboutPage() {
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <div className="grid lg:grid-cols-[260px_1fr] gap-12 lg:gap-20">
             <div className="pt-1">
-              <div className="w-8 h-0.5 bg-accent mb-4" />
+              <div className="w-8 h-0.5 bg-clay mb-4" />
               <h2 className="font-display text-2xl lg:text-3xl text-ink">
                 Our Approach
               </h2>
@@ -150,7 +150,7 @@ export default function AboutPage() {
               <ul className="space-y-3 mb-8">
                 {approachPriorities.map((item) => (
                   <li key={item} className="flex items-center gap-3 text-sm text-ink-secondary">
-                    <span className="w-1 h-1 rounded-full bg-accent flex-shrink-0" />
+                    <span className="w-1 h-1 rounded-full bg-clay flex-shrink-0" />
                     {item}
                   </li>
                 ))}
@@ -167,7 +167,10 @@ export default function AboutPage() {
       <section className="bg-canvas-subtle border-y border-line py-16 lg:py-24">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <div className="mb-10 lg:mb-14">
-            <div className="w-8 h-0.5 bg-accent mb-4" />
+            <div className="w-8 h-0.5 bg-clay mb-4" />
+            <p className="text-xs font-semibold text-clay uppercase tracking-[0.28em] mb-4">
+              Sectors
+            </p>
             <h2 className="font-display text-3xl lg:text-4xl text-ink">
               Project Types & Sectors
             </h2>
@@ -176,7 +179,7 @@ export default function AboutPage() {
             {projectTypes.map((type, i) => (
               <div key={type.title} className="bg-canvas-subtle p-8 hover:bg-canvas transition-colors duration-200 relative overflow-hidden">
                 <span
-                  className="absolute -top-1 right-3 font-display text-8xl text-accent leading-none select-none opacity-[0.05]"
+                  className="absolute -top-1 right-3 font-display text-8xl text-clay leading-none select-none opacity-[0.07]"
                   aria-hidden="true"
                 >
                   {i + 1}
@@ -197,7 +200,10 @@ export default function AboutPage() {
       <section className="bg-canvas py-16 lg:py-24">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <div className="mb-10 lg:mb-14">
-            <div className="w-8 h-0.5 bg-accent mb-4" />
+            <div className="w-8 h-0.5 bg-clay mb-4" />
+            <p className="text-xs font-semibold text-clay uppercase tracking-[0.28em] mb-4">
+              Team
+            </p>
             <h2 className="font-display text-3xl lg:text-4xl text-ink">
               Leadership
             </h2>
@@ -208,11 +214,11 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-line border border-line overflow-hidden max-w-3xl">
             {leadership.map((person) => (
               <div key={person.name} className="bg-canvas p-8 lg:p-10 hover:bg-canvas-subtle transition-colors duration-200">
-                <div className="w-8 h-0.5 bg-accent mb-7" />
+                <div className="w-8 h-0.5 bg-clay mb-7" />
                 <p className="font-display text-2xl text-ink mb-1">
                   {person.name}
                 </p>
-                <p className="text-xs font-semibold text-accent uppercase tracking-wider mb-5">
+                <p className="text-xs font-semibold text-clay uppercase tracking-wider mb-5">
                   {person.title}
                 </p>
                 <p className="text-sm text-ink-muted leading-relaxed">
@@ -227,6 +233,9 @@ export default function AboutPage() {
       {/* 6. Closing CTA */}
       <section className="bg-canvas-dark py-20 lg:py-28">
         <div className="max-w-2xl mx-auto px-6 lg:px-8 text-center">
+          <p className="text-xs font-semibold text-clay uppercase tracking-[0.28em] mb-6">
+            Work With Us
+          </p>
           <h2 className="font-display text-3xl lg:text-4xl text-canvas leading-tight mb-6">
             Built Around Coordination, Execution, and Long-Term Project Support
           </h2>

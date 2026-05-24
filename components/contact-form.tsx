@@ -12,7 +12,7 @@ const projectTypeOptions = [
 ]
 
 const inputClass =
-  'w-full border border-line bg-canvas text-ink text-sm px-4 py-3 outline-none focus:border-accent transition-colors duration-150 placeholder:text-ink-muted'
+  'w-full border border-line bg-canvas text-ink text-sm px-4 py-3 outline-none focus:border-clay transition-colors duration-150 placeholder:text-ink-muted'
 
 export function ContactForm() {
   const [submitted, setSubmitted] = useState(false)

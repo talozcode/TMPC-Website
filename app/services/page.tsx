@@ -118,8 +118,8 @@ export default function ServicesPage() {
       <section className="bg-canvas py-24 lg:py-32">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <div className="max-w-3xl">
-            <div className="w-8 h-0.5 bg-accent mb-6" />
-            <p className="text-xs font-semibold text-accent uppercase tracking-[0.25em] mb-6 animate-fade-in">
+            <div className="w-8 h-0.5 bg-clay mb-6" />
+            <p className="text-xs font-semibold text-clay uppercase tracking-[0.28em] mb-6 animate-fade-in">
               Our Services
             </p>
             <h1
@@ -157,9 +157,12 @@ export default function ServicesPage() {
       <section className="bg-canvas py-16 lg:py-24">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <div className="mb-12 lg:mb-16">
-            <div className="w-8 h-0.5 bg-accent mb-4" />
-            <h2 className="font-display text-3xl lg:text-4xl text-ink">
+            <div className="w-8 h-0.5 bg-clay mb-4" />
+            <p className="text-xs font-semibold text-clay uppercase tracking-[0.28em] mb-4">
               Core Services
+            </p>
+            <h2 className="font-display text-3xl lg:text-4xl text-ink">
+              What We Provide
             </h2>
           </div>
 
@@ -171,7 +174,7 @@ export default function ServicesPage() {
               >
                 {/* Number */}
                 <div>
-                  <p className="font-display text-4xl text-accent opacity-30 leading-none tabular-nums">
+                  <p className="font-display text-4xl text-clay opacity-35 leading-none tabular-nums">
                     {service.number}
                   </p>
                 </div>
@@ -188,13 +191,13 @@ export default function ServicesPage() {
 
                 {/* Scope */}
                 <div className="lg:pt-1">
-                  <p className="text-xs font-semibold text-accent uppercase tracking-[0.2em] mb-4">
+                  <p className="text-xs font-semibold text-clay uppercase tracking-[0.2em] mb-4">
                     Scope Includes
                   </p>
                   <ul className="space-y-2.5">
                     {service.scope.map((item) => (
                       <li key={item} className="flex items-start gap-2.5 text-sm text-ink-muted">
-                        <span className="w-1 h-1 rounded-full bg-accent-muted mt-2 flex-shrink-0" />
+                        <span className="w-1 h-1 rounded-full bg-clay-muted mt-2 flex-shrink-0" />
                         {item}
                       </li>
                     ))}
@@ -207,18 +210,21 @@ export default function ServicesPage() {
       </section>
 
       {/* 4. How TMPC Works */}
-      <section className="bg-canvas-subtle border-y border-line py-16 lg:py-24">
+      <section className="bg-canvas-stone border-y border-line py-16 lg:py-24">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <div className="mb-10 lg:mb-14">
-            <div className="w-8 h-0.5 bg-accent mb-4" />
+            <div className="w-8 h-0.5 bg-clay mb-4" />
+            <p className="text-xs font-semibold text-clay uppercase tracking-[0.28em] mb-4">
+              Process
+            </p>
             <h2 className="font-display text-3xl lg:text-4xl text-ink">
               How TMPC Works
             </h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-line border border-line overflow-hidden">
             {processSteps.map((step) => (
-              <div key={step.title} className="bg-canvas-subtle p-8 hover:bg-canvas transition-colors duration-200">
-                <p className="font-display text-3xl text-accent opacity-25 mb-5 tabular-nums leading-none">
+              <div key={step.title} className="bg-canvas-stone p-8 hover:bg-canvas transition-colors duration-200">
+                <p className="font-display text-3xl text-clay opacity-30 mb-5 tabular-nums leading-none">
                   {step.number}
                 </p>
                 <h3 className="text-[0.9375rem] font-semibold text-ink mb-3 leading-snug">
@@ -236,6 +242,9 @@ export default function ServicesPage() {
       {/* 5. Closing CTA */}
       <section className="bg-canvas-dark py-20 lg:py-28">
         <div className="max-w-xl mx-auto px-6 lg:px-8 text-center">
+          <p className="text-xs font-semibold text-clay uppercase tracking-[0.28em] mb-6">
+            Get in Touch
+          </p>
           <h2 className="font-display text-3xl lg:text-[2.75rem] text-canvas leading-tight mb-5">
             Discuss Your Project
           </h2>
