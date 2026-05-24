@@ -9,14 +9,6 @@ export const metadata: Metadata = {
   description: siteConfig.description,
 }
 
-function orb(angleDeg: number, radius: number, nodeW: number, nodeH: number) {
-  const rad = (angleDeg * Math.PI) / 180
-  return {
-    left: `${radius + radius * Math.sin(rad) - nodeW / 2}px`,
-    top: `${radius - radius * Math.cos(rad) - nodeH / 2}px`,
-  }
-}
-
 const challengeInput = [
   'Owner / Investor', 'Architect', 'MEP Engineers', 'Interior Design',
   'Main Contractor', 'Subcontractors', 'Suppliers', 'Government Bodies',
@@ -39,46 +31,31 @@ const projectTeasers = [
   { title: 'Corporate Office Fit-Out', sector: 'Office', image: '/images/scenario-office.jpg' },
 ]
 
-// Orbital node sets
-const outerNodes = [
-  { label: 'Government', angle: 20 }, { label: 'Operations', angle: 108 },
-  { label: 'Suppliers', angle: 205 }, { label: 'Finance', angle: 295 },
-]
-const midNodes = [
-  { label: 'Owner / Investor', angle: 55 },
-  { label: 'Main Contractor', angle: 178 },
-  { label: 'Subcontractors', angle: 298 },
-]
-const innerNodes = [
-  { label: 'Architect', angle: 355 },
-  { label: 'MEP Engineers', angle: 120 },
-  { label: 'Interior Design', angle: 240 },
-]
-
 export default function HomePage() {
   return (
     <>
-      {/* ── HERO: G+H hybrid, light canvas, contained orbital ── */}
+      {/* ── HERO: Site to Strategy ── */}
       <section className="bg-canvas border-b border-line overflow-hidden">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
-          <div className="grid lg:grid-cols-[1fr_500px] gap-10 lg:gap-16 items-center py-20 lg:py-24">
+          <div className="grid lg:grid-cols-[1fr_480px] gap-16 items-stretch py-20 lg:py-0">
 
             {/* Left: text */}
-            <div>
+            <div className="flex flex-col justify-center lg:py-24">
+              <p className="text-[0.65rem] font-semibold text-ink-muted uppercase tracking-[0.2em] mb-6 animate-fade-in">
+                Bangkok, Thailand
+              </p>
               <h1
                 className="font-display font-bold text-5xl lg:text-[3.75rem] text-ink leading-[1.06] tracking-tight mb-7 animate-fade-up"
                 style={{ animationDelay: '0.1s' }}
               >
-                Project Consulting and Development Management in Thailand
+                Project consulting for complex work in Thailand
               </h1>
-
               <p
                 className="text-base lg:text-lg text-ink-secondary leading-relaxed max-w-lg mb-10 animate-fade-up"
                 style={{ animationDelay: '0.2s' }}
               >
-                TMPC provides structured coordination, development management, and execution oversight for complex projects across Thailand.
+                TMPC provides structured coordination, development management, and execution oversight for commercial, industrial, hospitality, and real estate projects across Thailand.
               </p>
-
               <div
                 className="flex flex-wrap items-center gap-4 mb-12 animate-fade-up"
                 style={{ animationDelay: '0.3s' }}
@@ -96,12 +73,11 @@ export default function HomePage() {
                   Our Services <span aria-hidden="true">&#8594;</span>
                 </Link>
               </div>
-
               <div
                 className="hidden lg:flex items-center pt-6 border-t border-line animate-fade-up"
                 style={{ animationDelay: '0.4s' }}
               >
-                {['Bangkok-Based', 'Commercial', 'Industrial', 'Hospitality', 'Real Estate'].map((tag, i) => (
+                {['Bangkok-Based', 'Multi-Sector', 'Execution Oversight'].map((tag, i) => (
                   <span
                     key={tag}
                     className={`text-[0.65rem] font-semibold text-ink-muted uppercase tracking-[0.15em] pr-5 ${i > 0 ? 'pl-5 border-l border-line' : ''}`}
@@ -112,121 +88,61 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Right: orbital diagram */}
-            <div className="hidden lg:flex items-center justify-center py-4 animate-fade-in" style={{ animationDelay: '0.2s' }}>
-              <div className="relative" style={{ width: '480px', height: '480px' }}>
+            {/* Right: image panel */}
+            <div
+              className="hidden lg:block relative overflow-hidden animate-fade-in"
+              style={{ animationDelay: '0.15s', minHeight: '580px' }}
+            >
+              <Image
+                src="/images/hero-about.jpg"
+                alt="Project planning and coordination"
+                fill
+                className="object-cover"
+                style={{ animation: 'img-drift 8s ease-in-out infinite' }}
+                sizes="480px"
+                priority
+              />
+              <div className="absolute inset-0 bg-gradient-to-br from-[#0A1628]/30 via-transparent to-transparent" />
+              <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-[#0A1628]/55 to-transparent" />
 
-                {/* Radial glow */}
-                <div className="absolute inset-0 pointer-events-none" style={{
-                  background: 'radial-gradient(circle at 50% 50%, rgba(8,145,178,0.04) 0%, transparent 65%)',
-                }} />
-
-                {/* Sonar pulses */}
-                {[0, 1.3, 2.6].map((delay) => (
-                  <div key={delay} className="absolute pointer-events-none rounded-full" style={{
-                    width: '440px', height: '440px',
-                    top: '50%', left: '50%',
-                    border: '1px solid rgba(8,145,178,0.10)',
-                    animation: 'sonar-out 3.9s ease-out infinite',
-                    animationDelay: `${delay}s`,
-                  }} />
-                ))}
-
-                {/* OUTER RING r=200, 26s CW */}
-                <div className="absolute top-1/2 left-1/2" style={{ transform: 'translate(-50%,-50%)' }}>
-                  <div style={{
-                    width: 400, height: 400, borderRadius: '50%',
-                    border: '1px dashed rgba(15,32,64,0.08)',
-                    position: 'relative', overflow: 'visible',
-                    animation: 'orbit-cw 26s linear infinite',
-                  }}>
-                    {outerNodes.map(({ label, angle }) => {
-                      const nW = 76, nH = 24
-                      return (
-                        <div key={label} style={{ position: 'absolute', ...orb(angle, 200, nW, nH), animation: 'orbit-ccw 26s linear infinite' }}>
-                          <div style={{ width: nW }} className="bg-white border border-[#E2E8F0] text-center px-1.5 py-1 text-[0.52rem] text-[#6B7280] whitespace-nowrap shadow-sm">
-                            {label}
-                          </div>
+              {/* Coordination overlay */}
+              <div
+                className="absolute bottom-8 left-6 right-6"
+                style={{ animation: 'fade-in 0.5s ease-out 0.65s both' }}
+              >
+                <div className="bg-[#0A1628]/90 border border-white/[0.1] p-5">
+                  <p className="text-[0.48rem] font-bold text-accent uppercase tracking-[0.3em] mb-4">
+                    TMPC Coordination Layer
+                  </p>
+                  <div className="mb-4">
+                    {['Planning', 'Coordination', 'Oversight'].map((item, i) => (
+                      <div
+                        key={item}
+                        style={{ animation: `fade-in 0.4s ease-out ${0.8 + i * 0.15}s both` }}
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className="w-1.5 h-1.5 rounded-full bg-accent flex-shrink-0" />
+                          <span className="text-[0.8rem] font-semibold text-white/80 uppercase tracking-[0.1em]">{item}</span>
                         </div>
-                      )
-                    })}
+                        {i < 2 && (
+                          <div
+                            className="w-px h-4 bg-accent/30 animate-flow-pulse ml-[2.5px]"
+                            style={{ animationDelay: `${i * 0.4}s` }}
+                          />
+                        )}
+                      </div>
+                    ))}
                   </div>
-                </div>
-
-                {/* MID RING r=144, 17s CCW */}
-                <div className="absolute top-1/2 left-1/2" style={{ transform: 'translate(-50%,-50%)' }}>
-                  <div style={{
-                    width: 288, height: 288, borderRadius: '50%',
-                    border: '1px dashed rgba(15,32,64,0.14)',
-                    position: 'relative', overflow: 'visible',
-                    animation: 'orbit-ccw 17s linear infinite',
-                  }}>
-                    {midNodes.map(({ label, angle }) => {
-                      const nW = 96, nH = 24
-                      return (
-                        <div key={label} style={{ position: 'absolute', ...orb(angle, 144, nW, nH), animation: 'orbit-cw 17s linear infinite' }}>
-                          <div style={{ width: nW }} className="bg-white border border-[#CBD5E1] text-center px-1.5 py-1 text-[0.52rem] text-[#374151] whitespace-nowrap shadow-sm font-medium">
-                            {label}
-                          </div>
-                        </div>
-                      )
-                    })}
-                  </div>
-                </div>
-
-                {/* INNER RING r=88, 10s CW */}
-                <div className="absolute top-1/2 left-1/2" style={{ transform: 'translate(-50%,-50%)' }}>
-                  <div style={{
-                    width: 176, height: 176, borderRadius: '50%',
-                    border: '1px dashed rgba(8,145,178,0.30)',
-                    position: 'relative', overflow: 'visible',
-                    animation: 'orbit-cw 10s linear infinite',
-                  }}>
-                    {innerNodes.map(({ label, angle }) => {
-                      const nW = 88, nH = 24
-                      return (
-                        <div key={label} style={{ position: 'absolute', ...orb(angle, 88, nW, nH), animation: 'orbit-ccw 10s linear infinite' }}>
-                          <div style={{ width: nW }} className="bg-[#0A1628] border border-accent/40 text-center px-1.5 py-1 text-[0.52rem] text-white/65 whitespace-nowrap">
-                            {label}
-                          </div>
-                        </div>
-                      )
-                    })}
-                  </div>
-                </div>
-
-                {/* TMPC center */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30">
-                  <div className="bg-[#0A1628] border-2 border-accent flex flex-col items-center justify-center animate-hub-glow"
-                    style={{ width: '92px', height: '92px' }}>
-                    <p className="text-[0.38rem] text-accent uppercase tracking-[0.28em] mb-1.5">Hub</p>
-                    <p className="font-display font-bold text-[1.6rem] text-white leading-none tracking-tight">TMPC</p>
-                    <div className="flex gap-1 mt-1.5">
-                      {[0, 0.5, 1].map((d) => (
-                        <span key={d} className="w-1 h-1 rounded-full bg-accent animate-dot-blink" style={{ animationDelay: `${d}s` }} />
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
-                {/* H: status readout, lower-right corner */}
-                <div className="absolute bottom-2 right-0 w-[168px] border border-[#E5E9EF] bg-white/98 p-4 shadow-sm">
-                  <div className="flex items-center gap-1.5 mb-3 pb-2.5 border-b border-[#F4F7FB]">
+                  <div
+                    className="pt-3 border-t border-white/[0.08] flex items-center gap-2"
+                    style={{ animation: 'fade-in 0.4s ease-out 1.25s both' }}
+                  >
                     <span className="w-1.5 h-1.5 rounded-full bg-accent animate-dot-blink flex-shrink-0" />
-                    <p className="text-[0.42rem] text-accent uppercase tracking-[0.25em] font-semibold">Active Coordination</p>
+                    <span className="text-[0.48rem] font-medium text-white/45 uppercase tracking-[0.22em]">
+                      Project Flow Active
+                    </span>
                   </div>
-                  {[
-                    { label: 'Parties', value: '10' },
-                    { label: 'Phase', value: 'Coordination' },
-                    { label: 'Location', value: 'Bangkok, TH' },
-                  ].map(({ label, value }) => (
-                    <div key={label} className="flex justify-between items-center py-[3px]">
-                      <span className="text-[0.44rem] text-[#9CA3AF] uppercase tracking-wider">{label}</span>
-                      <span className="text-[0.54rem] font-semibold text-[#111827]">{value}</span>
-                    </div>
-                  ))}
                 </div>
-
               </div>
             </div>
 
@@ -241,10 +157,10 @@ export default function HomePage() {
           <FadeIn className="max-w-2xl mb-14">
             <p className="text-xs font-semibold text-accent uppercase tracking-[0.25em] mb-4">The Challenge</p>
             <h2 className="font-display font-bold text-3xl lg:text-4xl text-ink tracking-tight mb-4">
-              Complex projects need a dedicated coordination layer.
+              Complex projects need structure.
             </h2>
             <p className="text-base text-ink-muted leading-relaxed">
-              Every large project involves multiple parties, each with different priorities and timelines. Without dedicated coordination, communication breaks down and execution suffers.
+              When owners, consultants, suppliers, contractors, timelines, budgets, and operations are all in motion at once, alignment does not happen on its own. Without a dedicated coordination layer, communication fragments, timelines slip, and execution falls behind. TMPC sits between the complexity and the outcome.
             </p>
           </FadeIn>
 

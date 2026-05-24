@@ -85,6 +85,11 @@
   100% { transform: translate(-50%, -50%) scale(1);    opacity: 0; }
 }
 
+@keyframes img-drift {
+  0%, 100% { transform: scale(1.05) translateY(0px); }
+  50%       { transform: scale(1.05) translateY(-8px); }
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;
