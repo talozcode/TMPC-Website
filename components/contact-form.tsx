@@ -158,7 +158,7 @@ export function ContactForm() {
       <div className="pt-1">
         <button
           type="submit"
-          className="inline-flex items-center text-sm font-medium bg-accent text-white px-7 py-3.5 hover:bg-accent-light transition-colors duration-200"
+          className="inline-flex items-center text-sm font-medium bg-clay text-white px-7 py-3.5 hover:bg-clay-light transition-colors duration-200"
         >
           Discuss Your Project
         </button>

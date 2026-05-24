@@ -121,7 +121,7 @@ export default function HomePage() {
               >
                 <Link
                   href="/contact"
-                  className="inline-flex items-center text-sm font-medium bg-accent text-white px-7 py-3.5 hover:bg-accent-light transition-colors duration-200"
+                  className="inline-flex items-center text-sm font-medium bg-clay text-white px-7 py-3.5 hover:bg-clay-light transition-colors duration-200"
                 >
                   Discuss Your Project
                 </Link>
@@ -337,7 +337,7 @@ export default function HomePage() {
               <div className="mt-10">
                 <Link
                   href="/services"
-                  className="inline-flex items-center text-sm font-medium bg-accent text-white px-7 py-3.5 hover:bg-accent-light transition-colors duration-200"
+                  className="inline-flex items-center text-sm font-medium bg-clay text-white px-7 py-3.5 hover:bg-clay-light transition-colors duration-200"
                 >
                   View All Services
                 </Link>

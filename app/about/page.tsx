@@ -247,7 +247,7 @@ export default function AboutPage() {
           </p>
           <Link
             href="/contact"
-            className="inline-flex items-center text-sm font-medium bg-canvas text-canvas-dark px-7 py-3.5 hover:bg-canvas-subtle transition-colors duration-200"
+            className="inline-flex items-center text-sm font-medium bg-clay text-white px-7 py-3.5 hover:bg-clay-light transition-colors duration-200"
           >
             Discuss Your Project
           </Link>

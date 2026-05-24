@@ -29,7 +29,7 @@ const contactMethods = [
         href="https://wa.me/66XXXXXXXXX"
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex items-center gap-2 text-sm font-medium bg-accent text-white px-5 py-2.5 hover:bg-accent-light transition-colors duration-200"
+        className="inline-flex items-center gap-2 text-sm font-medium bg-clay text-white px-5 py-2.5 hover:bg-clay-light transition-colors duration-200"
       >
         Chat on WhatsApp <span aria-hidden="true">&#8594;</span>
       </a>
@@ -175,7 +175,7 @@ export default function ContactPage() {
           </p>
           <Link
             href="#inquiry-form"
-            className="inline-flex items-center text-sm font-medium bg-canvas text-canvas-dark px-7 py-3.5 hover:bg-canvas-subtle transition-colors duration-200"
+            className="inline-flex items-center text-sm font-medium bg-clay text-white px-7 py-3.5 hover:bg-clay-light transition-colors duration-200"
           >
             Discuss Your Project
           </Link>

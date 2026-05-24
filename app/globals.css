@@ -2,30 +2,31 @@
 
 @theme {
   /* Backgrounds */
-  --color-canvas:        #F7F2EB;
-  --color-canvas-subtle: #EDE6D8;
-  --color-canvas-stone:  #E4DBCc;
-  --color-canvas-dark:   #211D19;
+  --color-canvas:        #FAF6EE;
+  --color-canvas-subtle: #F0E8D5;
+  --color-canvas-stone:  #E4D9C4;
+  --color-canvas-dark:   #1E1A16;
 
   /* Text */
   --color-ink:           #2A2420;
   --color-ink-secondary: #4A4440;
   --color-ink-muted:     #7A7068;
 
-  /* Deep olive: primary accent */
+  /* Deep olive: primary accent (nav, structural) */
   --color-accent:        #3A5830;
   --color-accent-light:  #557848;
   --color-accent-dark:   #2D4624;
   --color-accent-muted:  #8CAE72;
 
-  /* Terracotta / clay: secondary accent */
-  --color-clay:          #B5694A;
-  --color-clay-light:    #CC8060;
+  /* Terracotta / clay: primary CTA color */
+  --color-clay:          #B85C3C;
+  --color-clay-light:    #CB7050;
+  --color-clay-dark:     #9E4E32;
   --color-clay-muted:    #D4A090;
 
   /* Borders */
-  --color-line:          #D0C8BC;
-  --color-line-subtle:   #DDD6CA;
+  --color-line:          #D0C4B0;
+  --color-line-subtle:   #DDD5C0;
 
   /* Fonts */
   --font-sans:    var(--font-dm-sans), 'DM Sans', system-ui, sans-serif;
@@ -59,7 +60,7 @@
   }
 
   *:focus-visible {
-    outline: 2px solid var(--color-accent);
+    outline: 2px solid var(--color-clay);
     outline-offset: 3px;
     border-radius: 1px;
   }

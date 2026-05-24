@@ -54,7 +54,7 @@ export function Header() {
           <div className="flex items-center gap-3">
             <Link
               href="/contact"
-              className="hidden md:inline-flex items-center text-sm font-medium bg-accent text-white px-4 py-2 hover:bg-accent-light transition-colors duration-200"
+              className="hidden md:inline-flex items-center text-sm font-medium bg-clay text-white px-4 py-2 hover:bg-clay-light transition-colors duration-200"
             >
               Discuss Your Project
             </Link>
@@ -116,7 +116,7 @@ export function Header() {
             <Link
               href="/contact"
               onClick={() => setMenuOpen(false)}
-              className="block text-center text-sm font-medium bg-accent text-white px-4 py-2.5 hover:bg-accent-light transition-colors duration-200"
+              className="block text-center text-sm font-medium bg-clay text-white px-4 py-2.5 hover:bg-clay-light transition-colors duration-200"
             >
               Discuss Your Project
             </Link>

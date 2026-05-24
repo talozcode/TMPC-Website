@@ -254,7 +254,7 @@ export default function ServicesPage() {
           <div className="flex flex-wrap justify-center items-center gap-6">
             <Link
               href="/contact"
-              className="inline-flex items-center text-sm font-medium bg-canvas text-canvas-dark px-7 py-3.5 hover:bg-canvas-subtle transition-colors duration-200"
+              className="inline-flex items-center text-sm font-medium bg-clay text-white px-7 py-3.5 hover:bg-clay-light transition-colors duration-200"
             >
               Schedule a Consultation
             </Link>
