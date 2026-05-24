@@ -12,20 +12,19 @@ const projectTypeOptions = [
 ]
 
 const inputClass =
-  'w-full border border-line bg-canvas text-ink text-sm px-4 py-3 outline-none focus:border-clay transition-colors duration-150 placeholder:text-ink-muted'
+  'w-full border border-line bg-canvas-subtle text-ink text-sm px-4 py-3 outline-none focus:border-accent focus:bg-canvas transition-colors duration-150 placeholder:text-ink-muted'
 
 export function ContactForm() {
   const [submitted, setSubmitted] = useState(false)
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    // Form submission: wire to backend or email service when ready
     setSubmitted(true)
   }
 
   if (submitted) {
     return (
-      <div className="border border-line bg-canvas p-10 lg:p-14 text-center rounded-sm">
+      <div className="border border-accent/30 bg-accent/5 p-10 lg:p-14 text-center">
         <p className="text-base font-semibold text-ink mb-3">
           Thank you for your inquiry.
         </p>
@@ -38,10 +37,9 @@ export function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit} noValidate className="space-y-5">
-      {/* Row 1: Name + Company */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         <div>
-          <label htmlFor="name" className="block text-sm font-medium text-ink mb-2">
+          <label htmlFor="name" className="block text-xs font-semibold text-ink-secondary uppercase tracking-wider mb-2">
             Full Name <span className="text-accent">*</span>
           </label>
           <input
@@ -55,7 +53,7 @@ export function ContactForm() {
           />
         </div>
         <div>
-          <label htmlFor="company" className="block text-sm font-medium text-ink mb-2">
+          <label htmlFor="company" className="block text-xs font-semibold text-ink-secondary uppercase tracking-wider mb-2">
             Company / Organization
           </label>
           <input
@@ -69,10 +67,9 @@ export function ContactForm() {
         </div>
       </div>
 
-      {/* Row 2: Email + Phone */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-ink mb-2">
+          <label htmlFor="email" className="block text-xs font-semibold text-ink-secondary uppercase tracking-wider mb-2">
             Email Address <span className="text-accent">*</span>
           </label>
           <input
@@ -86,7 +83,7 @@ export function ContactForm() {
           />
         </div>
         <div>
-          <label htmlFor="phone" className="block text-sm font-medium text-ink mb-2">
+          <label htmlFor="phone" className="block text-xs font-semibold text-ink-secondary uppercase tracking-wider mb-2">
             Phone / WhatsApp
           </label>
           <input
@@ -100,9 +97,8 @@ export function ContactForm() {
         </div>
       </div>
 
-      {/* Row 3: Project Type */}
       <div>
-        <label htmlFor="project-type" className="block text-sm font-medium text-ink mb-2">
+        <label htmlFor="project-type" className="block text-xs font-semibold text-ink-secondary uppercase tracking-wider mb-2">
           Project Type
         </label>
         <div className="relative">
@@ -122,27 +118,15 @@ export function ContactForm() {
             ))}
           </select>
           <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-            <svg
-              className="w-4 h-4 text-ink-muted"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={1.5}
-                d="m6 9 6 6 6-6"
-              />
+            <svg className="w-4 h-4 text-ink-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="m6 9 6 6 6-6" />
             </svg>
           </div>
         </div>
       </div>
 
-      {/* Row 4: Description */}
       <div>
-        <label htmlFor="description" className="block text-sm font-medium text-ink mb-2">
+        <label htmlFor="description" className="block text-xs font-semibold text-ink-secondary uppercase tracking-wider mb-2">
           Project Description
         </label>
         <textarea
@@ -154,11 +138,10 @@ export function ContactForm() {
         />
       </div>
 
-      {/* Submit */}
       <div className="pt-1">
         <button
           type="submit"
-          className="inline-flex items-center text-sm font-medium bg-clay text-white px-7 py-3.5 hover:bg-clay-light transition-colors duration-200"
+          className="inline-flex items-center text-sm font-semibold bg-accent text-white px-7 py-3.5 hover:bg-accent-dark transition-colors duration-200"
         >
           Discuss Your Project
         </button>

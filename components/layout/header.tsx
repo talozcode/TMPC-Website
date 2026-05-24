@@ -12,11 +12,10 @@ export function Header() {
   const pathname = usePathname()
 
   return (
-    <header className="sticky top-0 z-50 bg-canvas/95 backdrop-blur-sm border-b border-line">
+    <header className="sticky top-0 z-50 bg-canvas/95 backdrop-blur-md border-b border-line">
       <div className="max-w-6xl mx-auto px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
 
-          {/* Logo */}
           <Link
             href="/"
             aria-label={`${siteConfig.name} - Home`}
@@ -32,7 +31,6 @@ export function Header() {
             />
           </Link>
 
-          {/* Desktop navigation */}
           <nav aria-label="Main navigation" className="hidden md:flex items-center gap-7">
             {navLinks.map((link) => (
               <Link
@@ -50,11 +48,10 @@ export function Header() {
             ))}
           </nav>
 
-          {/* Desktop CTA + mobile toggle */}
           <div className="flex items-center gap-3">
             <Link
               href="/contact"
-              className="hidden md:inline-flex items-center text-sm font-medium bg-clay text-white px-4 py-2 hover:bg-clay-light transition-colors duration-200"
+              className="hidden md:inline-flex items-center text-sm font-semibold bg-accent text-white px-4 py-2 hover:bg-accent-dark transition-colors duration-200"
             >
               Discuss Your Project
             </Link>
@@ -66,35 +63,16 @@ export function Header() {
               aria-label={menuOpen ? 'Close menu' : 'Open menu'}
               className="md:hidden flex flex-col justify-center gap-[5px] w-8 h-8 p-1"
             >
-              <span
-                className={cn(
-                  'block h-px bg-ink transition-transform duration-200',
-                  menuOpen ? 'translate-y-[6px] rotate-45' : ''
-                )}
-              />
-              <span
-                className={cn(
-                  'block h-px bg-ink transition-opacity duration-200',
-                  menuOpen ? 'opacity-0' : ''
-                )}
-              />
-              <span
-                className={cn(
-                  'block h-px bg-ink transition-transform duration-200',
-                  menuOpen ? '-translate-y-[6px] -rotate-45' : ''
-                )}
-              />
+              <span className={cn('block h-px bg-ink transition-transform duration-200', menuOpen ? 'translate-y-[6px] rotate-45' : '')} />
+              <span className={cn('block h-px bg-ink transition-opacity duration-200', menuOpen ? 'opacity-0' : '')} />
+              <span className={cn('block h-px bg-ink transition-transform duration-200', menuOpen ? '-translate-y-[6px] -rotate-45' : '')} />
             </button>
           </div>
         </div>
       </div>
 
-      {/* Mobile menu */}
       {menuOpen && (
-        <div
-          id="mobile-menu"
-          className="md:hidden border-t border-line bg-canvas px-6 pb-5 pt-4"
-        >
+        <div id="mobile-menu" className="md:hidden border-t border-line bg-canvas px-6 pb-5 pt-4">
           <nav aria-label="Mobile navigation" className="flex flex-col gap-1">
             {navLinks.map((link) => (
               <Link
@@ -103,9 +81,7 @@ export function Header() {
                 onClick={() => setMenuOpen(false)}
                 className={cn(
                   'py-2 text-sm',
-                  pathname === link.href
-                    ? 'text-accent font-medium'
-                    : 'text-ink-muted'
+                  pathname === link.href ? 'text-accent font-medium' : 'text-ink-muted'
                 )}
               >
                 {link.label}
@@ -116,7 +92,7 @@ export function Header() {
             <Link
               href="/contact"
               onClick={() => setMenuOpen(false)}
-              className="block text-center text-sm font-medium bg-clay text-white px-4 py-2.5 hover:bg-clay-light transition-colors duration-200"
+              className="block text-center text-sm font-semibold bg-accent text-white px-4 py-2.5 hover:bg-accent-dark transition-colors duration-200"
             >
               Discuss Your Project
             </Link>

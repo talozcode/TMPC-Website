@@ -1,22 +1,21 @@
 import type { Metadata } from 'next'
-import { DM_Sans, DM_Serif_Display } from 'next/font/google'
+import { Inter, Outfit } from 'next/font/google'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { siteConfig } from '@/lib/data'
 import './globals.css'
 
-const dmSans = DM_Sans({
+const inter = Inter({
   subsets: ['latin'],
-  variable: '--font-dm-sans',
+  variable: '--font-inter',
   display: 'swap',
 })
 
-const dmSerifDisplay = DM_Serif_Display({
+const outfit = Outfit({
   subsets: ['latin'],
-  variable: '--font-dm-serif',
+  variable: '--font-outfit',
   display: 'swap',
-  weight: '400',
-  style: ['normal', 'italic'],
+  weight: ['500', '600', '700', '800'],
 })
 
 export const metadata: Metadata = {
@@ -47,7 +46,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${dmSans.variable} ${dmSerifDisplay.variable} h-full`}>
+    <html lang="en" className={`${inter.variable} ${outfit.variable} h-full`}>
       <body className="min-h-full flex flex-col font-sans antialiased">
         <Header />
         <main className="flex-1">{children}</main>

@@ -15,7 +15,7 @@ const contactMethods = [
     action: (
       <a
         href={`mailto:${siteConfig.email}`}
-        className="text-sm font-semibold text-ink underline underline-offset-4 decoration-clay/40 hover:decoration-clay transition-colors duration-150 break-all"
+        className="text-sm font-semibold text-accent hover:text-accent-dark transition-colors duration-150 break-all"
       >
         {siteConfig.email}
       </a>
@@ -29,7 +29,7 @@ const contactMethods = [
         href="https://wa.me/66XXXXXXXXX"
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex items-center gap-2 text-sm font-medium bg-clay text-white px-5 py-2.5 hover:bg-clay-light transition-colors duration-200"
+        className="inline-flex items-center gap-2 text-sm font-semibold bg-accent text-white px-5 py-2.5 hover:bg-accent-dark transition-colors duration-200"
       >
         Chat on WhatsApp <span aria-hidden="true">&#8594;</span>
       </a>
@@ -56,21 +56,21 @@ export default function ContactPage() {
   return (
     <>
       {/* 1. Hero */}
-      <section className="bg-canvas py-24 lg:py-32">
-        <div className="max-w-6xl mx-auto px-6 lg:px-8">
+      <section className="bg-canvas-dark py-24 lg:py-32 relative overflow-hidden">
+        <div className="absolute inset-0 bg-grid-dots pointer-events-none" />
+        <div className="relative z-10 max-w-6xl mx-auto px-6 lg:px-8">
           <div className="max-w-3xl">
-            <div className="w-8 h-0.5 bg-clay mb-6" />
-            <p className="text-xs font-semibold text-clay uppercase tracking-[0.28em] mb-6 animate-fade-in">
+            <p className="text-xs font-semibold text-accent uppercase tracking-[0.25em] mb-6 animate-fade-in">
               Get in Touch
             </p>
             <h1
-              className="font-display text-5xl sm:text-6xl lg:text-[4.5rem] text-ink leading-[1.06] mb-8 animate-fade-up"
+              className="font-display font-bold text-5xl sm:text-6xl lg:text-[4.5rem] text-white leading-[1.08] tracking-tight mb-8 animate-fade-up"
               style={{ animationDelay: '0.1s' }}
             >
               Discuss Your Project
             </h1>
             <p
-              className="text-lg text-ink-muted leading-relaxed max-w-xl animate-fade-up"
+              className="text-lg text-white/55 leading-relaxed max-w-xl animate-fade-up"
               style={{ animationDelay: '0.2s' }}
             >
               Whether you are planning a commercial, industrial, hospitality, wellness, operational, or real estate project, TMPC can support the planning, coordination, and execution process across Thailand.
@@ -80,7 +80,7 @@ export default function ContactPage() {
       </section>
 
       {/* 2. Intro */}
-      <section className="bg-canvas-subtle border-y border-line py-14 lg:py-16">
+      <section className="bg-canvas border-b border-line py-14 lg:py-16">
         <div className="max-w-2xl mx-auto px-6 lg:px-8">
           <p className="text-base text-ink leading-relaxed mb-4">
             TMPC works with businesses, investors, operators, and project owners across multiple industries and project environments.
@@ -92,12 +92,12 @@ export default function ContactPage() {
       </section>
 
       {/* 3. Contact Methods */}
-      <section className="bg-canvas py-16 lg:py-20">
+      <section className="bg-canvas-subtle border-b border-line py-16 lg:py-20">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-line border border-line overflow-hidden">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {contactMethods.map((method) => (
-              <div key={method.label} className="bg-canvas p-8 lg:p-10 hover:bg-canvas-subtle transition-colors duration-200">
-                <p className="text-xs font-semibold text-clay uppercase tracking-[0.2em] mb-4">
+              <div key={method.label} className="bg-canvas border border-line p-8 lg:p-10 hover:border-accent/40 hover:shadow-sm transition-all duration-200">
+                <p className="text-[0.65rem] font-semibold text-accent uppercase tracking-[0.2em] mb-4">
                   {method.label}
                 </p>
                 <p className="text-sm text-ink-muted leading-relaxed mb-5">
@@ -111,15 +111,14 @@ export default function ContactPage() {
       </section>
 
       {/* 4. Contact Form */}
-      <section id="inquiry-form" className="bg-canvas-subtle border-y border-line py-16 lg:py-24">
+      <section id="inquiry-form" className="bg-canvas border-b border-line py-16 lg:py-24">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <div className="grid lg:grid-cols-[280px_1fr] gap-12 lg:gap-20">
             <div className="pt-1">
-              <div className="w-8 h-0.5 bg-clay mb-4" />
-              <p className="text-xs font-semibold text-clay uppercase tracking-[0.28em] mb-4">
+              <p className="text-xs font-semibold text-accent uppercase tracking-[0.25em] mb-4">
                 Inquiry Form
               </p>
-              <h2 className="font-display text-2xl lg:text-3xl text-ink mb-3">
+              <h2 className="font-display font-semibold text-2xl lg:text-3xl text-ink tracking-tight mb-3">
                 Start a Conversation
               </h2>
               <p className="text-sm text-ink-muted leading-relaxed">
@@ -131,18 +130,17 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* 5. How We Typically Work */}
-      <section className="bg-canvas py-16 lg:py-24">
+      {/* 5. How We Work */}
+      <section className="bg-canvas-subtle border-b border-line py-16 lg:py-24">
         <div className="max-w-2xl mx-auto px-6 lg:px-8">
-          <div className="w-8 h-0.5 bg-clay mb-4" />
-          <p className="text-xs font-semibold text-clay uppercase tracking-[0.28em] mb-4">
-            Our Process
+          <p className="text-xs font-semibold text-accent uppercase tracking-[0.25em] mb-4">
+            Process
           </p>
-          <h2 className="font-display text-2xl lg:text-3xl text-ink mb-8">
+          <h2 className="font-display font-semibold text-2xl lg:text-3xl text-ink tracking-tight mb-8">
             How We Typically Work
           </h2>
           <p className="text-base text-ink leading-relaxed mb-5">
-            Most projects begin with an initial discussion to understand project scope, operational requirements, timelines, and coordination needs.
+            Most projects begin with an initial discussion to understand scope, operational requirements, timelines, and coordination needs.
           </p>
           <p className="text-base text-ink-muted leading-relaxed mb-6">
             Depending on the project, TMPC may support:
@@ -150,7 +148,7 @@ export default function ContactPage() {
           <ul className="space-y-3 mb-8">
             {approachItems.map((item) => (
               <li key={item} className="flex items-center gap-3 text-sm text-ink-secondary">
-                <span className="w-1 h-1 rounded-full bg-clay flex-shrink-0" />
+                <span className="w-1.5 h-1.5 rounded-full bg-accent flex-shrink-0" />
                 {item}
               </li>
             ))}
@@ -161,21 +159,21 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* 6. Final CTA */}
+      {/* 6. CTA */}
       <section className="bg-canvas-dark py-20 lg:py-24">
         <div className="max-w-xl mx-auto px-6 lg:px-8 text-center">
-          <p className="text-xs font-semibold text-clay uppercase tracking-[0.28em] mb-6">
+          <p className="text-xs font-semibold text-accent uppercase tracking-[0.25em] mb-6">
             Ready to Begin
           </p>
-          <h2 className="font-display text-2xl lg:text-3xl text-canvas leading-tight mb-5">
-            Structured Coordination. Practical Execution Support.
+          <h2 className="font-display font-bold text-2xl lg:text-3xl text-white tracking-tight leading-tight mb-5">
+            Structured Coordination. Practical Execution.
           </h2>
-          <p className="text-base text-canvas/55 leading-relaxed mb-10">
-            TMPC supports projects throughout Thailand with a focus on communication clarity, organized coordination, and execution-focused management support.
+          <p className="text-base text-white/50 leading-relaxed mb-10">
+            TMPC supports projects throughout Thailand with a focus on communication clarity, organized coordination, and execution-focused management.
           </p>
           <Link
             href="#inquiry-form"
-            className="inline-flex items-center text-sm font-medium bg-clay text-white px-7 py-3.5 hover:bg-clay-light transition-colors duration-200"
+            className="inline-flex items-center text-sm font-semibold bg-accent text-white px-7 py-3.5 hover:bg-accent-dark transition-colors duration-200"
           >
             Discuss Your Project
           </Link>

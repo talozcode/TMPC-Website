@@ -2,43 +2,38 @@
 
 @theme {
   /* Backgrounds */
-  --color-canvas:        #FAF6EE;
-  --color-canvas-subtle: #F0E8D5;
-  --color-canvas-stone:  #E4D9C4;
-  --color-canvas-dark:   #1E1A16;
+  --color-canvas:         #FFFFFF;
+  --color-canvas-subtle:  #F4F7FB;
+  --color-canvas-muted:   #E8EDF5;
+  --color-canvas-dark:    #0A1628;
+  --color-navy:           #0F2040;
 
   /* Text */
-  --color-ink:           #2A2420;
-  --color-ink-secondary: #4A4440;
-  --color-ink-muted:     #7A7068;
+  --color-ink:            #111827;
+  --color-ink-secondary:  #374151;
+  --color-ink-muted:      #6B7280;
 
-  /* Deep olive: primary accent (nav, structural) */
-  --color-accent:        #3A5830;
-  --color-accent-light:  #557848;
-  --color-accent-dark:   #2D4624;
-  --color-accent-muted:  #8CAE72;
-
-  /* Terracotta / clay: primary CTA color */
-  --color-clay:          #B85C3C;
-  --color-clay-light:    #CB7050;
-  --color-clay-dark:     #9E4E32;
-  --color-clay-muted:    #D4A090;
+  /* Teal: primary accent */
+  --color-accent:         #0891B2;
+  --color-accent-light:   #22C5E0;
+  --color-accent-dark:    #0E7490;
+  --color-accent-muted:   #A5D8E6;
 
   /* Borders */
-  --color-line:          #D0C4B0;
-  --color-line-subtle:   #DDD5C0;
+  --color-line:           #E5E9EF;
+  --color-line-subtle:    #EFF2F7;
 
   /* Fonts */
-  --font-sans:    var(--font-dm-sans), 'DM Sans', system-ui, sans-serif;
-  --font-display: var(--font-dm-serif), 'DM Serif Display', Georgia, serif;
+  --font-sans:    var(--font-inter), 'Inter', system-ui, sans-serif;
+  --font-display: var(--font-outfit), 'Outfit', system-ui, sans-serif;
 
   /* Animations */
-  --animate-fade-up: fade-up 0.65s ease-out both;
+  --animate-fade-up: fade-up 0.6s ease-out both;
   --animate-fade-in: fade-in 0.5s ease-out both;
 }
 
 @keyframes fade-up {
-  from { opacity: 0; transform: translateY(18px); }
+  from { opacity: 0; transform: translateY(16px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
@@ -60,8 +55,15 @@
   }
 
   *:focus-visible {
-    outline: 2px solid var(--color-clay);
+    outline: 2px solid var(--color-accent);
     outline-offset: 3px;
     border-radius: 1px;
+  }
+}
+
+@layer utilities {
+  .bg-grid-dots {
+    background-image: radial-gradient(circle, rgba(255,255,255,0.055) 1px, transparent 1px);
+    background-size: 28px 28px;
   }
 }
