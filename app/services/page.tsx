@@ -111,14 +111,14 @@ export default function ServicesPage() {
   return (
     <>
       {/* 1. Hero */}
-      <section className="bg-canvas border-b border-line py-20 lg:py-28">
+      <section className="bg-canvas border-b border-line py-10 lg:py-14">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <div className="max-w-3xl">
             <p className="text-xs font-semibold text-accent uppercase tracking-[0.25em] mb-6 animate-fade-in">
               Services
             </p>
             <h1
-              className="font-display font-bold text-5xl sm:text-6xl lg:text-[4.5rem] text-ink leading-[1.08] tracking-tight mb-8 animate-fade-up"
+              className="font-display font-bold text-5xl sm:text-6xl lg:text-[4.5rem] text-ink leading-[1.08] tracking-tight mb-4 animate-fade-up"
               style={{ animationDelay: '0.1s' }}
             >
               How TMPC manages your project
@@ -134,9 +134,9 @@ export default function ServicesPage() {
       </section>
 
       {/* 2. Core Services */}
-      <section className="bg-canvas-subtle border-b border-line py-16 lg:py-24">
+      <section className="bg-canvas-subtle border-b border-line py-8 lg:py-12">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
-          <div className="mb-12 lg:mb-16">
+          <div className="mb-6 lg:mb-9">
             <p className="text-xs font-semibold text-accent uppercase tracking-[0.25em] mb-4">
               Core Services
             </p>
@@ -189,9 +189,9 @@ export default function ServicesPage() {
       </section>
 
       {/* 4. Process */}
-      <section className="bg-canvas border-b border-line py-16 lg:py-24">
+      <section className="bg-canvas border-b border-line py-8 lg:py-12">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
-          <div className="mb-10 lg:mb-14">
+          <div className="mb-6 lg:mb-8">
             <p className="text-xs font-semibold text-accent uppercase tracking-[0.25em] mb-4">
               Process
             </p>
@@ -218,7 +218,7 @@ export default function ServicesPage() {
       </section>
 
       {/* 5. CTA */}
-      <section className="bg-canvas-dark py-20 lg:py-28">
+      <section className="bg-canvas-dark py-10 lg:py-14">
         <div className="max-w-xl mx-auto px-6 lg:px-8 text-center">
           <p className="text-xs font-semibold text-accent uppercase tracking-[0.25em] mb-6">
             Get in Touch

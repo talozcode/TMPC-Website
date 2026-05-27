@@ -49,7 +49,7 @@ export default function HomePage() {
           <div className="grid lg:grid-cols-[1fr_520px] gap-16 items-stretch py-20 lg:py-0">
 
             {/* Left: text */}
-            <div className="flex flex-col justify-center lg:py-24">
+            <div className="flex flex-col justify-center lg:py-14">
               <p className="text-[0.65rem] font-semibold text-ink-muted uppercase tracking-[0.2em] mb-6 animate-fade-in">
                 Bangkok, Thailand
               </p>
@@ -60,13 +60,13 @@ export default function HomePage() {
                 Planning a project in Thailand? You need someone on the ground.
               </h1>
               <p
-                className="text-base lg:text-lg text-ink-secondary leading-relaxed max-w-lg mb-10 animate-fade-up"
+                className="text-base lg:text-lg text-ink-secondary leading-relaxed max-w-lg mb-6 animate-fade-up"
                 style={{ animationDelay: '0.2s' }}
               >
                 For international clients and investors, Thailand projects bring real complexity: unfamiliar contractors, approval processes, language barriers, and a delivery environment where local presence makes the difference. TMPC provides that presence.
               </p>
               <div
-                className="flex flex-wrap items-center gap-4 mb-12 animate-fade-up"
+                className="flex flex-wrap items-center gap-4 mb-8 animate-fade-up"
                 style={{ animationDelay: '0.3s' }}
               >
                 <Link
@@ -246,7 +246,7 @@ export default function HomePage() {
       </section>
 
       {/* ── THE COORDINATION CHALLENGE ── */}
-      <section className="bg-canvas border-b border-line py-20 lg:py-28">
+      <section className="bg-canvas border-b border-line py-12 lg:py-16">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
 
           <FadeIn className="max-w-2xl mb-14">
@@ -316,10 +316,10 @@ export default function HomePage() {
       </section>
 
       {/* ── SERVICES ── */}
-      <section className="bg-canvas-subtle border-b border-line py-16 lg:py-24">
+      <section className="bg-canvas-subtle border-b border-line py-8 lg:py-12">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <FadeIn>
-            <div className="flex items-end justify-between mb-12">
+            <div className="flex items-end justify-between mb-8">
               <div>
                 <p className="text-xs font-semibold text-accent uppercase tracking-[0.25em] mb-4">Services</p>
                 <h2 className="font-display font-bold text-3xl lg:text-4xl text-ink tracking-tight">What We Do</h2>
@@ -346,9 +346,9 @@ export default function HomePage() {
       </section>
 
       {/* ── SELECTED PROJECTS ── */}
-      <section className="bg-canvas border-b border-line py-16 lg:py-24">
+      <section className="bg-canvas border-b border-line py-8 lg:py-12">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
-          <FadeIn className="mb-10">
+          <FadeIn className="mb-6">
             <div className="flex items-end justify-between">
               <div>
                 <p className="text-xs font-semibold text-accent uppercase tracking-[0.25em] mb-4">Selected Work</p>
@@ -392,7 +392,7 @@ export default function HomePage() {
       </section>
 
       {/* ── CTA ── */}
-      <section className="relative bg-canvas-dark py-24 lg:py-32 overflow-hidden">
+      <section className="relative bg-canvas-dark py-12 lg:py-16 overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
           <Image src="/images/hero-home.jpg" alt="" aria-hidden="true" fill className="object-cover opacity-[0.06]" />
         </div>

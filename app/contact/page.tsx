@@ -48,14 +48,14 @@ export default function ContactPage() {
   return (
     <>
       {/* 1. Hero */}
-      <section className="bg-canvas border-b border-line py-20 lg:py-28">
+      <section className="bg-canvas border-b border-line py-10 lg:py-14">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <div className="max-w-3xl">
             <p className="text-xs font-semibold text-accent uppercase tracking-[0.25em] mb-6 animate-fade-in">
               Get in Touch
             </p>
             <h1
-              className="font-display font-bold text-5xl sm:text-6xl lg:text-[4.5rem] text-ink leading-[1.08] tracking-tight mb-8 animate-fade-up"
+              className="font-display font-bold text-5xl sm:text-6xl lg:text-[4.5rem] text-ink leading-[1.08] tracking-tight mb-4 animate-fade-up"
               style={{ animationDelay: '0.1s' }}
             >
               Discuss Your Project
@@ -71,7 +71,7 @@ export default function ContactPage() {
       </section>
 
       {/* 2. Contact Methods */}
-      <section className="bg-canvas-subtle border-b border-line py-16 lg:py-20">
+      <section className="bg-canvas-subtle border-b border-line py-8 lg:py-10">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {contactMethods.map((method) => (
@@ -90,7 +90,7 @@ export default function ContactPage() {
       </section>
 
       {/* 4. Contact Form */}
-      <section id="inquiry-form" className="bg-canvas border-b border-line py-16 lg:py-24">
+      <section id="inquiry-form" className="bg-canvas border-b border-line py-8 lg:py-12">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <div className="grid lg:grid-cols-[280px_1fr] gap-12 lg:gap-20">
             <div className="pt-1">
@@ -110,7 +110,7 @@ export default function ContactPage() {
       </section>
 
       {/* 5. CTA */}
-      <section className="bg-canvas-dark py-20 lg:py-24">
+      <section className="bg-canvas-dark py-10 lg:py-12">
         <div className="max-w-xl mx-auto px-6 lg:px-8 text-center">
           <p className="text-xs font-semibold text-accent uppercase tracking-[0.25em] mb-6">
             Ready to Begin

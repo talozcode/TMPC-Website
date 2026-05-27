@@ -28,7 +28,7 @@ export default function AboutPage() {
   return (
     <>
       {/* 1. Hero */}
-      <section className="bg-canvas border-b border-line py-20 lg:py-28 relative overflow-hidden">
+      <section className="bg-canvas border-b border-line py-10 lg:py-14 relative overflow-hidden">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <div className="grid lg:grid-cols-[1fr_360px] gap-16 lg:gap-20 items-start">
             <div>
@@ -36,7 +36,7 @@ export default function AboutPage() {
                 About TMPC
               </p>
               <h1
-                className="font-display font-bold text-5xl sm:text-6xl lg:text-[4.5rem] text-ink leading-[1.08] tracking-tight mb-8 animate-fade-up"
+                className="font-display font-bold text-5xl sm:text-6xl lg:text-[4.5rem] text-ink leading-[1.08] tracking-tight mb-4 animate-fade-up"
                 style={{ animationDelay: '0.1s' }}
               >
                 Managing projects in Thailand for international owners.
@@ -71,7 +71,7 @@ export default function AboutPage() {
       </section>
 
       {/* 2. Who We Are */}
-      <section className="bg-canvas border-b border-line py-16 lg:py-24">
+      <section className="bg-canvas border-b border-line py-8 lg:py-12">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <div className="grid lg:grid-cols-[260px_1fr] gap-12 lg:gap-20">
             <div className="pt-1">
@@ -98,7 +98,7 @@ export default function AboutPage() {
       </section>
 
       {/* 3. Our Approach */}
-      <section className="bg-canvas-subtle border-b border-line py-16 lg:py-24">
+      <section className="bg-canvas-subtle border-b border-line py-8 lg:py-12">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <div className="grid lg:grid-cols-[260px_1fr] gap-12 lg:gap-20">
             <div className="pt-1">
@@ -122,9 +122,9 @@ export default function AboutPage() {
       </section>
 
       {/* 4. Leadership */}
-      <section className="bg-canvas-subtle border-b border-line py-16 lg:py-24">
+      <section className="bg-canvas-subtle border-b border-line py-8 lg:py-12">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
-          <div className="mb-10 lg:mb-14">
+          <div className="mb-6 lg:mb-8">
             <p className="text-xs font-semibold text-accent uppercase tracking-[0.25em] mb-4">
               Team
             </p>
@@ -155,7 +155,7 @@ export default function AboutPage() {
       </section>
 
       {/* 6. CTA */}
-      <section className="bg-canvas-dark py-20 lg:py-28">
+      <section className="bg-canvas-dark py-10 lg:py-14">
         <div className="max-w-2xl mx-auto px-6 lg:px-8 text-center">
           <p className="text-xs font-semibold text-accent uppercase tracking-[0.25em] mb-6">
             Work With Us
