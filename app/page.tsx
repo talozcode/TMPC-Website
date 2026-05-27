@@ -57,7 +57,7 @@ export default function HomePage() {
                 className="font-display font-bold text-5xl lg:text-[3.75rem] text-ink leading-[1.06] tracking-tight mb-7 animate-fade-up"
                 style={{ animationDelay: '0.1s' }}
               >
-                Building in Thailand? You need someone on the ground.
+                Planning a project in Thailand? You need someone on the ground.
               </h1>
               <p
                 className="text-base lg:text-lg text-ink-secondary leading-relaxed max-w-lg mb-10 animate-fade-up"
