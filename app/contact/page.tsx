@@ -23,7 +23,7 @@ const contactMethods = [
   },
   {
     label: 'WhatsApp',
-    description: 'Direct communication for initial project discussions and coordination inquiries.',
+    description: 'For quick questions and initial project discussions.',
     action: (
       <a
         href="https://wa.me/66XXXXXXXXX"
@@ -64,7 +64,7 @@ export default function ContactPage() {
               className="text-lg text-ink-secondary leading-relaxed max-w-xl animate-fade-up"
               style={{ animationDelay: '0.2s' }}
             >
-              Whether you are planning a commercial, industrial, hospitality, wellness, or real estate project in Thailand, TMPC can structure and manage delivery from planning through handover.
+              Tell us what you are working on. TMPC will give you a clear picture of what delivery looks like in Thailand.
             </p>
           </div>
         </div>
@@ -101,7 +101,7 @@ export default function ContactPage() {
                 Start a Conversation
               </h2>
               <p className="text-sm text-ink-muted leading-relaxed">
-                Share a few details about your project. TMPC will follow up to arrange an initial discussion.
+                Share a few details about your project. TMPC will follow up to set up an initial call.
               </p>
             </div>
             <ContactForm />
@@ -116,7 +116,7 @@ export default function ContactPage() {
             Ready to Begin
           </p>
           <h2 className="font-display font-bold text-2xl lg:text-3xl text-white tracking-tight leading-tight mb-5">
-            Structured Coordination. Practical Execution.
+            One partner. Full accountability.
           </h2>
           <p className="text-base text-white/50 leading-relaxed mb-10">
             Most project problems are easier to manage with the right partner involved early. Get in touch.

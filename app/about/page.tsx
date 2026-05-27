@@ -13,13 +13,13 @@ const leadership = [
     name: 'Tom',
     title: 'Managing Partner',
     description:
-      'Focused on project development, planning, coordination, execution oversight, and business development across commercial, operational, industrial, and real estate projects.',
+      'Focused on project planning, coordination, execution oversight, and business development across commercial, industrial, hospitality, and real estate projects.',
   },
   {
     name: 'Tal',
     title: 'Operations & Technology Partner',
     description:
-      'Focused on operational systems, coordination support, technology implementation, workflow optimization, and Thailand-based operational structure.',
+      'Focused on operations, technology implementation, workflow systems, and coordination infrastructure for projects across Thailand.',
   },
 ]
 
@@ -45,7 +45,7 @@ export default function AboutPage() {
                 className="text-lg text-ink-secondary leading-relaxed max-w-xl animate-fade-up"
                 style={{ animationDelay: '0.2s' }}
               >
-                We partner with owners, investors, and operators who need a disciplined management structure for complex delivery environments across Thailand.
+                We partner with owners, investors, and operators who need one accountable management presence on the ground in Thailand.
               </p>
             </div>
 
@@ -87,10 +87,10 @@ export default function AboutPage() {
                 TMPC was established to give international project owners a reliable management presence in Thailand. Getting the right contractors, managing consultants, navigating approvals, and keeping a project on track requires local knowledge, constant attention, and clear accountability. Most owners operating from abroad do not have all of that.
               </p>
               <p className="text-base text-ink-muted leading-relaxed">
-                We carry the full coordination load on your behalf: contractor selection, consultant management, authority submissions, milestone tracking, budget oversight, and on-site supervision. Everything handled by TMPC, reported clearly to you.
+                We carry the full coordination load on your behalf: contractor selection, consultant management, authority submissions, milestone tracking, budget oversight, and on-site supervision. Everything is handled by TMPC and reported clearly to you.
               </p>
               <p className="text-base text-ink-muted leading-relaxed">
-                TMPC is a project management partner, not a construction contractor. We do not build. We plan, coordinate, and oversee so that the right parties deliver correctly.
+                TMPC is a project management partner, not a construction contractor. We do not build. We plan, coordinate, and oversee so that the right parties deliver to plan.
               </p>
             </div>
           </div>
@@ -161,10 +161,10 @@ export default function AboutPage() {
             Work With Us
           </p>
           <h2 className="font-display font-bold text-3xl lg:text-4xl text-white tracking-tight leading-tight mb-6">
-            Ready to talk about your project?
+            Tell us what you are planning.
           </h2>
           <p className="text-base text-white/50 leading-relaxed mb-10">
-            Tell us what you are planning. We will give you a straight assessment of what it takes to deliver it.
+            We will give you a straight assessment of what it takes to deliver it in Thailand.
           </p>
           <Link
             href="/contact"

@@ -63,7 +63,7 @@ export default function HomePage() {
                 className="text-base lg:text-lg text-ink-secondary leading-relaxed max-w-lg mb-10 animate-fade-up"
                 style={{ animationDelay: '0.2s' }}
               >
-                For international clients and investors, Thailand projects involve real complexity: unfamiliar contractors, approval processes, language barriers, and a market that rewards local knowledge. TMPC removes those risks.
+                For international clients and investors, Thailand projects bring real complexity: unfamiliar contractors, approval processes, language barriers, and a delivery environment where local presence makes the difference. TMPC provides that presence.
               </p>
               <div
                 className="flex flex-wrap items-center gap-4 mb-12 animate-fade-up"
@@ -87,9 +87,9 @@ export default function HomePage() {
                 style={{ animationDelay: '0.4s' }}
               >
                 {[
-                  { value: '5+', label: 'Sectors' },
+                  { value: '1', label: 'Point of Accountability' },
                   { value: '10+', label: 'Parties per Project' },
-                  { value: '6', label: 'Project Phases' },
+                  { value: 'Full', label: 'Lifecycle Coverage' },
                 ].map((stat, i) => (
                   <div key={stat.label} className={`flex flex-col ${i > 0 ? 'pl-6 border-l border-line ml-6' : ''}`}>
                     <span className="font-display font-bold text-xl text-ink leading-none mb-1">{stat.value}</span>
@@ -352,7 +352,7 @@ export default function HomePage() {
             <div className="flex items-end justify-between">
               <div>
                 <p className="text-xs font-semibold text-accent uppercase tracking-[0.25em] mb-4">Selected Work</p>
-                <h2 className="font-display font-bold text-3xl lg:text-4xl text-ink tracking-tight">Projects We Support</h2>
+                <h2 className="font-display font-bold text-3xl lg:text-4xl text-ink tracking-tight">Work in Thailand</h2>
               </div>
               <Link href="/projects" className="hidden md:flex items-center gap-1.5 text-sm text-ink-muted hover:text-accent transition-colors duration-150">
                 View all projects <span aria-hidden="true">&#8594;</span>
@@ -399,12 +399,12 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-grid-dots pointer-events-none opacity-50" />
         <div className="absolute inset-0 bg-gradient-to-t from-canvas-dark via-transparent to-canvas-dark pointer-events-none" />
         <FadeIn className="relative z-10 max-w-xl mx-auto px-6 lg:px-8 text-center">
-          <p className="text-xs font-semibold text-accent uppercase tracking-[0.25em] mb-6">Get Started</p>
+          <p className="text-xs font-semibold text-accent uppercase tracking-[0.25em] mb-6">Work With TMPC</p>
           <h2 className="font-display font-bold text-3xl lg:text-[2.5rem] text-white tracking-tight leading-tight mb-5">
-            Ready to Discuss Your Project?
+            Most project problems are preventable.
           </h2>
           <p className="text-base text-white/50 leading-relaxed mb-10">
-            Most project problems in Thailand are preventable. Talk to TMPC before work begins.
+            Talk to TMPC before work begins.
           </p>
           <Link href="/contact" className="inline-flex items-center text-sm font-semibold bg-accent text-white px-8 py-4 hover:bg-accent-dark transition-colors duration-200">
             Schedule a Consultation

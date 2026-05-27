@@ -72,7 +72,7 @@ const coreServices = [
     number: '05',
     title: 'Operational Setup Support',
     description:
-      'Most projects finish construction without being ready to operate. We coordinate the final phase: vendor selection, system commissioning, staff-readiness planning, and handover so the transition from project to operation is managed, not improvised.',
+      'Most projects finish construction without being ready to operate. We coordinate the final phase: vendor selection, system commissioning, staff preparation, and handover so the transition from project to operation is managed, not improvised.',
     scope: [
       'Operational planning support',
       'Vendor setup coordination',
@@ -93,7 +93,7 @@ const processSteps = [
   {
     number: '02',
     title: 'Planning & Structuring',
-    description: 'Setting the right structure before work starts. Consultants, timelines, budgets, and the coordination approach established before commitment.',
+    description: 'Setting the right structure before work starts. Consultants, timelines, budgets, and the coordination approach all confirmed before commitment.',
   },
   {
     number: '03',
@@ -127,7 +127,7 @@ export default function ServicesPage() {
               className="text-lg text-ink-secondary leading-relaxed max-w-2xl animate-fade-up"
               style={{ animationDelay: '0.2s' }}
             >
-              From the first planning conversation to operational handover, TMPC manages the coordination, oversight, and reporting across every phase. We are a management partner, not a contractor.
+              From the first planning conversation to handover, TMPC manages the coordination, oversight, and reporting across every phase. One accountable partner throughout.
             </p>
           </div>
         </div>
