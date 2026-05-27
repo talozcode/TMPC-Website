@@ -145,39 +145,42 @@ export default function ServicesPage() {
             </h2>
           </div>
 
-          <div className="divide-y divide-line">
-            {coreServices.map((service) => (
+          <div className="relative">
+            {coreServices.map((service, index) => (
               <div
                 key={service.title}
-                className="py-12 lg:py-16 grid lg:grid-cols-[80px_1fr_1fr] gap-8 lg:gap-12"
+                className={`sticky bg-canvas border border-line shadow-[0_6px_32px_rgba(10,22,40,0.09)]${index > 0 ? ' -mt-px' : ''}`}
+                style={{ top: `${68 + index * 20}px`, zIndex: index + 1 }}
               >
-                <div>
-                  <p className="font-display font-bold text-4xl text-accent opacity-25 leading-none tabular-nums tracking-tight">
-                    {service.number}
-                  </p>
-                </div>
+                <div className="py-10 lg:py-14 px-6 lg:px-8 grid lg:grid-cols-[80px_1fr_1fr] gap-8 lg:gap-12">
+                  <div>
+                    <p className="font-display font-bold text-4xl text-accent opacity-25 leading-none tabular-nums tracking-tight">
+                      {service.number}
+                    </p>
+                  </div>
 
-                <div>
-                  <h3 className="font-display font-semibold text-2xl lg:text-3xl text-ink mb-5 leading-snug tracking-tight">
-                    {service.title}
-                  </h3>
-                  <p className="text-base text-ink-muted leading-relaxed">
-                    {service.description}
-                  </p>
-                </div>
+                  <div>
+                    <h3 className="font-display font-semibold text-2xl lg:text-3xl text-ink mb-5 leading-snug tracking-tight">
+                      {service.title}
+                    </h3>
+                    <p className="text-base text-ink-muted leading-relaxed">
+                      {service.description}
+                    </p>
+                  </div>
 
-                <div className="lg:pt-1">
-                  <p className="text-[0.65rem] font-semibold text-accent uppercase tracking-[0.2em] mb-4">
-                    Scope Includes
-                  </p>
-                  <ul className="space-y-2.5">
-                    {service.scope.map((item) => (
-                      <li key={item} className="flex items-start gap-2.5 text-sm text-ink-muted">
-                        <span className="w-1 h-1 rounded-full bg-accent/40 mt-2 flex-shrink-0" />
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
+                  <div className="lg:pt-1">
+                    <p className="text-[0.65rem] font-semibold text-accent uppercase tracking-[0.2em] mb-4">
+                      Scope Includes
+                    </p>
+                    <ul className="space-y-2.5">
+                      {service.scope.map((item) => (
+                        <li key={item} className="flex items-start gap-2.5 text-sm text-ink-muted">
+                          <span className="w-1 h-1 rounded-full bg-accent/40 mt-2 flex-shrink-0" />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
               </div>
             ))}
