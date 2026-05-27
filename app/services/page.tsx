@@ -12,7 +12,7 @@ const coreServices = [
     number: '01',
     title: 'Project Consulting',
     description:
-      'Strategic support during early-stage planning, project structuring, budgeting, coordination planning, and execution preparation.',
+      'Most projects fail before construction starts. The first weeks set the scope, budget, and coordination structure. Get those wrong and the project never recovers. We get them right before any commitment is made.',
     scope: [
       'Project planning support',
       'Feasibility discussions',
@@ -27,7 +27,7 @@ const coreServices = [
     number: '02',
     title: 'Development Management',
     description:
-      'Coordination and oversight support throughout project development phases, from concept planning through implementation stages.',
+      'Most projects have an owner, an architect, and a contractor with no one managing the relationship between all three. TMPC fills that gap. We oversee the full development process, keep every party accountable, and report clearly to you.',
     scope: [
       'Development coordination',
       'Stakeholder management',
@@ -42,7 +42,7 @@ const coreServices = [
     number: '03',
     title: 'Project Coordination',
     description:
-      'Structured coordination between consultants, suppliers, contractors, operational teams, and project stakeholders.',
+      'Communication between five parties across two languages produces confusion and delay. TMPC manages all coordination: meetings, instructions, approvals, and documentation, so the project moves without constant client intervention.',
     scope: [
       'Communication management',
       'Coordination meetings',
@@ -57,7 +57,7 @@ const coreServices = [
     number: '04',
     title: 'Execution Oversight',
     description:
-      'Execution-focused project support with attention to timelines, coordination flow, operational requirements, and implementation progress.',
+      'Decisions made on site without oversight become expensive surprises later. TMPC maintains a consistent presence during execution, monitors progress against plan, resolves issues before they escalate, and keeps the owner informed throughout.',
     scope: [
       'Site coordination',
       'Timeline tracking',
@@ -72,7 +72,7 @@ const coreServices = [
     number: '05',
     title: 'Operational Setup Support',
     description:
-      'Support for operational planning and project-related setup requirements across commercial, hospitality, industrial, and operational environments.',
+      'Most projects finish construction without being ready to operate. We coordinate the final phase: vendor selection, system commissioning, staff-readiness planning, and handover so the transition from project to operation is managed, not improvised.',
     scope: [
       'Operational planning support',
       'Vendor setup coordination',
@@ -88,22 +88,22 @@ const processSteps = [
   {
     number: '01',
     title: 'Project Review',
-    description: 'Understanding scope, operational goals, stakeholders, and coordination requirements.',
+    description: 'Understanding what is being built, what can go wrong, and what the coordination structure needs to look like.',
   },
   {
     number: '02',
     title: 'Planning & Structuring',
-    description: 'Establishing workflows, consultant involvement, timelines, and execution planning.',
+    description: 'Setting the right structure before work starts. Consultants, timelines, budgets, and the coordination approach established before commitment.',
   },
   {
     number: '03',
     title: 'Coordination & Oversight',
-    description: 'Supporting communication, execution flow, reporting, and coordination throughout.',
+    description: 'Managing all party communication, tracking progress against plan, and keeping the owner informed throughout delivery.',
   },
   {
     number: '04',
     title: 'Operational Support',
-    description: 'Helping projects move toward organized delivery and operational readiness.',
+    description: 'Managing the final steps so the project transitions cleanly from construction into operation.',
   },
 ]
 
@@ -121,13 +121,13 @@ export default function ServicesPage() {
               className="font-display font-bold text-5xl sm:text-6xl lg:text-[4.5rem] text-ink leading-[1.08] tracking-tight mb-8 animate-fade-up"
               style={{ animationDelay: '0.1s' }}
             >
-              Project Consulting and Development Management
+              How TMPC manages your project
             </h1>
             <p
               className="text-lg text-ink-secondary leading-relaxed max-w-2xl animate-fade-up"
               style={{ animationDelay: '0.2s' }}
             >
-              TMPC provides project planning, coordination, development management, and execution oversight throughout Thailand. Our role is structured management, not construction.
+              From the first planning conversation to operational handover, TMPC manages the coordination, oversight, and reporting across every phase. We are a management partner, not a contractor.
             </p>
           </div>
         </div>
@@ -224,7 +224,7 @@ export default function ServicesPage() {
             Discuss Your Project
           </h2>
           <p className="text-base text-white/50 leading-relaxed mb-10">
-            TMPC supports projects across planning, coordination, development management, and execution oversight throughout Thailand.
+            Tell us what you are building. We will tell you what it takes to deliver it correctly.
           </p>
           <div className="flex flex-wrap justify-center items-center gap-5">
             <Link

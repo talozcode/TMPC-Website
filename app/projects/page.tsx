@@ -198,22 +198,6 @@ export default function ProjectsPage() {
         ))}
       </section>
 
-      {/* SECTOR STRIP */}
-      <section className="bg-canvas-subtle border-b border-line py-8">
-        <div className="max-w-6xl mx-auto px-6 lg:px-8">
-          <div className="flex flex-wrap items-center gap-0 divide-x divide-line">
-            {['Commercial', 'Industrial', 'Wellness', 'Warehousing', 'Office', 'Real Estate', 'Hospitality'].map((s, i) => (
-              <span
-                key={s}
-                className={`text-[0.62rem] font-semibold text-ink-muted uppercase tracking-[0.2em] px-5 ${i === 0 ? 'pl-0' : ''}`}
-              >
-                {s}
-              </span>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* CTA */}
       <section className="bg-canvas-dark py-20 lg:py-28">
         <div className="max-w-xl mx-auto px-6 lg:px-8 text-center">

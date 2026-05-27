@@ -23,13 +23,6 @@ const leadership = [
   },
 ]
 
-const approachPriorities = [
-  'Structured communication',
-  'Execution-focused planning',
-  'Operational awareness',
-  'Practical coordination',
-  'Long-term project functionality',
-]
 
 export default function AboutPage() {
   return (
@@ -46,7 +39,7 @@ export default function AboutPage() {
                 className="font-display font-bold text-5xl sm:text-6xl lg:text-[4.5rem] text-ink leading-[1.08] tracking-tight mb-8 animate-fade-up"
                 style={{ animationDelay: '0.1s' }}
               >
-                Strategic Project Consulting in Bangkok
+                Managing projects in Thailand for international owners.
               </h1>
               <p
                 className="text-lg text-ink-secondary leading-relaxed max-w-xl animate-fade-up"
@@ -91,16 +84,13 @@ export default function AboutPage() {
             </div>
             <div className="space-y-5">
               <p className="text-base text-ink leading-relaxed">
-                TMPC Development is a Thailand-based project consulting and development management company supporting clients across multiple industries and project environments.
+                TMPC was established to give international project owners a reliable management presence in Thailand. Getting the right contractors, managing consultants, navigating approvals, and keeping a project on track requires local knowledge, constant attention, and clear accountability. Most owners operating from abroad do not have all of that.
               </p>
               <p className="text-base text-ink-muted leading-relaxed">
-                We work closely with project owners, businesses, investors, consultants, and operational teams to help structure, coordinate, and support projects from planning through execution.
+                We carry the full coordination load on your behalf: contractor selection, consultant management, authority submissions, milestone tracking, budget oversight, and on-site supervision. Everything handled by TMPC, reported clearly to you.
               </p>
               <p className="text-base text-ink-muted leading-relaxed">
-                TMPC acts as a strategic project management partner, not a construction contractor. Our focus is coordination, communication, oversight, and execution support across the full project lifecycle.
-              </p>
-              <p className="text-base text-ink-muted leading-relaxed">
-                We combine local coordination experience with international communication standards and a practical, execution-focused approach.
+                TMPC is a project management partner, not a construction contractor. We do not build. We plan, coordinate, and oversee so that the right parties deliver correctly.
               </p>
             </div>
           </div>
@@ -121,22 +111,10 @@ export default function AboutPage() {
             </div>
             <div>
               <p className="text-base text-ink leading-relaxed mb-5">
-                Every project requires a different structure, team, timeline, and operational approach.
+                Every project is different. The parties, timelines, and challenges vary. What does not vary is the need for a structured coordination layer with a single point of accountability.
               </p>
-              <p className="text-base text-ink-muted leading-relaxed mb-8">
-                TMPC focuses on building clear coordination systems between stakeholders, consultants, suppliers, contractors, and operational teams to help projects move forward in an organized and practical way.
-              </p>
-              <p className="text-sm font-semibold text-ink mb-5 uppercase tracking-wider">We prioritize</p>
-              <ul className="space-y-3 mb-8">
-                {approachPriorities.map((item) => (
-                  <li key={item} className="flex items-center gap-3 text-sm text-ink-secondary">
-                    <span className="w-1.5 h-1.5 rounded-full bg-accent flex-shrink-0" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
               <p className="text-base text-ink-muted leading-relaxed">
-                Our goal is to support projects with clarity, consistency, and reliable on-the-ground coordination throughout Thailand.
+                TMPC builds the coordination structures, manages the communication flows, and maintains oversight so that projects move with clarity regardless of how many parties are involved or how far the owner is from the ground.
               </p>
             </div>
           </div>
@@ -183,10 +161,10 @@ export default function AboutPage() {
             Work With Us
           </p>
           <h2 className="font-display font-bold text-3xl lg:text-4xl text-white tracking-tight leading-tight mb-6">
-            Built Around Coordination, Execution, and Project Outcomes
+            Ready to talk about your project?
           </h2>
           <p className="text-base text-white/50 leading-relaxed mb-10">
-            TMPC supports projects through structured planning, practical coordination, and execution-focused management across Thailand.
+            Tell us what you are planning. We will give you a straight assessment of what it takes to deliver it.
           </p>
           <Link
             href="/contact"

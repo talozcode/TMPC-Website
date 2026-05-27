@@ -37,7 +37,7 @@ const contactMethods = [
   },
   {
     label: 'Location',
-    description: 'Thailand-based coordination and project management support.',
+    description: 'On the ground in Bangkok, available across Thailand.',
     action: (
       <p className="text-sm font-semibold text-ink">{siteConfig.location}</p>
     ),
@@ -119,7 +119,7 @@ export default function ContactPage() {
             Structured Coordination. Practical Execution.
           </h2>
           <p className="text-base text-white/50 leading-relaxed mb-10">
-            TMPC supports projects throughout Thailand with a focus on communication clarity, organized coordination, and execution-focused management.
+            Most project problems are easier to manage with the right partner involved early. Get in touch.
           </p>
           <Link
             href="#inquiry-form"

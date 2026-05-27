@@ -27,11 +27,11 @@ const challengeOutput = [
   'Budget Clarity', 'Stakeholder Alignment', 'Operational Readiness', 'On-time Delivery',
 ]
 const services = [
-  { number: '01', title: 'Project Consulting', description: 'Early-stage planning, scope definition, budgeting, and coordination strategy.' },
-  { number: '02', title: 'Development Management', description: 'Oversight and coordination across all development phases, from concept through execution.' },
-  { number: '03', title: 'Project Coordination', description: 'Structured communication between consultants, contractors, suppliers, and teams.' },
-  { number: '04', title: 'Execution Oversight', description: 'Timeline tracking, progress reporting, site coordination, and issue management.' },
-  { number: '05', title: 'Operational Setup', description: 'Pre-opening planning, vendor coordination, and operational environment preparation.' },
+  { number: '01', title: 'Project Consulting', description: 'Not sure where to start? We structure the scope, budget, and coordination plan before anything is committed.' },
+  { number: '02', title: 'Development Management', description: 'One party accountable for every consultant, contractor, and milestone. From concept through completion.' },
+  { number: '03', title: 'Project Coordination', description: 'Multiple parties, fragmented communication. We run the coordination and documentation so nothing gets dropped.' },
+  { number: '04', title: 'Execution Oversight', description: 'Cannot be on site every day? We are. Progress tracked, issues resolved, and the owner informed throughout.' },
+  { number: '05', title: 'Operational Setup', description: 'Construction finished but operations not ready. We coordinate the handover so opening day is not improvised.' },
 ]
 const projectTeasers = [
   { title: 'Mixed-Use Commercial', sector: 'Commercial', image: '/images/scenario-commercial.jpg' },
@@ -57,13 +57,13 @@ export default function HomePage() {
                 className="font-display font-bold text-5xl lg:text-[3.75rem] text-ink leading-[1.06] tracking-tight mb-7 animate-fade-up"
                 style={{ animationDelay: '0.1s' }}
               >
-                Project consulting for complex work in Thailand
+                Building in Thailand? You need someone on the ground.
               </h1>
               <p
                 className="text-base lg:text-lg text-ink-secondary leading-relaxed max-w-lg mb-10 animate-fade-up"
                 style={{ animationDelay: '0.2s' }}
               >
-                TMPC provides structured coordination, development management, and execution oversight for commercial, industrial, hospitality, and real estate projects across Thailand.
+                For international clients and investors, Thailand projects involve real complexity: unfamiliar contractors, approval processes, language barriers, and a market that rewards local knowledge. TMPC removes those risks.
               </p>
               <div
                 className="flex flex-wrap items-center gap-4 mb-12 animate-fade-up"
@@ -252,10 +252,10 @@ export default function HomePage() {
           <FadeIn className="max-w-2xl mb-14">
             <p className="text-xs font-semibold text-accent uppercase tracking-[0.25em] mb-4">The Challenge</p>
             <h2 className="font-display font-bold text-3xl lg:text-4xl text-ink tracking-tight mb-4">
-              Complex projects need structure.
+              What most projects are missing from day one.
             </h2>
             <p className="text-base text-ink-muted leading-relaxed">
-              When owners, consultants, suppliers, contractors, timelines, budgets, and operations are all in motion at once, alignment does not happen on its own. Without a dedicated coordination layer, communication breaks down, timelines slip, and execution falls behind. TMPC provides the coordination layer that keeps every party aligned and the project moving.
+              International projects in Thailand bring together architects, contractors, subcontractors, MEP engineers, government approval processes, and suppliers, often managed by an owner who is overseas and unfamiliar with how things work here. No single party coordinates the whole. Communication breaks down, timelines drift, and accountability disappears. TMPC closes that gap.
             </p>
           </FadeIn>
 
@@ -404,7 +404,7 @@ export default function HomePage() {
             Ready to Discuss Your Project?
           </h2>
           <p className="text-base text-white/50 leading-relaxed mb-10">
-            TMPC supports projects across planning, coordination, and execution throughout Thailand.
+            Most project problems in Thailand are preventable. Talk to TMPC before work begins.
           </p>
           <Link href="/contact" className="inline-flex items-center text-sm font-semibold bg-accent text-white px-8 py-4 hover:bg-accent-dark transition-colors duration-200">
             Schedule a Consultation
