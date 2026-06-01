@@ -69,140 +69,161 @@ export function ProjectsGallery({ projects, categories }: Props) {
         </div>
       </div>
 
-      {/* Projects list */}
-      <section className="bg-canvas">
-        {filtered.length === 0 ? (
-          <div className="max-w-6xl mx-auto px-6 lg:px-8 py-24 text-center">
-            <p className="text-sm text-ink-muted uppercase tracking-[0.15em]">
-              No projects to show in this category yet.
-            </p>
-          </div>
-        ) : (
-          filtered.map((project, i) => {
-          const imgIdx = activeImages[project.id] ?? 0
-          return (
-            <FadeIn key={`${activeCategory}-${project.id}`} delay={i * 60}>
-              <div className="grid lg:grid-cols-2 border-b border-line">
+      {/* Projects list — one framed card per project */}
+      <section className="bg-canvas-subtle py-10 lg:py-16">
+        <div className="max-w-6xl mx-auto px-6 lg:px-8">
+          {filtered.length === 0 ? (
+            <div className="py-24 text-center">
+              <p className="text-sm text-ink-muted uppercase tracking-[0.15em]">
+                No projects to show in this category yet.
+              </p>
+            </div>
+          ) : (
+            <div className="space-y-8 lg:space-y-10">
+              {filtered.map((project, i) => {
+                const imgIdx = activeImages[project.id] ?? 0
+                const facts = [
+                  { label: 'Location', value: project.location },
+                  { label: 'Scope', value: project.scope },
+                  { label: 'Role', value: project.role },
+                ].filter((f) => f.value)
+                return (
+                  <FadeIn key={`${activeCategory}-${project.id}`} delay={i * 60}>
+                    <article className="bg-canvas border border-line shadow-[0_6px_32px_rgba(10,22,40,0.06)] overflow-hidden">
+                      <div className="grid lg:grid-cols-2">
 
-                {/* Image panel */}
-                <div className={`flex flex-col ${i % 2 === 1 ? 'lg:order-2' : ''}`}>
-                  {/* Main image */}
-                  <div className="relative overflow-hidden flex-1 group" style={{ minHeight: '380px' }}>
-                    <button
-                      type="button"
-                      onClick={() => openLightbox(project, imgIdx)}
-                      aria-label={`View ${project.title} photos fullscreen`}
-                      className="absolute inset-0 w-full h-full cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-                    >
-                      <Image
-                        src={project.images[imgIdx]}
-                        alt={project.title}
-                        fill
-                        className="object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.04]"
-                        sizes="(max-width: 1024px) 100vw, 50vw"
-                      />
-                      <div className="absolute inset-0 bg-[#0A1628]/30 transition-colors duration-300 group-hover:bg-[#0A1628]/15" />
-                    </button>
-                    {/* Expand affordance */}
-                    <div className="absolute top-5 right-5 z-20 flex items-center gap-1.5 bg-[#0A1628]/70 backdrop-blur-sm border border-white/15 text-white/90 text-[0.58rem] font-semibold uppercase tracking-[0.18em] px-3 py-1.5 opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 [@media(hover:none)]:opacity-100 [@media(hover:none)]:translate-y-0 transition-all duration-300 pointer-events-none">
-                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
-                      </svg>
-                      View
-                    </div>
-                    <div className="absolute top-6 left-7 z-10 pointer-events-none">
-                      <span className="font-display font-bold text-[5rem] text-white/10 leading-none select-none">
-                        {project.number}
-                      </span>
-                    </div>
-                    <div className="absolute bottom-5 left-6 z-10 pointer-events-none">
-                      <span className="text-[0.58rem] font-bold text-accent uppercase tracking-[0.25em] border border-accent/40 bg-[#0A1628]/70 px-3 py-1.5">
-                        {project.category}
-                      </span>
-                    </div>
-                  </div>
+                        {/* Image column — carousel + TMPC Scope underneath */}
+                        <div className={`flex flex-col ${i % 2 === 1 ? 'lg:order-2' : ''}`}>
+                          {/* Main image */}
+                          <div className="relative overflow-hidden flex-1 group min-h-[320px]">
+                            <button
+                              type="button"
+                              onClick={() => openLightbox(project, imgIdx)}
+                              aria-label={`View ${project.title} photos fullscreen`}
+                              className="absolute inset-0 w-full h-full cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                            >
+                              <Image
+                                src={project.images[imgIdx]}
+                                alt={project.title}
+                                fill
+                                className="object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.04]"
+                                sizes="(max-width: 1024px) 100vw, 50vw"
+                              />
+                              <div className="absolute inset-0 bg-[#0A1628]/30 transition-colors duration-300 group-hover:bg-[#0A1628]/15" />
+                            </button>
+                            {/* Expand affordance */}
+                            <div className="absolute top-5 right-5 z-20 flex items-center gap-1.5 bg-[#0A1628]/70 backdrop-blur-sm border border-white/15 text-white/90 text-[0.58rem] font-semibold uppercase tracking-[0.18em] px-3 py-1.5 opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 [@media(hover:none)]:opacity-100 [@media(hover:none)]:translate-y-0 transition-all duration-300 pointer-events-none">
+                              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                              </svg>
+                              View
+                            </div>
+                            <div className="absolute top-6 left-7 z-10 pointer-events-none">
+                              <span className="font-display font-bold text-[5rem] text-white/10 leading-none select-none">
+                                {project.number}
+                              </span>
+                            </div>
+                            <div className="absolute bottom-5 left-6 z-10 pointer-events-none">
+                              <span className="text-[0.58rem] font-bold text-accent uppercase tracking-[0.25em] border border-accent/40 bg-[#0A1628]/70 px-3 py-1.5">
+                                {project.category}
+                              </span>
+                            </div>
+                          </div>
 
-                  {/* Thumbnail strip */}
-                  {project.images.length > 1 && (
-                    <div className="flex gap-1.5 p-2.5 bg-canvas-dark flex-shrink-0 overflow-x-auto">
-                      {project.images.map((img, j) => {
-                        const isActive = imgIdx === j
-                        return (
-                          <button
-                            key={j}
-                            onClick={() => selectImage(project.id, j)}
-                            aria-label={`View photo ${j + 1} of ${project.title}`}
-                            className={`relative flex-shrink-0 w-20 h-14 overflow-hidden border-2 transition-all duration-200 ${
-                              isActive
-                                ? 'border-accent'
-                                : 'border-white/10 hover:border-white/40 opacity-60 hover:opacity-100'
-                            }`}
-                          >
-                            <Image src={img} alt="" fill className="object-cover" sizes="80px" />
-                          </button>
-                        )
-                      })}
-                    </div>
-                  )}
-                </div>
+                          {/* Thumbnail strip */}
+                          {project.images.length > 1 && (
+                            <div className="flex gap-1.5 p-2.5 bg-canvas-dark flex-shrink-0 overflow-x-auto">
+                              {project.images.map((img, j) => {
+                                const isActive = imgIdx === j
+                                return (
+                                  <button
+                                    key={j}
+                                    onClick={() => selectImage(project.id, j)}
+                                    aria-label={`View photo ${j + 1} of ${project.title}`}
+                                    className={`relative flex-shrink-0 w-20 h-14 overflow-hidden border-2 transition-all duration-200 ${
+                                      isActive
+                                        ? 'border-accent'
+                                        : 'border-white/10 hover:border-white/40 opacity-60 hover:opacity-100'
+                                    }`}
+                                  >
+                                    <Image src={img} alt="" fill className="object-cover" sizes="80px" />
+                                  </button>
+                                )
+                              })}
+                            </div>
+                          )}
 
-                {/* Details panel */}
-                <div
-                  className={`flex flex-col justify-center px-8 py-10 lg:px-14 lg:py-14 bg-canvas ${
-                    i % 2 === 1 ? 'lg:order-1' : ''
-                  }`}
-                >
-                  <div className="flex items-center gap-3 mb-5">
-                    <span className="text-[0.58rem] font-bold text-accent uppercase tracking-[0.2em]">
-                      {project.number}
-                    </span>
-                    <div className="flex-1 h-px bg-line" />
-                    <span className="text-[0.58rem] text-ink-muted uppercase tracking-[0.15em]">
-                      {project.location}
-                    </span>
-                  </div>
+                          {/* TMPC Scope — directly under the image carousel */}
+                          {project.deliverables.length > 0 && (
+                            <div className="px-7 py-6 lg:px-9 border-t border-line bg-canvas">
+                              <p className="text-[0.58rem] font-bold text-accent uppercase tracking-[0.2em] mb-3">
+                                TMPC Scope
+                              </p>
+                              <ul className="grid sm:grid-cols-2 gap-x-6 gap-y-2">
+                                {project.deliverables.map((d) => (
+                                  <li key={d} className="flex items-start gap-2.5 text-sm text-ink-muted">
+                                    <span className="w-1 h-1 rounded-full bg-accent mt-2 flex-shrink-0" />
+                                    {d}
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
+                        </div>
 
-                  <h2 className="font-display font-bold text-2xl lg:text-3xl text-ink tracking-tight leading-snug mb-2">
-                    {project.title}
-                  </h2>
-                  <p className="text-sm text-ink-muted mb-1">{project.subtitle}</p>
-                  <p className="text-[0.65rem] text-ink-muted uppercase tracking-[0.15em] mb-6">
-                    {project.scope}
-                  </p>
+                        {/* Text column */}
+                        <div
+                          className={`flex flex-col justify-center px-8 py-10 lg:px-12 lg:py-12 ${
+                            i % 2 === 1 ? 'lg:order-1' : ''
+                          }`}
+                        >
+                          <div className="flex items-center gap-3 mb-5">
+                            <span className="text-[0.58rem] font-bold text-accent uppercase tracking-[0.2em]">
+                              {project.number}
+                            </span>
+                            <div className="flex-1 h-px bg-line" />
+                            <span className="text-[0.58rem] text-ink-muted uppercase tracking-[0.15em]">
+                              {project.category}
+                            </span>
+                          </div>
 
-                  <p className="text-sm text-ink-secondary leading-relaxed mb-7">{project.brief}</p>
+                          <h2 className="font-display font-bold text-2xl lg:text-3xl text-ink tracking-tight leading-snug mb-2">
+                            {project.title}
+                          </h2>
+                          {project.subtitle && <p className="text-sm text-ink-muted mb-5">{project.subtitle}</p>}
 
-                  {project.deliverables.length > 0 && (
-                    <div className="mb-7">
-                      <p className="text-[0.58rem] font-bold text-accent uppercase tracking-[0.2em] mb-3">
-                        Key Deliverables
-                      </p>
-                      <ul className="space-y-2">
-                        {project.deliverables.map((d) => (
-                          <li key={d} className="flex items-start gap-2.5 text-sm text-ink-muted">
-                            <span className="w-1 h-1 rounded-full bg-accent mt-2 flex-shrink-0" />
-                            {d}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
+                          {project.brief && (
+                            <p className="text-sm text-ink-secondary leading-relaxed mb-7">{project.brief}</p>
+                          )}
 
-                  {project.role && (
-                    <div className="pt-5 border-t border-line">
-                      <span className="inline-flex items-center gap-2 text-[0.65rem] font-semibold text-ink uppercase tracking-[0.15em]">
-                        <span className="w-1.5 h-1.5 rounded-full bg-accent flex-shrink-0" />
-                        TMPC Role: {project.role}
-                      </span>
-                    </div>
-                  )}
-                </div>
+                          {/* Fact Sheet */}
+                          {facts.length > 0 && (
+                            <div className="border-t border-line pt-5 mt-auto">
+                              <p className="text-[0.58rem] font-bold text-accent uppercase tracking-[0.2em] mb-3">
+                                Fact Sheet
+                              </p>
+                              <dl className="space-y-2.5">
+                                {facts.map((f) => (
+                                  <div key={f.label} className="flex gap-4">
+                                    <dt className="w-20 flex-shrink-0 text-[0.6rem] font-semibold text-ink-muted uppercase tracking-[0.12em] pt-0.5">
+                                      {f.label}
+                                    </dt>
+                                    <dd className="flex-1 text-sm text-ink-secondary leading-snug">{f.value}</dd>
+                                  </div>
+                                ))}
+                              </dl>
+                            </div>
+                          )}
+                        </div>
 
-              </div>
-            </FadeIn>
-          )
-        })
-        )}
+                      </div>
+                    </article>
+                  </FadeIn>
+                )
+              })}
+            </div>
+          )}
+        </div>
       </section>
 
       {/* CTA */}

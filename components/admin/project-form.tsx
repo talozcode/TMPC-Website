@@ -110,7 +110,7 @@ export function ProjectForm({ project, categories, onSave }: Props) {
       {/* Scope + Role */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         <div>
-          <label className={labelClass}>Scope</label>
+          <label className={labelClass}>Fact Sheet</label>
           <input name="scope" defaultValue={project?.scope ?? ''} className={inputClass} placeholder="e.g. 3,800 sqm across 4 levels" />
         </div>
         <div>
@@ -127,7 +127,7 @@ export function ProjectForm({ project, categories, onSave }: Props) {
 
       {/* Deliverables */}
       <div>
-        <label className={labelClass}>Key Deliverables</label>
+        <label className={labelClass}>TMPC Scope</label>
         <div className="space-y-2">
           {deliverables.map((d, idx) => (
             <div key={idx} className="flex gap-2">
@@ -135,7 +135,7 @@ export function ProjectForm({ project, categories, onSave }: Props) {
                 value={d}
                 onChange={(e) => updateDeliverable(idx, e.target.value)}
                 className={inputClass}
-                placeholder={`Deliverable ${idx + 1}`}
+                placeholder={`Scope item ${idx + 1}`}
               />
               {deliverables.length > 1 && (
                 <button type="button" onClick={() => removeDeliverable(idx)}

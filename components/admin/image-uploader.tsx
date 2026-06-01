@@ -3,6 +3,7 @@
 import { useState, useRef } from 'react'
 import Image from 'next/image'
 import { createClient } from '@/lib/supabase/client'
+import { ImageCropModal } from '@/components/admin/image-crop-modal'
 import type { ProjectImage } from '@/lib/types'
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10 MB
@@ -20,13 +21,15 @@ export function ImageUploader({ projectId, existing, onUpdate }: Props) {
   const inputRef = useRef<HTMLInputElement>(null)
   const supabase = createClient()
 
-  async function handleFiles(files: FileList | null) {
+  // Crop queue: each selected file passes through the crop modal before upload.
+  const [cropQueue, setCropQueue] = useState<File[]>([])
+  const [cropIdx, setCropIdx] = useState(0)
+  const cropResults = useRef<File[]>([])
+
+  function handleFiles(files: FileList | null) {
     if (!files || files.length === 0) return
-    setUploading(true)
     setError('')
-
-    const newImages: ProjectImage[] = []
-
+    const valid: File[] = []
     for (const file of Array.from(files)) {
       if (!file.type.startsWith('image/')) {
         setError(`${file.name} is not an image`)
@@ -36,7 +39,38 @@ export function ImageUploader({ projectId, existing, onUpdate }: Props) {
         setError(`${file.name} exceeds 10 MB limit`)
         continue
       }
+      valid.push(file)
+    }
+    if (valid.length === 0) return
+    cropResults.current = []
+    setCropIdx(0)
+    setCropQueue(valid)
+  }
 
+  function resolveCrop(result: File) {
+    cropResults.current.push(result)
+    const next = cropIdx + 1
+    if (next >= cropQueue.length) {
+      const results = cropResults.current
+      setCropQueue([])
+      setCropIdx(0)
+      void uploadFiles(results)
+    } else {
+      setCropIdx(next)
+    }
+  }
+
+  function cancelCrop() {
+    setCropQueue([])
+    setCropIdx(0)
+    cropResults.current = []
+  }
+
+  async function uploadFiles(files: File[]) {
+    setUploading(true)
+    const newImages: ProjectImage[] = []
+
+    for (const file of files) {
       const ext = file.name.split('.').pop()
       const path = `${projectId}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
 
@@ -162,10 +196,20 @@ export function ImageUploader({ projectId, existing, onUpdate }: Props) {
         ) : (
           <>
             <p className="text-sm text-gray-500 mb-1">Drag & drop images or click to browse</p>
-            <p className="text-xs text-gray-400">JPG, PNG, WebP · Max 10 MB · First image becomes main photo</p>
+            <p className="text-xs text-gray-400">JPG, PNG, WebP · Max 10 MB · First image becomes main photo · Crop on upload</p>
           </>
         )}
       </div>
+
+      {cropQueue.length > 0 && cropQueue[cropIdx] && (
+        <ImageCropModal
+          file={cropQueue[cropIdx]}
+          label={cropQueue.length > 1 ? `Image ${cropIdx + 1} of ${cropQueue.length}` : undefined}
+          onComplete={resolveCrop}
+          onSkip={resolveCrop}
+          onCancel={cancelCrop}
+        />
+      )}
     </div>
   )
 }

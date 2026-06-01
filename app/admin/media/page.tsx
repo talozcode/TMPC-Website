@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react'
 import Image from 'next/image'
 import { createClient } from '@/lib/supabase/client'
+import { ImageCropModal } from '@/components/admin/image-crop-modal'
 
 const MAX_FILE_SIZE = 20 * 1024 * 1024 // 20 MB for media library
 
@@ -27,6 +28,11 @@ export default function MediaLibraryPage() {
   const inputRef = useRef<HTMLInputElement>(null)
   const supabase = createClient()
 
+  // Crop queue: each selected image passes through the crop modal before upload.
+  const [cropQueue, setCropQueue] = useState<File[]>([])
+  const [cropIdx, setCropIdx] = useState(0)
+  const cropResults = useRef<File[]>([])
+
   useEffect(() => {
     loadFiles()
   }, [])
@@ -46,16 +52,49 @@ export default function MediaLibraryPage() {
     setLoading(false)
   }
 
-  async function handleUpload(fileList: FileList | null) {
+  function handleUpload(fileList: FileList | null) {
     if (!fileList) return
-    setUploading(true)
     setUploadError('')
-
+    const valid: File[] = []
     for (const file of Array.from(fileList)) {
       if (file.size > MAX_FILE_SIZE) {
         setUploadError(`${file.name} exceeds 20 MB limit`)
         continue
       }
+      if (!file.type.startsWith('image/')) {
+        setUploadError(`${file.name} is not an image`)
+        continue
+      }
+      valid.push(file)
+    }
+    if (valid.length === 0) return
+    cropResults.current = []
+    setCropIdx(0)
+    setCropQueue(valid)
+  }
+
+  function resolveCrop(result: File) {
+    cropResults.current.push(result)
+    const next = cropIdx + 1
+    if (next >= cropQueue.length) {
+      const results = cropResults.current
+      setCropQueue([])
+      setCropIdx(0)
+      void uploadFiles(results)
+    } else {
+      setCropIdx(next)
+    }
+  }
+
+  function cancelCrop() {
+    setCropQueue([])
+    setCropIdx(0)
+    cropResults.current = []
+  }
+
+  async function uploadFiles(filesToUpload: File[]) {
+    setUploading(true)
+    for (const file of filesToUpload) {
       const ext = file.name.split('.').pop()
       const path = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
       const { error: storageError } = await supabase.storage.from('media-library').upload(path, file)
@@ -156,6 +195,16 @@ export default function MediaLibraryPage() {
             </div>
           ))}
         </div>
+      )}
+
+      {cropQueue.length > 0 && cropQueue[cropIdx] && (
+        <ImageCropModal
+          file={cropQueue[cropIdx]}
+          label={cropQueue.length > 1 ? `Image ${cropIdx + 1} of ${cropQueue.length}` : undefined}
+          onComplete={resolveCrop}
+          onSkip={resolveCrop}
+          onCancel={cancelCrop}
+        />
       )}
     </div>
   )

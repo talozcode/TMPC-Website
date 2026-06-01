@@ -109,7 +109,7 @@ export default async function ServicesPage() {
 
                   <div className="lg:pt-1">
                     <p className="text-[0.65rem] font-semibold text-accent uppercase tracking-[0.2em] mb-4">
-                      Scope Includes
+                      Fact Sheet
                     </p>
                     <ul className="space-y-2.5">
                       {service.scope.map((item) => (

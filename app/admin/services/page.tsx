@@ -28,7 +28,7 @@ function ServiceForm({ service }: { service?: Service }) {
         <textarea name="description" rows={3} defaultValue={service?.description ?? ''} className={`${inputClass} resize-none`} />
       </div>
       <div>
-        <label className={labelClass}>Scope Items (one per line)</label>
+        <label className={labelClass}>Fact Sheet (one per line)</label>
         <textarea name="scope_items" rows={5} defaultValue={service?.scope_items?.join('\n') ?? ''} className={`${inputClass} resize-none font-mono text-xs`} />
       </div>
       <div className="flex items-center gap-4">
