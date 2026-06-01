@@ -37,7 +37,7 @@ export function Header() {
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  'text-sm transition-colors duration-150',
+                  'text-base transition-colors duration-150',
                   pathname === link.href
                     ? 'text-accent font-medium'
                     : 'text-white/60 hover:text-white'
