@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -12,6 +12,7 @@ export interface HeroProject {
 }
 
 const DEFAULT_INTERVAL = 4000
+const SWIPE_THRESHOLD = 40
 
 export function HeroProjectCarousel({
   projects,
@@ -33,9 +34,29 @@ export function HeroProjectCarousel({
     return () => clearInterval(id)
   }, [paused, count, intervalMs])
 
+  // Touch swipe (mobile). Tap still navigates to /projects; a swipe changes slide.
+  const touchStartX = useRef<number | null>(null)
+  const swiped = useRef(false)
+  function onTouchStart(e: React.TouchEvent) {
+    touchStartX.current = e.touches[0].clientX
+    swiped.current = false
+  }
+  function onTouchEnd(e: React.TouchEvent) {
+    if (touchStartX.current === null || count <= 1) return
+    const dx = e.changedTouches[0].clientX - touchStartX.current
+    if (Math.abs(dx) > SWIPE_THRESHOLD) {
+      swiped.current = true
+      go(active + (dx < 0 ? 1 : -1))
+    }
+    touchStartX.current = null
+  }
+
   if (count === 0) return null
 
   const current = projects[active]
+  // Only mount nearby slides so a long project list doesn't download every image.
+  const isNear = (i: number) =>
+    i === active || i === (active + 1) % count || i === (active - 1 + count) % count
 
   return (
     <div
@@ -63,33 +84,42 @@ export function HeroProjectCarousel({
           </span>
         </div>
 
-        {/* Image stage — crossfade + slow Ken Burns on the active slide */}
+        {/* Image stage — swipeable, crossfade + slow Ken Burns on the active slide */}
         <Link
           href="/projects"
           aria-label={`View projects — ${current.title}`}
-          className="relative block overflow-hidden group"
-          style={{ height: '380px' }}
+          className="relative block overflow-hidden group h-[300px] sm:h-[360px] lg:h-[380px]"
+          onTouchStart={onTouchStart}
+          onTouchEnd={onTouchEnd}
+          onClick={(e) => {
+            if (swiped.current) {
+              e.preventDefault()
+              swiped.current = false
+            }
+          }}
         >
-          {projects.map((p, i) => (
-            <Image
-              key={p.id}
-              src={p.image}
-              alt={p.title}
-              fill
-              priority={i === 0}
-              sizes="(max-width: 1024px) 100vw, 520px"
-              className={`object-cover ease-out ${
-                i === active ? 'opacity-100 scale-105' : 'opacity-0 scale-100'
-              }`}
-              style={{
-                transitionProperty: 'opacity, transform',
-                // fast crossfade, slow Ken Burns zoom on the active slide
-                transitionDuration: i === active ? '700ms, 4000ms' : '700ms, 700ms',
-              }}
-            />
-          ))}
+          {projects.map((p, i) =>
+            isNear(i) ? (
+              <Image
+                key={p.id}
+                src={p.image}
+                alt={p.title}
+                fill
+                priority={i === 0}
+                sizes="(max-width: 1024px) 100vw, 520px"
+                className={`object-cover ease-out ${
+                  i === active ? 'opacity-100 scale-105' : 'opacity-0 scale-100'
+                }`}
+                style={{
+                  transitionProperty: 'opacity, transform',
+                  // fast crossfade, slow Ken Burns zoom on the active slide
+                  transitionDuration: i === active ? '700ms, 4000ms' : '700ms, 700ms',
+                }}
+              />
+            ) : null
+          )}
           <div className="absolute inset-0 bg-gradient-to-t from-[#0A1628]/70 via-transparent to-transparent" />
-          <span className="absolute bottom-4 right-5 inline-flex items-center gap-1.5 text-[0.62rem] font-semibold text-white uppercase tracking-[0.18em] opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
+          <span className="absolute bottom-4 right-5 inline-flex items-center gap-1.5 text-[0.62rem] font-semibold text-white uppercase tracking-[0.18em] opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 [@media(hover:none)]:opacity-100 [@media(hover:none)]:translate-y-0 transition-all duration-300">
             View Projects
             <span aria-hidden="true">&#8594;</span>
           </span>
@@ -97,35 +127,39 @@ export function HeroProjectCarousel({
 
         {/* Controls */}
         <div className="flex items-center justify-between px-6 py-4 border-t border-white/10">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1">
             {projects.map((p, i) => (
               <button
                 key={p.id}
                 onClick={() => go(i)}
                 aria-label={`Go to ${p.title}`}
                 aria-current={i === active}
-                className={`h-1.5 rounded-full transition-all duration-300 ${
-                  i === active ? 'w-6 bg-accent' : 'w-1.5 bg-white/25 hover:bg-white/50'
-                }`}
-              />
+                className="py-3 -my-3 px-1 -mx-0.5 flex items-center"
+              >
+                <span
+                  className={`h-1.5 rounded-full transition-all duration-300 ${
+                    i === active ? 'w-6 bg-accent' : 'w-1.5 bg-white/25 hover:bg-white/50'
+                  }`}
+                />
+              </button>
             ))}
           </div>
           <div className="flex items-center gap-1.5">
             <button
               onClick={() => go(active - 1)}
               aria-label="Previous project"
-              className="w-8 h-8 flex items-center justify-center border border-white/15 text-white/60 hover:text-white hover:border-accent/60 transition-colors"
+              className="w-10 h-10 flex items-center justify-center border border-white/15 text-white/60 hover:text-white hover:border-accent/60 transition-colors"
             >
-              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
             </button>
             <button
               onClick={() => go(active + 1)}
               aria-label="Next project"
-              className="w-8 h-8 flex items-center justify-center border border-white/15 text-white/60 hover:text-white hover:border-accent/60 transition-colors"
+              className="w-10 h-10 flex items-center justify-center border border-white/15 text-white/60 hover:text-white hover:border-accent/60 transition-colors"
             >
-              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
             </button>

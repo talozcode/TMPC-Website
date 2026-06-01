@@ -250,7 +250,7 @@ export default async function HomePage() {
               </FadeIn>
             ))}
             {heroProjects.slice(2, 5).map((p, i) => (
-              <FadeIn key={p.id} delay={i * 80} className="col-span-6 sm:col-span-3 lg:col-span-2">
+              <FadeIn key={p.id} delay={i * 80} className="col-span-6 sm:col-span-2">
                 <Link href="/projects" className="group block relative overflow-hidden aspect-[4/3]">
                   <Image src={p.image} alt={p.title} fill className="object-cover transition-transform duration-700 group-hover:scale-[1.04]" sizes="(max-width: 640px) 100vw, 33vw" />
                   <div className="absolute inset-0 bg-gradient-to-t from-canvas-dark/90 via-canvas-dark/20 to-transparent" />

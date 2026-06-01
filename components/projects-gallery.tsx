@@ -104,7 +104,7 @@ export function ProjectsGallery({ projects, categories }: Props) {
                       <div className="absolute inset-0 bg-[#0A1628]/30 transition-colors duration-300 group-hover:bg-[#0A1628]/15" />
                     </button>
                     {/* Expand affordance */}
-                    <div className="absolute top-5 right-5 z-20 flex items-center gap-1.5 bg-[#0A1628]/70 backdrop-blur-sm border border-white/15 text-white/90 text-[0.58rem] font-semibold uppercase tracking-[0.18em] px-3 py-1.5 opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 pointer-events-none">
+                    <div className="absolute top-5 right-5 z-20 flex items-center gap-1.5 bg-[#0A1628]/70 backdrop-blur-sm border border-white/15 text-white/90 text-[0.58rem] font-semibold uppercase tracking-[0.18em] px-3 py-1.5 opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 [@media(hover:none)]:opacity-100 [@media(hover:none)]:translate-y-0 transition-all duration-300 pointer-events-none">
                       <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
                       </svg>
