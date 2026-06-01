@@ -2,29 +2,28 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
 import { siteConfig } from '@/lib/data'
+import { createClient } from '@/lib/supabase/server'
+import type { TeamMember } from '@/lib/types'
 
 export const metadata: Metadata = {
   title: 'About',
   description: `${siteConfig.name} is a Thailand-based project consulting and development management company supporting clients across commercial, industrial, hospitality, wellness, and real estate projects.`,
 }
 
-const leadership = [
-  {
-    name: 'Tom',
-    title: 'Managing Partner',
-    description:
-      'Focused on project planning, coordination, execution oversight, and business development across commercial, industrial, hospitality, and real estate projects.',
-  },
-  {
-    name: 'Tal',
-    title: 'Operations & Technology Partner',
-    description:
-      'Focused on operations, technology implementation, workflow systems, and coordination infrastructure for projects across Thailand.',
-  },
-]
+export default async function AboutPage() {
+  const supabase = await createClient()
+  const { data: teamRows } = await supabase
+    .from('team_members')
+    .select('*')
+    .eq('active', true)
+    .order('display_order', { ascending: true })
 
+  const leadership = ((teamRows as TeamMember[]) ?? []).map((m) => ({
+    name: m.name,
+    title: m.role_title ?? '',
+    description: m.description ?? '',
+  }))
 
-export default function AboutPage() {
   return (
     <>
       {/* 1. Hero */}

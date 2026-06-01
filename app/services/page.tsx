@@ -1,88 +1,13 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { siteConfig } from '@/lib/data'
+import { createClient } from '@/lib/supabase/server'
+import type { Service } from '@/lib/types'
 
 export const metadata: Metadata = {
   title: 'Services',
   description: `${siteConfig.name} provides project consulting, development management, project coordination, and execution oversight across commercial, industrial, hospitality, wellness, and real estate projects in Thailand.`,
 }
-
-const coreServices = [
-  {
-    number: '01',
-    title: 'Project Consulting',
-    description:
-      'Most projects fail before construction starts. The first weeks set the scope, budget, and coordination structure. Get those wrong and the project never recovers. We get them right before any commitment is made.',
-    scope: [
-      'Project planning support',
-      'Feasibility discussions',
-      'Scope definition',
-      'Coordination strategy',
-      'Budget alignment',
-      'Project structure planning',
-      'Consultant identification support',
-    ],
-  },
-  {
-    number: '02',
-    title: 'Development Management',
-    description:
-      'Most projects have an owner, an architect, and a contractor with no one managing the relationship between all three. TMPC fills that gap. We oversee the full development process, keep every party accountable, and report clearly to you.',
-    scope: [
-      'Development coordination',
-      'Stakeholder management',
-      'Planning oversight',
-      'Consultant coordination',
-      'Timeline supervision',
-      'Reporting support',
-      'Budget monitoring',
-    ],
-  },
-  {
-    number: '03',
-    title: 'Project Coordination',
-    description:
-      'Communication between five parties across two languages produces confusion and delay. TMPC manages all coordination: meetings, instructions, approvals, and documentation, so the project moves without constant client intervention.',
-    scope: [
-      'Communication management',
-      'Coordination meetings',
-      'Workflow organization',
-      'Vendor coordination',
-      'Supplier sourcing support',
-      'Information flow management',
-      'Project updates and reporting',
-    ],
-  },
-  {
-    number: '04',
-    title: 'Execution Oversight',
-    description:
-      'Decisions made on site without oversight become expensive surprises later. TMPC maintains a consistent presence during execution, monitors progress against plan, resolves issues before they escalate, and keeps the owner informed throughout.',
-    scope: [
-      'Site coordination',
-      'Timeline tracking',
-      'Progress reporting',
-      'Issue coordination',
-      'Execution monitoring',
-      'Contractor communication support',
-      'Operational alignment',
-    ],
-  },
-  {
-    number: '05',
-    title: 'Operational Setup Support',
-    description:
-      'Most projects finish construction without being ready to operate. We coordinate the final phase: vendor selection, system commissioning, staff preparation, and handover so the transition from project to operation is managed, not improvised.',
-    scope: [
-      'Operational planning support',
-      'Vendor setup coordination',
-      'Workflow planning',
-      'Facility preparation',
-      'Operational coordination',
-      'Technology and system coordination support',
-    ],
-  },
-]
 
 const processSteps = [
   {
@@ -107,7 +32,21 @@ const processSteps = [
   },
 ]
 
-export default function ServicesPage() {
+export default async function ServicesPage() {
+  const supabase = await createClient()
+  const { data: serviceRows } = await supabase
+    .from('services')
+    .select('*')
+    .eq('active', true)
+    .order('display_order', { ascending: true })
+
+  const coreServices = ((serviceRows as Service[]) ?? []).map((s, i) => ({
+    number: s.number ?? String(i + 1).padStart(2, '0'),
+    title: s.title,
+    description: s.description ?? '',
+    scope: s.scope_items ?? [],
+  }))
+
   return (
     <>
       {/* 1. Hero */}
