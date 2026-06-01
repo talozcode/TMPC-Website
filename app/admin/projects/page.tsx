@@ -1,7 +1,11 @@
 import Link from 'next/link'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { deleteProject, togglePublished } from './actions'
+import { DeleteProjectButton } from '@/components/admin/delete-project-button'
 import type { Project } from '@/lib/types'
+
+// Admin dashboard — always render with fresh data, never statically prerendered.
+export const dynamic = 'force-dynamic'
 
 export default async function AdminProjectsPage() {
   const supabase = createAdminClient()
@@ -70,16 +74,7 @@ export default async function AdminProjectsPage() {
                         className="text-accent hover:text-accent-dark text-xs font-semibold transition-colors">
                         Edit
                       </Link>
-                      <form action={async () => {
-                        'use server'
-                        await deleteProject(p.id)
-                      }}>
-                        <button type="submit"
-                          className="text-red-500 hover:text-red-700 text-xs font-semibold transition-colors"
-                          onClick={(e) => { if (!confirm('Delete this project?')) e.preventDefault() }}>
-                          Delete
-                        </button>
-                      </form>
+                      <DeleteProjectButton onDelete={deleteProject.bind(null, p.id)} />
                     </div>
                   </td>
                 </tr>
