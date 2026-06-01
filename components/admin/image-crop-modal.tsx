@@ -42,9 +42,10 @@ async function cropToFile(src: string, area: Area, original: File): Promise<File
   ctx.drawImage(img, area.x, area.y, area.width, area.height, 0, 0, canvas.width, canvas.height)
 
   const type = original.type === 'image/png' ? 'image/png' : 'image/jpeg'
-  const blob: Blob = await new Promise((resolve) =>
-    canvas.toBlob((b) => resolve(b as Blob), type, 0.92)
+  const blob: Blob | null = await new Promise((resolve) =>
+    canvas.toBlob((b) => resolve(b), type, 0.92)
   )
+  if (!blob) return original // fall back to the original if encoding fails
   const base = original.name.replace(/\.[^.]+$/, '')
   const ext = type === 'image/png' ? 'png' : 'jpg'
   return new File([blob], `${base}-cropped.${ext}`, { type })
@@ -64,6 +65,7 @@ export function ImageCropModal({ file, label, onComplete, onSkip, onCancel }: Pr
     setSrc(url)
     setCrop({ x: 0, y: 0 })
     setZoom(1)
+    setAreaPixels(null) // avoid cropping a new file with the previous file's rect
     return () => URL.revokeObjectURL(url)
   }, [file])
 
