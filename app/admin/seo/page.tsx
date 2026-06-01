@@ -1,5 +1,6 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import { saveSeo } from './actions'
+import { SavedBanner } from '@/components/admin/saved-banner'
 
 export default async function SeoPage() {
   const supabase = createAdminClient()
@@ -10,6 +11,7 @@ export default async function SeoPage() {
 
   return (
     <div className="p-8">
+      <SavedBanner />
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-gray-900 tracking-tight">SEO</h1>
         <p className="text-sm text-gray-500 mt-1">Meta titles and descriptions for each page</p>
@@ -18,7 +20,9 @@ export default async function SeoPage() {
       <div className="space-y-6 max-w-3xl">
         {pages?.map((p) => (
           <div key={p.page} className="bg-white border border-gray-200 p-6">
-            <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-5">/{p.page === 'home' ? '' : p.page}</p>
+            <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-5">
+              /{p.page === 'home' ? '' : p.page}
+            </p>
             <form action={saveSeo.bind(null, p.page)} className="space-y-4">
               <div>
                 <label className={labelClass}>Page Title</label>

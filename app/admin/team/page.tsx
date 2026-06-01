@@ -1,4 +1,5 @@
 import { createAdminClient } from '@/lib/supabase/admin'
+import { SavedBanner } from '@/components/admin/saved-banner'
 import { upsertTeamMember, deleteTeamMember } from './actions'
 import type { TeamMember } from '@/lib/types'
 
@@ -50,6 +51,7 @@ export default async function TeamAdminPage() {
 
   return (
     <div className="p-8">
+      <SavedBanner />
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-gray-900 tracking-tight">Team</h1>
         <p className="text-sm text-gray-500 mt-1">Manage the leadership team shown on the About page</p>

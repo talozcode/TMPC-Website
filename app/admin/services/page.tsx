@@ -1,5 +1,6 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import { upsertService, deleteService } from './actions'
+import { SavedBanner } from '@/components/admin/saved-banner'
 import type { Service } from '@/lib/types'
 
 const inputClass = 'w-full border border-gray-300 bg-white text-gray-900 text-sm px-3 py-2 outline-none focus:border-accent'
@@ -54,6 +55,7 @@ export default async function ServicesAdminPage() {
 
   return (
     <div className="p-8">
+      <SavedBanner />
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-gray-900 tracking-tight">Services</h1>
         <p className="text-sm text-gray-500 mt-1">Manage the services shown on the Services page</p>

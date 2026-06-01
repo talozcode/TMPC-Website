@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { createPost } from '../actions'
+import { SavedBanner } from '@/components/admin/saved-banner'
 
 const inputClass = 'w-full border border-gray-300 bg-white text-gray-900 text-sm px-3 py-2.5 outline-none focus:border-accent'
 const labelClass = 'block text-xs font-semibold text-gray-600 uppercase tracking-wider mb-1.5'

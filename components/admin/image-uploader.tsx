@@ -5,6 +5,8 @@ import Image from 'next/image'
 import { createClient } from '@/lib/supabase/client'
 import type { ProjectImage } from '@/lib/types'
 
+const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10 MB
+
 interface Props {
   projectId: string
   existing: ProjectImage[]
@@ -26,7 +28,15 @@ export function ImageUploader({ projectId, existing, onUpdate }: Props) {
     const newImages: ProjectImage[] = []
 
     for (const file of Array.from(files)) {
-      if (!file.type.startsWith('image/')) continue
+      if (!file.type.startsWith('image/')) {
+        setError(`${file.name} is not an image`)
+        continue
+      }
+      if (file.size > MAX_FILE_SIZE) {
+        setError(`${file.name} exceeds 10 MB limit`)
+        continue
+      }
+
       const ext = file.name.split('.').pop()
       const path = `${projectId}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
 
@@ -39,9 +49,7 @@ export function ImageUploader({ projectId, existing, onUpdate }: Props) {
         continue
       }
 
-      const { data: { publicUrl } } = supabase.storage
-        .from('project-images')
-        .getPublicUrl(path)
+      const { data: { publicUrl } } = supabase.storage.from('project-images').getPublicUrl(path)
 
       const { data: imgRecord, error: dbError } = await supabase
         .from('project_images')
@@ -73,17 +81,18 @@ export function ImageUploader({ projectId, existing, onUpdate }: Props) {
     await supabase.storage.from('project-images').remove([img.storage_path])
     await supabase.from('project_images').delete().eq('id', img.id)
 
-    const updated = images
+    const reordered = images
       .filter((i) => i.id !== img.id)
       .map((i, idx) => ({ ...i, display_order: idx, is_primary: idx === 0 }))
 
-    // update display_order in DB
-    for (const i of updated) {
-      await supabase.from('project_images').update({ display_order: i.display_order, is_primary: i.is_primary }).eq('id', i.id)
+    if (reordered.length > 0) {
+      await supabase.from('project_images').upsert(
+        reordered.map(({ id, display_order, is_primary }) => ({ id, display_order, is_primary }))
+      )
     }
 
-    setImages(updated)
-    onUpdate(updated)
+    setImages(reordered)
+    onUpdate(reordered)
   }
 
   async function moveImage(idx: number, dir: -1 | 1) {
@@ -94,9 +103,9 @@ export function ImageUploader({ projectId, existing, onUpdate }: Props) {
     ;[updated[idx], updated[swapIdx]] = [updated[swapIdx], updated[idx]]
     const reordered = updated.map((img, i) => ({ ...img, display_order: i, is_primary: i === 0 }))
 
-    for (const img of reordered) {
-      await supabase.from('project_images').update({ display_order: img.display_order, is_primary: img.is_primary }).eq('id', img.id)
-    }
+    await supabase.from('project_images').upsert(
+      reordered.map(({ id, display_order, is_primary }) => ({ id, display_order, is_primary }))
+    )
 
     setImages(reordered)
     onUpdate(reordered)
@@ -108,7 +117,6 @@ export function ImageUploader({ projectId, existing, onUpdate }: Props) {
         <div className="mb-3 bg-red-50 border border-red-200 text-red-700 text-xs px-3 py-2">{error}</div>
       )}
 
-      {/* Existing images */}
       {images.length > 0 && (
         <div className="flex flex-wrap gap-3 mb-4">
           {images.map((img, idx) => (
@@ -123,60 +131,38 @@ export function ImageUploader({ projectId, existing, onUpdate }: Props) {
               </div>
               <div className="absolute top-1 right-1 hidden group-hover:flex gap-1">
                 {idx > 0 && (
-                  <button
-                    type="button"
-                    onClick={() => moveImage(idx, -1)}
+                  <button type="button" onClick={() => moveImage(idx, -1)}
                     className="w-5 h-5 bg-black/70 text-white text-xs flex items-center justify-center hover:bg-black"
-                    title="Move left"
-                  >
-                    ←
-                  </button>
+                    title="Move left">←</button>
                 )}
                 {idx < images.length - 1 && (
-                  <button
-                    type="button"
-                    onClick={() => moveImage(idx, 1)}
+                  <button type="button" onClick={() => moveImage(idx, 1)}
                     className="w-5 h-5 bg-black/70 text-white text-xs flex items-center justify-center hover:bg-black"
-                    title="Move right"
-                  >
-                    →
-                  </button>
+                    title="Move right">→</button>
                 )}
-                <button
-                  type="button"
-                  onClick={() => handleDelete(img)}
+                <button type="button" onClick={() => handleDelete(img)}
                   className="w-5 h-5 bg-red-600/90 text-white text-xs flex items-center justify-center hover:bg-red-700"
-                  title="Delete"
-                >
-                  ×
-                </button>
+                  title="Delete">×</button>
               </div>
             </div>
           ))}
         </div>
       )}
 
-      {/* Upload area */}
       <div
         className="border-2 border-dashed border-gray-300 hover:border-accent/50 p-6 text-center cursor-pointer transition-colors"
         onClick={() => inputRef.current?.click()}
         onDragOver={(e) => e.preventDefault()}
         onDrop={(e) => { e.preventDefault(); handleFiles(e.dataTransfer.files) }}
       >
-        <input
-          ref={inputRef}
-          type="file"
-          accept="image/*"
-          multiple
-          className="hidden"
-          onChange={(e) => handleFiles(e.target.files)}
-        />
+        <input ref={inputRef} type="file" accept="image/*" multiple className="hidden"
+          onChange={(e) => handleFiles(e.target.files)} />
         {uploading ? (
           <p className="text-sm text-gray-500">Uploading…</p>
         ) : (
           <>
             <p className="text-sm text-gray-500 mb-1">Drag & drop images or click to browse</p>
-            <p className="text-xs text-gray-400">JPG, PNG, WebP — first image becomes main photo</p>
+            <p className="text-xs text-gray-400">JPG, PNG, WebP · Max 10 MB · First image becomes main photo</p>
           </>
         )}
       </div>

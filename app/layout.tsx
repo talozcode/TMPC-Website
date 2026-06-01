@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import { Inter, Outfit } from 'next/font/google'
-import { Header } from '@/components/layout/header'
-import { Footer } from '@/components/layout/footer'
+import { SiteShell } from '@/components/layout/site-shell'
 import { siteConfig } from '@/lib/data'
 import './globals.css'
 
@@ -48,9 +47,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${outfit.variable} h-full`}>
       <body className="min-h-full flex flex-col font-sans antialiased">
-        <Header />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        <SiteShell>{children}</SiteShell>
       </body>
     </html>
   )

@@ -1,6 +1,7 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
+import { redirect } from 'next/navigation'
 import { createAdminClient } from '@/lib/supabase/admin'
 
 function toSlug(name: string) {
@@ -8,23 +9,38 @@ function toSlug(name: string) {
 }
 
 export async function createCategory(formData: FormData): Promise<void> {
-  const name = (formData.get('name') as string).trim()
+  const name = (formData.get('name') as string)?.trim()
   if (!name) return
   const supabase = createAdminClient()
-  const { data: existing } = await supabase.from('categories').select('display_order').order('display_order', { ascending: false }).limit(1).single()
-  const next_order = (existing?.display_order ?? 0) + 1
-  await supabase.from('categories').insert({ name, slug: toSlug(name), display_order: next_order })
+  const { data: existing } = await supabase
+    .from('categories')
+    .select('display_order')
+    .order('display_order', { ascending: false })
+    .limit(1)
+    .single()
+  const { error } = await supabase.from('categories').insert({
+    name,
+    slug: toSlug(name),
+    display_order: (existing?.display_order ?? 0) + 1,
+  })
+  if (error) redirect(`/admin/categories?formError=${encodeURIComponent(error.message)}`)
   revalidatePath('/admin/categories')
   revalidatePath('/projects')
+  redirect('/admin/categories?saved=1')
 }
 
 export async function updateCategory(id: string, formData: FormData): Promise<void> {
-  const name = (formData.get('name') as string).trim()
+  const name = (formData.get('name') as string)?.trim()
   if (!name) return
   const supabase = createAdminClient()
-  await supabase.from('categories').update({ name, slug: toSlug(name) }).eq('id', id)
+  const { error } = await supabase
+    .from('categories')
+    .update({ name, slug: toSlug(name) })
+    .eq('id', id)
+  if (error) redirect(`/admin/categories?formError=${encodeURIComponent(error.message)}`)
   revalidatePath('/admin/categories')
   revalidatePath('/projects')
+  redirect('/admin/categories?saved=1')
 }
 
 export async function deleteCategory(id: string): Promise<void> {
@@ -34,7 +50,7 @@ export async function deleteCategory(id: string): Promise<void> {
   revalidatePath('/projects')
 }
 
-export async function moveCategoryOrder(id: string, dir: 'up' | 'down') {
+export async function moveCategoryOrder(id: string, dir: 'up' | 'down'): Promise<void> {
   const supabase = createAdminClient()
   const { data: all } = await supabase.from('categories').select('id,display_order').order('display_order')
   if (!all) return

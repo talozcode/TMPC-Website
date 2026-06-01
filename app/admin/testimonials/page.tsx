@@ -1,4 +1,5 @@
 import { createAdminClient } from '@/lib/supabase/admin'
+import { SavedBanner } from '@/components/admin/saved-banner'
 import { upsertTestimonial, deleteTestimonial } from './actions'
 
 const inputClass = 'w-full border border-gray-300 bg-white text-gray-900 text-sm px-3 py-2 outline-none focus:border-accent'
@@ -62,6 +63,7 @@ export default async function TestimonialsPage() {
 
   return (
     <div className="p-8">
+      <SavedBanner />
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-gray-900 tracking-tight">Testimonials</h1>
       </div>

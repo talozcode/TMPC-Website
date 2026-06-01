@@ -1,5 +1,6 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import { saveSetting } from './actions'
+import { SavedBanner } from '@/components/admin/saved-banner'
 
 export default async function SettingsPage() {
   const supabase = createAdminClient()
@@ -9,6 +10,7 @@ export default async function SettingsPage() {
 
   return (
     <div className="p-8">
+      <SavedBanner />
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-gray-900 tracking-tight">Settings</h1>
         <p className="text-sm text-gray-500 mt-1">Global site configuration</p>

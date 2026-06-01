@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { updatePost, deletePost } from '../../actions'
+import { SavedBanner } from '@/components/admin/saved-banner'
 
 const inputClass = 'w-full border border-gray-300 bg-white text-gray-900 text-sm px-3 py-2.5 outline-none focus:border-accent'
 const labelClass = 'block text-xs font-semibold text-gray-600 uppercase tracking-wider mb-1.5'
@@ -14,6 +15,7 @@ export default async function EditBlogPostPage({ params }: { params: Promise<{ i
 
   return (
     <div className="p-8">
+      <SavedBanner />
       <div className="flex items-center gap-3 mb-8">
         <Link href="/admin/blog" className="text-gray-400 hover:text-gray-600 text-sm transition-colors">← Blog</Link>
         <span className="text-gray-300">/</span>
