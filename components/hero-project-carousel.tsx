@@ -11,7 +11,7 @@ export interface HeroProject {
   image: string
 }
 
-const INTERVAL = 5000
+const INTERVAL = 3000
 
 export function HeroProjectCarousel({ projects }: { projects: HeroProject[] }) {
   const [active, setActive] = useState(0)
@@ -45,7 +45,7 @@ export function HeroProjectCarousel({ projects }: { projects: HeroProject[] }) {
         <div className="px-6 py-5 flex items-end justify-between gap-4">
           <div className="min-w-0">
             <p className="text-[0.5rem] font-bold text-accent uppercase tracking-[0.3em] mb-2">
-              Selected Work · {current.category}
+              {current.category}
             </p>
             <p
               key={current.id}
@@ -57,17 +57,6 @@ export function HeroProjectCarousel({ projects }: { projects: HeroProject[] }) {
           <span className="flex-shrink-0 text-[0.6rem] font-semibold text-white/30 tabular-nums tracking-[0.15em] pb-1">
             {String(active + 1).padStart(2, '0')} / {String(count).padStart(2, '0')}
           </span>
-        </div>
-
-        {/* Slide-progress bar */}
-        <div className="h-[2px] bg-white/10 overflow-hidden">
-          {!paused && count > 1 && (
-            <div
-              key={active}
-              className="h-full bg-accent origin-left"
-              style={{ animation: `bar-grow ${INTERVAL}ms linear both` }}
-            />
-          )}
         </div>
 
         {/* Image stage — crossfade + slow Ken Burns on the active slide */}
@@ -85,11 +74,14 @@ export function HeroProjectCarousel({ projects }: { projects: HeroProject[] }) {
               fill
               priority={i === 0}
               sizes="(max-width: 1024px) 100vw, 520px"
-              className={`object-cover transition-[opacity,transform] ease-out ${
-                i === active
-                  ? 'opacity-100 scale-105 duration-[6000ms]'
-                  : 'opacity-0 scale-100 duration-700'
+              className={`object-cover ease-out ${
+                i === active ? 'opacity-100 scale-105' : 'opacity-0 scale-100'
               }`}
+              style={{
+                transitionProperty: 'opacity, transform',
+                // fast crossfade, slow Ken Burns zoom on the active slide
+                transitionDuration: i === active ? '700ms, 4000ms' : '700ms, 700ms',
+              }}
             />
           ))}
           <div className="absolute inset-0 bg-gradient-to-t from-[#0A1628]/70 via-transparent to-transparent" />
