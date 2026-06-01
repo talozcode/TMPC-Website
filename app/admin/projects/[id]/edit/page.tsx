@@ -32,7 +32,7 @@ export default async function EditProjectPage({ params }: { params: Promise<{ id
       <ProjectForm
         project={project as any}
         categories={categories ?? []}
-        onSave={(data) => updateProject(id, data)}
+        onSave={updateProject.bind(null, id)}
       />
     </div>
   )
