@@ -28,12 +28,6 @@ const services = [
   { number: '04', title: 'Execution Oversight', description: 'Cannot be on site every day? We are. Progress tracked, issues resolved, and the owner informed throughout.' },
   { number: '05', title: 'Operational Setup', description: 'Construction finished but operations not ready. We coordinate the handover so opening day is not improvised.' },
 ]
-const projectTeasers = [
-  { title: 'Mixed-Use Commercial', sector: 'Commercial', image: '/images/scenario-commercial.jpg' },
-  { title: 'Industrial Expansion', sector: 'Industrial', image: '/images/scenario-industrial.jpg' },
-  { title: 'Wellness Resort', sector: 'Wellness', image: '/images/scenario-wellness.jpg' },
-  { title: 'Corporate Office Fit-Out', sector: 'Office', image: '/images/scenario-office.jpg' },
-]
 
 export default async function HomePage() {
   const supabase = await createClient()
@@ -242,27 +236,27 @@ export default async function HomePage() {
           </FadeIn>
 
           <div className="mt-10 grid grid-cols-6 gap-3">
-            {projectTeasers.slice(0, 2).map((p, i) => (
-              <FadeIn key={p.title} delay={i * 100} className="col-span-6 sm:col-span-3">
+            {heroProjects.slice(0, 2).map((p, i) => (
+              <FadeIn key={p.id} delay={i * 100} className="col-span-6 sm:col-span-3">
                 <Link href="/projects" className="group block relative overflow-hidden aspect-[4/3]">
                   <Image src={p.image} alt={p.title} fill className="object-cover transition-transform duration-700 group-hover:scale-[1.04]" sizes="(max-width: 640px) 100vw, 50vw" />
                   <div className="absolute inset-0 bg-gradient-to-t from-canvas-dark/90 via-canvas-dark/20 to-transparent" />
                   <div className="absolute top-0 left-0 right-0 h-0.5 bg-accent scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
                   <div className="absolute bottom-0 left-0 right-0 p-5 lg:p-7">
-                    <p className="text-[0.62rem] font-bold text-accent uppercase tracking-[0.22em] mb-2">{p.sector}</p>
+                    <p className="text-[0.62rem] font-bold text-accent uppercase tracking-[0.22em] mb-2">{p.category}</p>
                     <h3 className="font-display font-semibold text-xl lg:text-2xl text-white tracking-tight">{p.title}</h3>
                   </div>
                 </Link>
               </FadeIn>
             ))}
-            {projectTeasers.slice(2).map((p, i) => (
-              <FadeIn key={p.title} delay={i * 80} className="col-span-6 sm:col-span-3 lg:col-span-2">
+            {heroProjects.slice(2, 5).map((p, i) => (
+              <FadeIn key={p.id} delay={i * 80} className="col-span-6 sm:col-span-3 lg:col-span-2">
                 <Link href="/projects" className="group block relative overflow-hidden aspect-[4/3]">
                   <Image src={p.image} alt={p.title} fill className="object-cover transition-transform duration-700 group-hover:scale-[1.04]" sizes="(max-width: 640px) 100vw, 33vw" />
                   <div className="absolute inset-0 bg-gradient-to-t from-canvas-dark/90 via-canvas-dark/20 to-transparent" />
                   <div className="absolute top-0 left-0 right-0 h-0.5 bg-accent scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
                   <div className="absolute bottom-0 left-0 right-0 p-5">
-                    <p className="text-[0.62rem] font-bold text-accent uppercase tracking-[0.22em] mb-2">{p.sector}</p>
+                    <p className="text-[0.62rem] font-bold text-accent uppercase tracking-[0.22em] mb-2">{p.category}</p>
                     <h3 className="font-display font-semibold text-xl text-white tracking-tight">{p.title}</h3>
                   </div>
                 </Link>
