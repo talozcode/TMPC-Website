@@ -33,14 +33,14 @@ export default function AdminLoginPage() {
     'w-full border border-gray-300 bg-white text-gray-900 text-sm px-3 py-2.5 outline-none focus:border-accent focus:ring-1 focus:ring-accent/30 transition-colors'
 
   return (
-    <div className="min-h-screen bg-canvas-dark flex items-center justify-center px-4">
+    <div className="min-h-screen bg-white flex items-center justify-center px-4">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
           <p className="text-[0.5rem] font-bold text-accent uppercase tracking-[0.3em] mb-2">TMPC</p>
-          <h1 className="text-xl font-bold text-white tracking-tight">Admin Login</h1>
+          <h1 className="text-xl font-bold text-gray-900 tracking-tight">Admin Login</h1>
         </div>
 
-        <form onSubmit={handleSubmit} className="bg-white p-8 space-y-5">
+        <form onSubmit={handleSubmit} className="bg-white border border-gray-200 shadow-sm p-8 space-y-5">
           {error && (
             <div className="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3">
               {error}
