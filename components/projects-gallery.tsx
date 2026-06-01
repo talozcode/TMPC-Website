@@ -5,175 +5,35 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { FadeIn } from '@/components/fade-in'
 
-const CATEGORIES = ['All', 'Residential', 'Hospitality', 'Commercial', 'Industrial', 'Community'] as const
-type Category = (typeof CATEGORIES)[number]
+export interface GalleryProject {
+  id: string
+  number: string
+  title: string
+  subtitle: string
+  category: string
+  location: string
+  scope: string
+  role: string
+  brief: string
+  deliverables: string[]
+  images: string[]
+}
 
-const projects = [
-  {
-    number: '01',
-    title: 'The Yard Bangkok',
-    subtitle: 'Mixed-Use Commercial Development',
-    category: 'Commercial' as Category,
-    location: 'Sukhumvit Soi 36, Bangkok',
-    scope: '3,800 sqm across 4 levels, 8 retail and F&B tenants',
-    role: 'Development Management',
-    brief:
-      'Owner-driven mixed-use development with multiple tenant configurations, shared infrastructure, and phased delivery across two wings. TMPC coordinated the architect, MEP consultants, main contractor, and individual tenant fit-out teams throughout the full build programme.',
-    deliverables: [
-      'Architect and consultant coordination',
-      'Tenant fit-out management',
-      'Programme and milestone oversight',
-      'Operational readiness and handover',
-    ],
-    images: [
-      '/images/scenario-commercial.jpg',
-      '/images/scenario-office.jpg',
-      '/images/scenario-wellness.jpg',
-    ],
-  },
-  {
-    number: '02',
-    title: 'Mitsui Rayong Expansion',
-    subtitle: 'Industrial Production Facility Expansion',
-    category: 'Industrial' as Category,
-    location: 'Map Ta Phut Industrial Estate, Rayong',
-    scope: '5,600 sqm factory floor extension, clean room addition, utility upgrades',
-    role: 'Project Coordination + Execution Oversight',
-    brief:
-      'Complex industrial expansion requiring coordination between Japanese investor standards, Thai regulatory requirements, and local contractors. TMPC managed all party communication, RFI flows, authority submissions, and on-site execution oversight from planning through commissioning.',
-    deliverables: [
-      'Multi-party and authority coordination',
-      'RFI and instruction management',
-      'Site execution oversight',
-      'Commissioning and handover coordination',
-    ],
-    images: [
-      '/images/scenario-industrial.jpg',
-      '/images/scenario-warehouse.jpg',
-      '/images/scenario-commercial.jpg',
-    ],
-  },
-  {
-    number: '03',
-    title: 'Aura Wellness Phuket',
-    subtitle: 'Boutique Wellness and Spa Resort',
-    category: 'Hospitality' as Category,
-    location: 'Cherngtalay, Phuket',
-    scope: '14 treatment rooms, 6 villas, spa facility, pool and landscape',
-    role: 'Full Development Management',
-    brief:
-      'International wellness brand entering Thailand required a local development management partner operating to international project standards. TMPC managed all consultants, contractors, FF&E procurement, and operational setup from concept approval through soft opening.',
-    deliverables: [
-      'Design and consultant coordination',
-      'International brand compliance management',
-      'Contractor procurement and oversight',
-      'Operational setup and pre-opening coordination',
-    ],
-    images: [
-      '/images/scenario-wellness.jpg',
-      '/images/scenario-realestate.jpg',
-      '/images/scenario-commercial.jpg',
-    ],
-  },
-  {
-    number: '04',
-    title: 'Regional Distribution Hub',
-    subtitle: 'Logistics and Warehousing Facility',
-    category: 'Industrial' as Category,
-    location: 'Bangpoo Industrial Estate, Samut Prakan',
-    scope: '11,200 sqm high-bay warehouse, racking fit-out, dock levellers, office mezzanine',
-    role: 'Project Consulting + Operational Setup',
-    brief:
-      'Logistics client expanding regional distribution capacity across Southeast Asia. TMPC provided project consulting through tender and procurement, fit-out oversight, and post-construction operational setup coordination to ensure day-one readiness.',
-    deliverables: [
-      'Feasibility and scope definition',
-      'Procurement and tender coordination',
-      'Fit-out execution oversight',
-      'Operational readiness planning and handover',
-    ],
-    images: [
-      '/images/scenario-warehouse.jpg',
-      '/images/scenario-industrial.jpg',
-      '/images/scenario-office.jpg',
-    ],
-  },
-  {
-    number: '05',
-    title: 'One Silom Office Fit-Out',
-    subtitle: 'Corporate Office Fit-Out Programme',
-    category: 'Commercial' as Category,
-    location: 'Silom, Bangkok',
-    scope: '1,600 sqm full-floor office fit-out for an international legal practice',
-    role: 'Project Consulting + Coordination',
-    brief:
-      'International law firm establishing Bangkok presence required a fit-out programme aligned to firm standards and a firm operational date. TMPC coordinated interior design, MEP works, IT and AV infrastructure, furniture procurement, and all landlord interfaces.',
-    deliverables: [
-      'Scope definition and project brief',
-      'Interior and MEP coordination',
-      'IT and AV integration management',
-      'Landlord and building management interface',
-    ],
-    images: [
-      '/images/scenario-office.jpg',
-      '/images/scenario-commercial.jpg',
-      '/images/scenario-realestate.jpg',
-    ],
-  },
-  {
-    number: '06',
-    title: 'Laguna Park Villa Renovation',
-    subtitle: 'Luxury Villa Renovation Programme',
-    category: 'Residential' as Category,
-    location: 'Bang Tao, Phuket',
-    scope: '8 luxury villas, full renovation and landscaping upgrade, phased delivery',
-    role: 'Development Management',
-    brief:
-      'Foreign investor portfolio requiring coordinated renovation across 8 units while managing ongoing rental occupancy and owner expectations from overseas. TMPC structured the phased programme, coordinated contractors and suppliers, and maintained owner reporting throughout.',
-    deliverables: [
-      'Phased programme management',
-      'Contractor and supplier coordination',
-      'Scope and cost tracking',
-      'Owner communication and reporting',
-    ],
-    images: [
-      '/images/scenario-realestate.jpg',
-      '/images/scenario-wellness.jpg',
-      '/images/scenario-office.jpg',
-    ],
-  },
-  {
-    number: '07',
-    title: 'Khon Kaen Community Hub',
-    subtitle: 'Community Sports and Recreation Facility',
-    category: 'Community' as Category,
-    location: 'Mueang District, Khon Kaen',
-    scope: '6,200 sqm multi-sport facility, outdoor courts, community hall, parking',
-    role: 'Development Management + Execution Oversight',
-    brief:
-      'Municipal-backed community facility requiring coordination between government stakeholders, local contractors, and community representatives. TMPC managed planning approvals, contractor procurement, and full execution oversight across a phased build programme.',
-    deliverables: [
-      'Government stakeholder liaison',
-      'Contractor procurement and oversight',
-      'Community representative coordination',
-      'Phased execution and handover',
-    ],
-    images: [
-      '/images/scenario-commercial.jpg',
-      '/images/scenario-warehouse.jpg',
-      '/images/scenario-industrial.jpg',
-    ],
-  },
-]
+interface Props {
+  projects: GalleryProject[]
+  categories: string[]
+}
 
-export function ProjectsGallery() {
-  const [activeCategory, setActiveCategory] = useState<Category>('All')
+export function ProjectsGallery({ projects, categories }: Props) {
+  const allCategories = ['All', ...categories]
+  const [activeCategory, setActiveCategory] = useState<string>('All')
   const [activeImages, setActiveImages] = useState<Record<string, number>>({})
 
   const filtered =
     activeCategory === 'All' ? projects : projects.filter((p) => p.category === activeCategory)
 
-  function selectImage(number: string, index: number) {
-    setActiveImages((prev) => ({ ...prev, [number]: index }))
+  function selectImage(id: string, index: number) {
+    setActiveImages((prev) => ({ ...prev, [id]: index }))
   }
 
   return (
@@ -182,7 +42,7 @@ export function ProjectsGallery() {
       <div className="bg-canvas border-b border-line sticky top-16 z-20">
         <div className="max-w-6xl mx-auto px-6 lg:px-8 py-3">
           <div className="flex flex-wrap items-center gap-2">
-            {CATEGORIES.map((cat) => (
+            {allCategories.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
@@ -201,10 +61,17 @@ export function ProjectsGallery() {
 
       {/* Projects list */}
       <section className="bg-canvas">
-        {filtered.map((project, i) => {
-          const imgIdx = activeImages[project.number] ?? 0
+        {filtered.length === 0 ? (
+          <div className="max-w-6xl mx-auto px-6 lg:px-8 py-24 text-center">
+            <p className="text-sm text-ink-muted uppercase tracking-[0.15em]">
+              No projects to show in this category yet.
+            </p>
+          </div>
+        ) : (
+          filtered.map((project, i) => {
+          const imgIdx = activeImages[project.id] ?? 0
           return (
-            <FadeIn key={`${activeCategory}-${project.number}`} delay={i * 60}>
+            <FadeIn key={`${activeCategory}-${project.id}`} delay={i * 60}>
               <div className="grid lg:grid-cols-2 border-b border-line">
 
                 {/* Image panel */}
@@ -232,25 +99,27 @@ export function ProjectsGallery() {
                   </div>
 
                   {/* Thumbnail strip */}
-                  <div className="flex gap-1.5 p-2.5 bg-canvas-dark flex-shrink-0 overflow-x-auto">
-                    {project.images.map((img, j) => {
-                      const isActive = imgIdx === j
-                      return (
-                        <button
-                          key={j}
-                          onClick={() => selectImage(project.number, j)}
-                          aria-label={`View photo ${j + 1} of ${project.title}`}
-                          className={`relative flex-shrink-0 w-20 h-14 overflow-hidden border-2 transition-all duration-200 ${
-                            isActive
-                              ? 'border-accent'
-                              : 'border-white/10 hover:border-white/40 opacity-60 hover:opacity-100'
-                          }`}
-                        >
-                          <Image src={img} alt="" fill className="object-cover" sizes="80px" />
-                        </button>
-                      )
-                    })}
-                  </div>
+                  {project.images.length > 1 && (
+                    <div className="flex gap-1.5 p-2.5 bg-canvas-dark flex-shrink-0 overflow-x-auto">
+                      {project.images.map((img, j) => {
+                        const isActive = imgIdx === j
+                        return (
+                          <button
+                            key={j}
+                            onClick={() => selectImage(project.id, j)}
+                            aria-label={`View photo ${j + 1} of ${project.title}`}
+                            className={`relative flex-shrink-0 w-20 h-14 overflow-hidden border-2 transition-all duration-200 ${
+                              isActive
+                                ? 'border-accent'
+                                : 'border-white/10 hover:border-white/40 opacity-60 hover:opacity-100'
+                            }`}
+                          >
+                            <Image src={img} alt="" fill className="object-cover" sizes="80px" />
+                          </button>
+                        )
+                      })}
+                    </div>
+                  )}
                 </div>
 
                 {/* Details panel */}
@@ -279,32 +148,37 @@ export function ProjectsGallery() {
 
                   <p className="text-sm text-ink-secondary leading-relaxed mb-7">{project.brief}</p>
 
-                  <div className="mb-7">
-                    <p className="text-[0.58rem] font-bold text-accent uppercase tracking-[0.2em] mb-3">
-                      Key Deliverables
-                    </p>
-                    <ul className="space-y-2">
-                      {project.deliverables.map((d) => (
-                        <li key={d} className="flex items-start gap-2.5 text-sm text-ink-muted">
-                          <span className="w-1 h-1 rounded-full bg-accent mt-2 flex-shrink-0" />
-                          {d}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                  {project.deliverables.length > 0 && (
+                    <div className="mb-7">
+                      <p className="text-[0.58rem] font-bold text-accent uppercase tracking-[0.2em] mb-3">
+                        Key Deliverables
+                      </p>
+                      <ul className="space-y-2">
+                        {project.deliverables.map((d) => (
+                          <li key={d} className="flex items-start gap-2.5 text-sm text-ink-muted">
+                            <span className="w-1 h-1 rounded-full bg-accent mt-2 flex-shrink-0" />
+                            {d}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
 
-                  <div className="pt-5 border-t border-line">
-                    <span className="inline-flex items-center gap-2 text-[0.65rem] font-semibold text-ink uppercase tracking-[0.15em]">
-                      <span className="w-1.5 h-1.5 rounded-full bg-accent flex-shrink-0" />
-                      TMPC Role: {project.role}
-                    </span>
-                  </div>
+                  {project.role && (
+                    <div className="pt-5 border-t border-line">
+                      <span className="inline-flex items-center gap-2 text-[0.65rem] font-semibold text-ink uppercase tracking-[0.15em]">
+                        <span className="w-1.5 h-1.5 rounded-full bg-accent flex-shrink-0" />
+                        TMPC Role: {project.role}
+                      </span>
+                    </div>
+                  )}
                 </div>
 
               </div>
             </FadeIn>
           )
-        })}
+        })
+        )}
       </section>
 
       {/* CTA */}
