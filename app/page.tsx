@@ -3,20 +3,15 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { FadeIn } from '@/components/fade-in'
 import { siteConfig } from '@/lib/data'
+import { createClient } from '@/lib/supabase/server'
+import { HeroProjectCarousel, type HeroProject } from '@/components/hero-project-carousel'
+import type { Project } from '@/lib/types'
 
 export const metadata: Metadata = {
   title: `${siteConfig.shortName} - Project Consulting and Development Management in Thailand`,
   description: siteConfig.description,
 }
 
-const ganttPhases = [
-  { label: 'Planning',     start:  0, width: 18, delay: 0.35, party: 'Owner / TMPC',  milestone: null },
-  { label: 'Design',       start:  8, width: 36, delay: 0.55, party: 'Architect',      milestone: 44  },
-  { label: 'Approvals',    start: 24, width: 26, delay: 0.75, party: 'Authorities',    milestone: null },
-  { label: 'Procurement',  start: 33, width: 34, delay: 0.95, party: 'Contractors',    milestone: null },
-  { label: 'Construction', start: 50, width: 42, delay: 1.15, party: 'Contractor',     milestone: 50  },
-  { label: 'Handover',     start: 84, width: 16, delay: 1.35, party: 'All Parties',    milestone: 84  },
-]
 
 const challengeInput = [
   'Owner / Investor', 'Architect', 'MEP Engineers', 'Interior Design',
@@ -40,7 +35,25 @@ const projectTeasers = [
   { title: 'Corporate Office Fit-Out', sector: 'Office', image: '/images/scenario-office.jpg' },
 ]
 
-export default function HomePage() {
+export default async function HomePage() {
+  const supabase = await createClient()
+  const { data: heroRows } = await supabase
+    .from('projects')
+    .select('id, title, category:categories(name), project_images(url, display_order, is_primary)')
+    .eq('published', true)
+    .order('display_order', { ascending: true })
+    .limit(6)
+
+  const heroProjects: HeroProject[] = ((heroRows as unknown as Project[]) ?? [])
+    .map((p) => {
+      const imgs = (p.project_images ?? []).slice().sort((a, b) => a.display_order - b.display_order)
+      const primary = imgs.find((im) => im.is_primary) ?? imgs[0]
+      return primary
+        ? { id: p.id, title: p.title, category: p.category?.name ?? '', image: primary.url }
+        : null
+    })
+    .filter((p): p is HeroProject => p !== null)
+
   return (
     <>
       {/* ── HERO: Site to Strategy ── */}
@@ -99,147 +112,8 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Right: animated Gantt chart */}
-            <div className="hidden lg:flex flex-col justify-center animate-fade-in" style={{ animationDelay: '0.2s' }}>
-              <div className="border-2 border-canvas-dark">
-
-                {/* Navy header */}
-                <div className="bg-canvas-dark px-6 py-5 flex items-center justify-between">
-                  <div>
-                    <p className="text-[0.44rem] font-bold text-accent uppercase tracking-[0.3em] mb-2">Project Programme</p>
-                    <p className="font-display font-bold text-xl text-white tracking-tight leading-none">Timeline</p>
-                  </div>
-                  <div className="text-right">
-                    <div className="flex items-center justify-end gap-1.5 mb-1.5">
-                      <span className="w-1.5 h-1.5 rounded-full bg-accent animate-dot-blink flex-shrink-0" />
-                      <span className="text-[0.44rem] font-semibold text-white/40 uppercase tracking-[0.2em]">Active</span>
-                    </div>
-                    <p className="text-[0.42rem] text-white/20 uppercase tracking-[0.15em]">Bangkok, TH</p>
-                  </div>
-                </div>
-
-                {/* White chart body */}
-                <div className="bg-white px-6 py-6">
-
-                  {/* Column headers: spacer | Q labels | Party header
-                      Layout: 22% label | flex-1 bar (=56%) | 22% party */}
-                  <div className="flex items-end mb-3">
-                    <div className="w-[22%] flex-shrink-0" />
-                    <div className="flex flex-1">
-                      {['Q1', 'Q2', 'Q3', 'Q4'].map((q) => (
-                        <div key={q} className="flex-1 border-l-2 border-canvas-dark/10 pl-2">
-                          <span className="text-[0.48rem] font-bold text-ink/30 uppercase tracking-[0.18em]">{q}</span>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="w-[22%] flex-shrink-0 pl-3">
-                      <span className="text-[0.44rem] font-bold text-ink/25 uppercase tracking-[0.18em]">Party</span>
-                    </div>
-                  </div>
-
-                  {/* Relative container: grid lines + today marker + all rows */}
-                  <div className="relative">
-
-                    {/* Q boundary grid lines: 22% + pct × 0.56% */}
-                    {[25, 50, 75].map((pct) => (
-                      <div
-                        key={pct}
-                        className="absolute top-0 bottom-0 pointer-events-none"
-                        style={{ left: `calc(22% + ${pct * 0.56}%)`, width: '1px', background: 'rgba(10,22,40,0.06)' }}
-                      />
-                    ))}
-
-                    {/* Today at 60% of timeline = 22% + 0.6 × 56% = 55.6% */}
-                    <div
-                      className="absolute top-0 bottom-0 pointer-events-none z-10"
-                      style={{ left: '55.6%', animation: 'fade-in 0.3s ease-out 1.9s both' }}
-                    >
-                      <div className="w-[2px] h-full bg-accent/70" />
-                      <div className="absolute -top-[3px] -left-[3px] w-2 h-2 rounded-full bg-accent animate-dot-blink" />
-                      <div className="absolute top-3 left-2 text-[0.4rem] font-bold text-accent uppercase tracking-[0.12em] whitespace-nowrap">
-                        Today
-                      </div>
-                    </div>
-
-                    {/* Phase rows */}
-                    <div className="space-y-[8px]">
-                      {ganttPhases.map((phase) => {
-                        const phaseEnd = phase.start + phase.width
-                        const doneFrac = phaseEnd <= 60 ? 1 : phase.start >= 60 ? 0 : (60 - phase.start) / phase.width
-                        return (
-                          <div key={phase.label} className="flex items-center">
-                            <span className="text-[0.54rem] font-medium text-ink-muted w-[22%] text-right pr-3 flex-shrink-0 leading-tight">
-                              {phase.label}
-                            </span>
-                            <div className="flex-1 relative h-[22px]">
-                              {/* Bar */}
-                              <div
-                                className="absolute top-0 bottom-0 overflow-hidden"
-                                style={{
-                                  left: `${phase.start}%`,
-                                  width: `${phase.width}%`,
-                                  transformOrigin: 'left',
-                                  animation: `bar-grow 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94) ${phase.delay}s both`,
-                                }}
-                              >
-                                {doneFrac > 0 && (
-                                  <div className="absolute top-0 bottom-0 bg-canvas-dark" style={{ width: `${doneFrac * 100}%` }} />
-                                )}
-                                {doneFrac < 1 && (
-                                  <div className="absolute top-0 bottom-0 border border-canvas-dark/25" style={{ left: `${doneFrac * 100}%`, right: 0 }} />
-                                )}
-                              </div>
-                              {/* Milestone diamond */}
-                              {phase.milestone !== null && (
-                                <div
-                                  className="absolute top-1/2 z-20 w-[10px] h-[10px] -translate-x-1/2 -translate-y-1/2 rotate-45 bg-white border-2 border-accent"
-                                  style={{ left: `${phase.milestone}%`, animation: `fade-in 0.3s ease-out ${phase.delay + 0.5}s both` }}
-                                />
-                              )}
-                            </div>
-                            {/* Party tag */}
-                            <div className="w-[22%] flex-shrink-0 pl-3">
-                              <span className="text-[0.46rem] font-medium text-ink-muted uppercase tracking-[0.1em] leading-tight">
-                                {phase.party}
-                              </span>
-                            </div>
-                          </div>
-                        )
-                      })}
-                    </div>
-
-                    {/* TMPC coordination bar */}
-                    <div className="flex items-center mt-4 pt-4 border-t-2 border-canvas-dark/10">
-                      <span className="text-[0.5rem] font-bold text-accent w-[22%] text-right pr-3 flex-shrink-0 uppercase tracking-[0.18em]">
-                        TMPC
-                      </span>
-                      <div className="flex-1 relative h-[28px]">
-                        <div
-                          className="absolute inset-0 bg-accent"
-                          style={{ transformOrigin: 'left', animation: 'bar-grow 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1.55s both' }}
-                        />
-                        <div className="absolute inset-0 flex items-center px-3">
-                          <span className="text-[0.44rem] font-bold text-white uppercase tracking-[0.22em] whitespace-nowrap">
-                            Coordination &#183; All Phases
-                          </span>
-                        </div>
-                      </div>
-                      <div className="w-[22%] flex-shrink-0 pl-3">
-                        <span className="text-[0.46rem] font-bold text-accent uppercase tracking-[0.1em]">All Parties</span>
-                      </div>
-                    </div>
-
-                  </div>
-
-                  {/* Footer */}
-                  <div className="mt-5 pt-4 border-t border-canvas-dark/[0.08] flex items-center justify-between">
-                    <span className="text-[0.42rem] text-ink-muted uppercase tracking-[0.15em]">Commercial &#183; Industrial &#183; Hospitality &#183; Real Estate</span>
-                    <span className="text-[0.42rem] text-accent uppercase tracking-[0.15em]">Bangkok</span>
-                  </div>
-
-                </div>
-              </div>
-            </div>
+            {/* Right: project carousel */}
+          <HeroProjectCarousel projects={heroProjects} />
 
           </div>
         </div>

@@ -3,6 +3,11 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import Lightbox from 'yet-another-react-lightbox'
+import Zoom from 'yet-another-react-lightbox/plugins/zoom'
+import Captions from 'yet-another-react-lightbox/plugins/captions'
+import 'yet-another-react-lightbox/styles.css'
+import 'yet-another-react-lightbox/plugins/captions.css'
 import { FadeIn } from '@/components/fade-in'
 
 export interface GalleryProject {
@@ -28,12 +33,17 @@ export function ProjectsGallery({ projects, categories }: Props) {
   const allCategories = ['All', ...categories]
   const [activeCategory, setActiveCategory] = useState<string>('All')
   const [activeImages, setActiveImages] = useState<Record<string, number>>({})
+  const [lightbox, setLightbox] = useState<{ slides: { src: string; title: string }[]; index: number } | null>(null)
 
   const filtered =
     activeCategory === 'All' ? projects : projects.filter((p) => p.category === activeCategory)
 
   function selectImage(id: string, index: number) {
     setActiveImages((prev) => ({ ...prev, [id]: index }))
+  }
+
+  function openLightbox(project: GalleryProject, index: number) {
+    setLightbox({ slides: project.images.map((src) => ({ src, title: project.title })), index })
   }
 
   return (
@@ -77,21 +87,35 @@ export function ProjectsGallery({ projects, categories }: Props) {
                 {/* Image panel */}
                 <div className={`flex flex-col ${i % 2 === 1 ? 'lg:order-2' : ''}`}>
                   {/* Main image */}
-                  <div className="relative overflow-hidden flex-1" style={{ minHeight: '380px' }}>
-                    <Image
-                      src={project.images[imgIdx]}
-                      alt={project.title}
-                      fill
-                      className="object-cover transition-opacity duration-300"
-                      sizes="(max-width: 1024px) 100vw, 50vw"
-                    />
-                    <div className="absolute inset-0 bg-[#0A1628]/30" />
-                    <div className="absolute top-6 left-7">
+                  <div className="relative overflow-hidden flex-1 group" style={{ minHeight: '380px' }}>
+                    <button
+                      type="button"
+                      onClick={() => openLightbox(project, imgIdx)}
+                      aria-label={`View ${project.title} photos fullscreen`}
+                      className="absolute inset-0 w-full h-full cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                    >
+                      <Image
+                        src={project.images[imgIdx]}
+                        alt={project.title}
+                        fill
+                        className="object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.04]"
+                        sizes="(max-width: 1024px) 100vw, 50vw"
+                      />
+                      <div className="absolute inset-0 bg-[#0A1628]/30 transition-colors duration-300 group-hover:bg-[#0A1628]/15" />
+                    </button>
+                    {/* Expand affordance */}
+                    <div className="absolute top-5 right-5 z-20 flex items-center gap-1.5 bg-[#0A1628]/70 backdrop-blur-sm border border-white/15 text-white/90 text-[0.58rem] font-semibold uppercase tracking-[0.18em] px-3 py-1.5 opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 pointer-events-none">
+                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                      </svg>
+                      View
+                    </div>
+                    <div className="absolute top-6 left-7 z-10 pointer-events-none">
                       <span className="font-display font-bold text-[5rem] text-white/10 leading-none select-none">
                         {project.number}
                       </span>
                     </div>
-                    <div className="absolute bottom-5 left-6">
+                    <div className="absolute bottom-5 left-6 z-10 pointer-events-none">
                       <span className="text-[0.58rem] font-bold text-accent uppercase tracking-[0.25em] border border-accent/40 bg-[#0A1628]/70 px-3 py-1.5">
                         {project.category}
                       </span>
@@ -210,6 +234,24 @@ export function ProjectsGallery({ projects, categories }: Props) {
           </div>
         </div>
       </section>
+
+      {/* Fullscreen image lightbox with manual zoom */}
+      <Lightbox
+        open={!!lightbox}
+        close={() => setLightbox(null)}
+        index={lightbox?.index ?? 0}
+        slides={lightbox?.slides ?? []}
+        plugins={[Zoom, Captions]}
+        zoom={{ scrollToZoom: true, maxZoomPixelRatio: 3, doubleTapDelay: 250, doubleClickMaxStops: 2 }}
+        captions={{ descriptionTextAlign: 'center' }}
+        controller={{ closeOnBackdropClick: true }}
+        animation={{ fade: 300, swipe: 400 }}
+        carousel={{ finite: false, padding: '5%' }}
+        styles={{
+          container: { backgroundColor: 'rgba(8,18,33,0.94)' },
+          root: { '--yarl__color_button': 'rgba(255,255,255,0.7)', '--yarl__color_button_active': '#22C5E0' },
+        }}
+      />
     </>
   )
 }
