@@ -37,12 +37,15 @@ const projectTeasers = [
 
 export default async function HomePage() {
   const supabase = await createClient()
-  const { data: heroRows } = await supabase
-    .from('projects')
-    .select('id, title, category:categories(name), project_images(url, display_order, is_primary)')
-    .eq('published', true)
-    .order('display_order', { ascending: true })
-    .limit(6)
+  const [{ data: heroRows }, { data: slideRows }] = await Promise.all([
+    supabase
+      .from('projects')
+      .select('id, title, category:categories(name), project_images(url, display_order, is_primary)')
+      .eq('published', true)
+      .order('display_order', { ascending: true })
+      .limit(6),
+    supabase.from('site_settings').select('value').eq('key', 'hero_slide_seconds').limit(1),
+  ])
 
   const heroProjects: HeroProject[] = ((heroRows as unknown as Project[]) ?? [])
     .map((p) => {
@@ -53,6 +56,10 @@ export default async function HomePage() {
         : null
     })
     .filter((p): p is HeroProject => p !== null)
+
+  // Admin-configurable slide duration (Settings → "Hero Slide Duration"); defaults to 4s.
+  const slideSeconds = Number(slideRows?.[0]?.value)
+  const heroIntervalMs = Number.isFinite(slideSeconds) && slideSeconds >= 1 ? slideSeconds * 1000 : 4000
 
   return (
     <>
@@ -113,7 +120,7 @@ export default async function HomePage() {
             </div>
 
             {/* Right: project carousel */}
-          <HeroProjectCarousel projects={heroProjects} />
+          <HeroProjectCarousel projects={heroProjects} intervalMs={heroIntervalMs} />
 
           </div>
         </div>

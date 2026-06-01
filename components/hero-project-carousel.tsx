@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -11,23 +11,27 @@ export interface HeroProject {
   image: string
 }
 
-const INTERVAL = 3000
+const DEFAULT_INTERVAL = 4000
 
-export function HeroProjectCarousel({ projects }: { projects: HeroProject[] }) {
+export function HeroProjectCarousel({
+  projects,
+  intervalMs = DEFAULT_INTERVAL,
+}: {
+  projects: HeroProject[]
+  intervalMs?: number
+}) {
   const [active, setActive] = useState(0)
   const [paused, setPaused] = useState(false)
   const count = projects.length
 
   const go = useCallback((next: number) => setActive((next + count) % count), [count])
 
-  // Auto-advance, paused on hover / when tab hidden.
-  const activeRef = useRef(active)
-  activeRef.current = active
+  // Auto-advance, paused on hover. Interval is admin-configurable via settings.
   useEffect(() => {
     if (paused || count <= 1) return
-    const id = setInterval(() => setActive((a) => (a + 1) % count), INTERVAL)
+    const id = setInterval(() => setActive((a) => (a + 1) % count), intervalMs)
     return () => clearInterval(id)
-  }, [paused, count])
+  }, [paused, count, intervalMs])
 
   if (count === 0) return null
 
