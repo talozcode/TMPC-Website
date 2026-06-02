@@ -141,52 +141,54 @@ export default async function HomePage() {
           </FadeIn>
 
           <FadeIn delay={120}>
-            <div className="flex flex-col lg:flex-row items-stretch">
+            <div className="flex flex-col lg:flex-row lg:items-stretch gap-3 lg:gap-0">
 
-              <div className="flex-1 border border-line p-6 lg:p-8">
-                <p className="text-[0.6rem] font-bold text-ink-muted uppercase tracking-[0.2em] mb-5">What comes in</p>
-                <div className="space-y-2">
+              {/* Inputs */}
+              <div className="flex-1 border border-line bg-canvas-subtle p-6 lg:p-7">
+                <p className="text-[0.6rem] font-bold text-ink-muted uppercase tracking-[0.2em] mb-4">Without coordination</p>
+                <div className="flex flex-wrap gap-2">
                   {challengeInput.map((s) => (
-                    <div key={s} className="border border-line bg-canvas-subtle px-4 py-2.5 text-sm text-ink-secondary hover:border-accent/30 hover:text-ink transition-colors duration-200">{s}</div>
+                    <span key={s} className="border border-line bg-canvas px-3 py-1.5 text-[0.8rem] text-ink-secondary">{s}</span>
                   ))}
                 </div>
               </div>
 
-              <div className="hidden lg:flex flex-col items-center justify-center w-14 border-y border-line bg-canvas-subtle flex-shrink-0">
-                <div className="flex-1 w-px bg-accent/20 animate-flow-pulse" />
-                <span className="text-accent/60 text-sm my-3 flex-shrink-0" aria-hidden="true">&#8594;</span>
-                <div className="flex-1 w-px bg-accent/20 animate-flow-pulse" style={{ animationDelay: '0.5s' }} />
+              {/* Connector: ↓ on mobile, → on desktop */}
+              <div className="flex flex-col lg:flex-row items-center justify-center gap-1.5 lg:gap-0 lg:w-14 lg:flex-shrink-0">
+                <div className="hidden lg:block flex-1 w-px bg-accent/25 animate-flow-pulse" />
+                <span aria-hidden="true" className="text-accent text-lg leading-none rotate-90 lg:rotate-0 lg:my-2">&#8594;</span>
+                <span className="text-[0.5rem] font-semibold text-ink-muted uppercase tracking-[0.18em] lg:hidden">TMPC coordinates</span>
+                <div className="hidden lg:block flex-1 w-px bg-accent/25 animate-flow-pulse" style={{ animationDelay: '0.5s' }} />
               </div>
 
-              <div className="lg:w-52 flex-shrink-0 bg-canvas-dark border border-white/[0.08] relative overflow-hidden">
+              {/* TMPC node */}
+              <div className="lg:w-56 lg:flex-shrink-0 bg-canvas-dark border border-white/[0.08] relative overflow-hidden">
                 <div className="absolute inset-0 bg-grid-dots pointer-events-none opacity-40" />
-                <div className="relative z-10 p-6 lg:px-6 lg:py-10 flex flex-col h-full justify-center text-center">
-                  <p className="text-[0.5rem] text-accent uppercase tracking-[0.3em] mb-3">Coordination Layer</p>
-                  <p className="font-display font-bold text-[2.5rem] text-white tracking-tight leading-none mb-5 animate-hub-glow inline-block">TMPC</p>
-                  <div className="space-y-1.5 mb-5">
+                <div className="relative z-10 p-6 flex flex-col h-full justify-center items-center text-center">
+                  <p className="text-[0.5rem] text-accent uppercase tracking-[0.3em] mb-2">Coordination Layer</p>
+                  <p className="font-display font-bold text-4xl text-white tracking-tight leading-none mb-4 animate-hub-glow">TMPC</p>
+                  <div className="grid grid-cols-2 gap-1.5 w-full max-w-[200px]">
                     {['Planning', 'Coordination', 'Oversight', 'Reporting'].map((s) => (
-                      <div key={s} className="border border-accent/20 px-3 py-1.5 text-[0.55rem] text-white/50 uppercase tracking-wider">{s}</div>
-                    ))}
-                  </div>
-                  <div className="flex justify-center gap-1.5">
-                    {[0, 0.4, 0.8].map((d) => (
-                      <span key={d} className="w-1.5 h-1.5 rounded-full bg-accent animate-dot-blink" style={{ animationDelay: `${d}s` }} />
+                      <div key={s} className="border border-accent/20 px-2 py-1.5 text-[0.5rem] text-white/55 uppercase tracking-wider text-center">{s}</div>
                     ))}
                   </div>
                 </div>
               </div>
 
-              <div className="hidden lg:flex flex-col items-center justify-center w-14 border-y border-accent/25 bg-accent/[0.03] flex-shrink-0">
-                <div className="flex-1 w-px bg-accent/35 animate-flow-pulse" style={{ animationDelay: '0.8s' }} />
-                <span className="text-accent/60 text-sm my-3 flex-shrink-0" aria-hidden="true">&#8594;</span>
-                <div className="flex-1 w-px bg-accent/35 animate-flow-pulse" style={{ animationDelay: '1.2s' }} />
+              {/* Connector */}
+              <div className="flex flex-col lg:flex-row items-center justify-center gap-1.5 lg:gap-0 lg:w-14 lg:flex-shrink-0">
+                <div className="hidden lg:block flex-1 w-px bg-accent/35 animate-flow-pulse" style={{ animationDelay: '0.8s' }} />
+                <span aria-hidden="true" className="text-accent text-lg leading-none rotate-90 lg:rotate-0 lg:my-2">&#8594;</span>
+                <span className="text-[0.5rem] font-semibold text-accent uppercase tracking-[0.18em] lg:hidden">becomes</span>
+                <div className="hidden lg:block flex-1 w-px bg-accent/35 animate-flow-pulse" style={{ animationDelay: '1.2s' }} />
               </div>
 
-              <div className="flex-1 border border-accent/30 bg-accent/[0.02] p-6 lg:p-8">
-                <p className="text-[0.6rem] font-bold text-accent uppercase tracking-[0.2em] mb-5">What TMPC delivers</p>
-                <div className="space-y-2">
+              {/* Outcomes */}
+              <div className="flex-1 border border-accent/30 bg-accent/[0.02] p-6 lg:p-7">
+                <p className="text-[0.6rem] font-bold text-accent uppercase tracking-[0.2em] mb-4">With TMPC</p>
+                <div className="flex flex-wrap gap-2">
                   {challengeOutput.map((s) => (
-                    <div key={s} className="border border-accent/20 bg-accent/[0.04] px-4 py-2.5 text-sm text-accent/80 hover:bg-accent/[0.09] transition-colors duration-200">{s}</div>
+                    <span key={s} className="border border-accent/20 bg-accent/[0.05] px-3 py-1.5 text-[0.8rem] text-accent/80">{s}</span>
                   ))}
                 </div>
               </div>
@@ -220,52 +222,6 @@ export default async function HomePage() {
                   <p className="text-sm text-ink-muted leading-relaxed flex-1">{s.description}</p>
                   <div className="mt-6 w-8 h-0.5 bg-accent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
                 </div>
-              </FadeIn>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── SELECTED PROJECTS ── */}
-      <section className="bg-canvas border-b border-line py-8 lg:py-12">
-        <div className="max-w-6xl mx-auto px-6 lg:px-8">
-          <FadeIn className="mb-6">
-            <div className="flex items-end justify-between">
-              <div>
-                <p className="text-xs font-semibold text-accent uppercase tracking-[0.25em] mb-4">Selected Work</p>
-                <h2 className="font-display font-bold text-3xl lg:text-4xl text-ink tracking-tight">Work in Thailand</h2>
-              </div>
-              <Link href="/projects" className="hidden md:flex items-center gap-1.5 text-sm text-ink-muted hover:text-accent transition-colors duration-150">
-                View all projects <span aria-hidden="true">&#8594;</span>
-              </Link>
-            </div>
-          </FadeIn>
-
-          <div className="mt-10 grid grid-cols-6 gap-3">
-            {heroProjects.slice(0, 2).map((p, i) => (
-              <FadeIn key={p.id} delay={i * 100} className="col-span-6 sm:col-span-3">
-                <Link href="/projects" className="group block relative overflow-hidden aspect-[4/3]">
-                  <Image src={p.image} alt={p.title} fill className="object-cover transition-transform duration-700 group-hover:scale-[1.04]" sizes="(max-width: 640px) 100vw, 50vw" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-canvas-dark/90 via-canvas-dark/20 to-transparent" />
-                  <div className="absolute top-0 left-0 right-0 h-0.5 bg-accent scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
-                  <div className="absolute bottom-0 left-0 right-0 p-5 lg:p-7">
-                    <p className="text-[0.62rem] font-bold text-accent uppercase tracking-[0.22em] mb-2">{p.category}</p>
-                    <h3 className="font-display font-semibold text-xl lg:text-2xl text-white tracking-tight">{p.title}</h3>
-                  </div>
-                </Link>
-              </FadeIn>
-            ))}
-            {heroProjects.slice(2, 5).map((p, i) => (
-              <FadeIn key={p.id} delay={i * 80} className="col-span-6 sm:col-span-2">
-                <Link href="/projects" className="group block relative overflow-hidden aspect-[4/3]">
-                  <Image src={p.image} alt={p.title} fill className="object-cover transition-transform duration-700 group-hover:scale-[1.04]" sizes="(max-width: 640px) 100vw, 33vw" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-canvas-dark/90 via-canvas-dark/20 to-transparent" />
-                  <div className="absolute top-0 left-0 right-0 h-0.5 bg-accent scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
-                  <div className="absolute bottom-0 left-0 right-0 p-5">
-                    <p className="text-[0.62rem] font-bold text-accent uppercase tracking-[0.22em] mb-2">{p.category}</p>
-                    <h3 className="font-display font-semibold text-xl text-white tracking-tight">{p.title}</h3>
-                  </div>
-                </Link>
               </FadeIn>
             ))}
           </div>
