@@ -13,14 +13,6 @@ export const metadata: Metadata = {
 }
 
 
-const challengeInput = [
-  'Owner / Investor', 'Architect', 'MEP Engineers', 'Interior Design',
-  'Main Contractor', 'Subcontractors', 'Suppliers', 'Government Bodies',
-]
-const challengeOutput = [
-  'Aligned Scope', 'Clear Communication', 'Execution Visibility', 'Timeline Confidence',
-  'Budget Clarity', 'Stakeholder Alignment', 'Operational Readiness', 'On-time Delivery',
-]
 const services = [
   { number: '01', title: 'Project Consulting', description: 'Not sure where to start? We structure the scope, budget, and coordination plan before anything is committed.' },
   { number: '02', title: 'Development Management', description: 'One party accountable for every consultant, contractor, and milestone. From concept through completion.' },
@@ -141,58 +133,28 @@ export default async function HomePage() {
           </FadeIn>
 
           <FadeIn delay={120}>
-            <div className="flex flex-col lg:flex-row lg:items-stretch gap-3 lg:gap-0">
-
-              {/* Inputs */}
-              <div className="flex-1 border border-line bg-canvas-subtle p-6 lg:p-7">
-                <p className="text-[0.6rem] font-bold text-ink-muted uppercase tracking-[0.2em] mb-4">Without coordination</p>
-                <div className="flex flex-wrap gap-2">
-                  {challengeInput.map((s) => (
-                    <span key={s} className="border border-line bg-canvas px-3 py-1.5 text-[0.8rem] text-ink-secondary">{s}</span>
+            <div className="relative overflow-hidden bg-canvas-dark border border-white/[0.08] p-8 lg:p-10">
+              <div className="absolute inset-0 bg-grid-dots opacity-30 pointer-events-none" />
+              <div className="relative z-10 lg:flex lg:items-center lg:justify-between lg:gap-10">
+                <div className="max-w-2xl">
+                  <p className="text-[0.6rem] font-bold text-accent uppercase tracking-[0.25em] mb-3">One Coordination Layer</p>
+                  <p className="font-display text-xl lg:text-[1.7rem] text-white leading-snug tracking-tight">
+                    TMPC sits between 8+ parties, two languages, and every approval &mdash; turning fragmented input into <span className="text-accent-light">aligned delivery</span>.
+                  </p>
+                </div>
+                <div className="flex gap-5 sm:gap-6 mt-7 lg:mt-0 lg:flex-shrink-0">
+                  {[
+                    { v: '8+', l: 'Parties' },
+                    { v: '2', l: 'Languages' },
+                    { v: '1', l: 'Accountable Partner' },
+                  ].map((s, i) => (
+                    <div key={s.l} className={i > 0 ? 'pl-5 sm:pl-6 border-l border-white/10' : ''}>
+                      <p className="font-display font-bold text-2xl lg:text-3xl text-white leading-none mb-1">{s.v}</p>
+                      <p className="text-[0.52rem] text-white/40 uppercase tracking-[0.15em] leading-tight">{s.l}</p>
+                    </div>
                   ))}
                 </div>
               </div>
-
-              {/* Connector: ↓ on mobile, → on desktop */}
-              <div className="flex flex-col lg:flex-row items-center justify-center gap-1.5 lg:gap-0 lg:w-14 lg:flex-shrink-0">
-                <div className="hidden lg:block flex-1 w-px bg-accent/25 animate-flow-pulse" />
-                <span aria-hidden="true" className="text-accent text-lg leading-none rotate-90 lg:rotate-0 lg:my-2">&#8594;</span>
-                <span className="text-[0.5rem] font-semibold text-ink-muted uppercase tracking-[0.18em] lg:hidden">TMPC coordinates</span>
-                <div className="hidden lg:block flex-1 w-px bg-accent/25 animate-flow-pulse" style={{ animationDelay: '0.5s' }} />
-              </div>
-
-              {/* TMPC node */}
-              <div className="lg:w-56 lg:flex-shrink-0 bg-canvas-dark border border-white/[0.08] relative overflow-hidden">
-                <div className="absolute inset-0 bg-grid-dots pointer-events-none opacity-40" />
-                <div className="relative z-10 p-6 flex flex-col h-full justify-center items-center text-center">
-                  <p className="text-[0.5rem] text-accent uppercase tracking-[0.3em] mb-2">Coordination Layer</p>
-                  <p className="font-display font-bold text-4xl text-white tracking-tight leading-none mb-4 animate-hub-glow">TMPC</p>
-                  <div className="grid grid-cols-2 gap-1.5 w-full max-w-[200px]">
-                    {['Planning', 'Coordination', 'Oversight', 'Reporting'].map((s) => (
-                      <div key={s} className="border border-accent/20 px-2 py-1.5 text-[0.5rem] text-white/55 uppercase tracking-wider text-center">{s}</div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* Connector */}
-              <div className="flex flex-col lg:flex-row items-center justify-center gap-1.5 lg:gap-0 lg:w-14 lg:flex-shrink-0">
-                <div className="hidden lg:block flex-1 w-px bg-accent/35 animate-flow-pulse" style={{ animationDelay: '0.8s' }} />
-                <span aria-hidden="true" className="text-accent text-lg leading-none rotate-90 lg:rotate-0 lg:my-2">&#8594;</span>
-                <span className="text-[0.5rem] font-semibold text-accent uppercase tracking-[0.18em] lg:hidden">becomes</span>
-                <div className="hidden lg:block flex-1 w-px bg-accent/35 animate-flow-pulse" style={{ animationDelay: '1.2s' }} />
-              </div>
-
-              {/* Outcomes */}
-              <div className="flex-1 border border-accent/30 bg-accent/[0.02] p-6 lg:p-7">
-                <p className="text-[0.6rem] font-bold text-accent uppercase tracking-[0.2em] mb-4">With TMPC</p>
-                <div className="flex flex-wrap gap-2">
-                  {challengeOutput.map((s) => (
-                    <span key={s} className="border border-accent/20 bg-accent/[0.05] px-3 py-1.5 text-[0.8rem] text-accent/80">{s}</span>
-                  ))}
-                </div>
-              </div>
-
             </div>
           </FadeIn>
         </div>
