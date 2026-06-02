@@ -213,16 +213,20 @@ export default async function HomePage() {
             </div>
           </FadeIn>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {/* Mobile: sticky stacked deck (cards slide up over each other on scroll).
+              sm+: regular grid. */}
+          <div className="flex flex-col gap-4 sm:grid sm:grid-cols-2 lg:grid-cols-3">
             {services.map((s, i) => (
-              <FadeIn key={s.title} delay={i * 80}>
-                <div className="group bg-canvas border border-line p-7 lg:p-8 hover:border-accent/50 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 h-full flex flex-col">
-                  <p className="text-[0.65rem] font-bold text-accent uppercase tracking-widest mb-5">{s.number}</p>
-                  <h3 className="font-display font-semibold text-lg text-ink mb-3 tracking-tight leading-snug">{s.title}</h3>
-                  <p className="text-sm text-ink-muted leading-relaxed flex-1">{s.description}</p>
-                  <div className="mt-6 w-8 h-0.5 bg-accent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
-                </div>
-              </FadeIn>
+              <div
+                key={s.title}
+                style={{ top: `${80 + i * 12}px`, zIndex: i + 1 }}
+                className="group sticky sm:static top-20 flex flex-col min-h-[210px] sm:min-h-0 bg-canvas border border-line p-7 lg:p-8 shadow-[0_-8px_28px_rgba(10,22,40,0.06)] sm:shadow-none hover:border-accent/50 sm:hover:shadow-lg sm:hover:-translate-y-1 transition-all duration-300"
+              >
+                <p className="text-[0.65rem] font-bold text-accent uppercase tracking-widest mb-5">{s.number}</p>
+                <h3 className="font-display font-semibold text-lg text-ink mb-3 tracking-tight leading-snug">{s.title}</h3>
+                <p className="text-sm text-ink-muted leading-relaxed flex-1">{s.description}</p>
+                <div className="mt-6 w-8 h-0.5 bg-accent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+              </div>
             ))}
           </div>
         </div>
