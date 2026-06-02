@@ -65,6 +65,61 @@ const palettes: { name: string; desc: string; vars: Vars }[] = [
       '--color-line': '#E2E8F2', '--color-line-subtle': '#EEF2F8',
     },
   },
+  {
+    name: 'Emerald estate',
+    desc: 'Cream · Forest green',
+    vars: {
+      '--color-canvas': '#F8F6F1', '--color-canvas-subtle': '#EFEDE5', '--color-canvas-muted': '#E2E0D5',
+      '--color-canvas-dark': '#14271F', '--color-navy': '#1C3327',
+      '--color-ink': '#16241D', '--color-ink-secondary': '#3C4A42', '--color-ink-muted': '#6E7A72',
+      '--color-accent': '#1F7A55', '--color-accent-light': '#34A574', '--color-accent-dark': '#155C3F', '--color-accent-muted': '#B2D9C7',
+      '--color-line': '#E2DFD5', '--color-line-subtle': '#EDEBE3',
+    },
+  },
+  {
+    name: 'Dark mode',
+    desc: 'Near-black · Electric cyan',
+    vars: {
+      '--color-canvas': '#0E1116', '--color-canvas-subtle': '#161A22', '--color-canvas-muted': '#1F2530',
+      '--color-canvas-dark': '#05070C', '--color-navy': '#0B0F18',
+      '--color-ink': '#F3F5F8', '--color-ink-secondary': '#C2C8D2', '--color-ink-muted': '#8A93A1',
+      '--color-accent': '#22D3EE', '--color-accent-light': '#67E8F9', '--color-accent-dark': '#0FB6D1', '--color-accent-muted': '#164E5B',
+      '--color-line': '#232A36', '--color-line-subtle': '#1A2029',
+    },
+  },
+  {
+    name: 'Slate + coral',
+    desc: 'Cool slate · Coral',
+    vars: {
+      '--color-canvas': '#FFFFFF', '--color-canvas-subtle': '#F4F5F7', '--color-canvas-muted': '#E6E9ED',
+      '--color-canvas-dark': '#1E293B', '--color-navy': '#334155',
+      '--color-ink': '#0F172A', '--color-ink-secondary': '#334155', '--color-ink-muted': '#64748B',
+      '--color-accent': '#FB6F5C', '--color-accent-light': '#FF8E7D', '--color-accent-dark': '#E25542', '--color-accent-muted': '#FBCFC7',
+      '--color-line': '#E2E6EC', '--color-line-subtle': '#EEF1F5',
+    },
+  },
+  {
+    name: 'Burgundy luxe',
+    desc: 'Ivory · Wine · Soft gold',
+    vars: {
+      '--color-canvas': '#FAF7F4', '--color-canvas-subtle': '#F2ECE7', '--color-canvas-muted': '#E7DDD5',
+      '--color-canvas-dark': '#3A1620', '--color-navy': '#4E2029',
+      '--color-ink': '#2A1318', '--color-ink-secondary': '#51393E', '--color-ink-muted': '#836E72',
+      '--color-accent': '#B08A3E', '--color-accent-light': '#CBA862', '--color-accent-dark': '#8C6B26', '--color-accent-muted': '#E4D5B2',
+      '--color-line': '#E8DDD5', '--color-line-subtle': '#F1E9E2',
+    },
+  },
+  {
+    name: 'Indigo violet',
+    desc: 'Soft lavender · Violet',
+    vars: {
+      '--color-canvas': '#FBFAFD', '--color-canvas-subtle': '#F3F1F9', '--color-canvas-muted': '#E7E3F3',
+      '--color-canvas-dark': '#1E1B3A', '--color-navy': '#2A2552',
+      '--color-ink': '#1A1730', '--color-ink-secondary': '#3F3A5C', '--color-ink-muted': '#716C8C',
+      '--color-accent': '#6D4AE0', '--color-accent-light': '#8E6FF0', '--color-accent-dark': '#5436BE', '--color-accent-muted': '#D2C6F5',
+      '--color-line': '#E5E1F0', '--color-line-subtle': '#EFECF8',
+    },
+  },
 ]
 
 function Swatches() {
