@@ -34,7 +34,7 @@ export default async function HomePage() {
   const [{ data: heroRows }, { data: slideRows }] = await Promise.all([
     supabase
       .from('projects')
-      .select('id, title, deliverables, category:categories(name), project_images(url, display_order, is_primary)')
+      .select('id, title, category:categories(name), project_images(url, display_order, is_primary)')
       .eq('published', true)
       .order('display_order', { ascending: true })
       .limit(6),
@@ -46,13 +46,7 @@ export default async function HomePage() {
       const imgs = (p.project_images ?? []).slice().sort((a, b) => a.display_order - b.display_order)
       const primary = imgs.find((im) => im.is_primary) ?? imgs[0]
       return primary
-        ? {
-            id: p.id,
-            title: p.title,
-            category: p.category?.name ?? '',
-            image: primary.url,
-            deliverables: p.deliverables ?? [],
-          }
+        ? { id: p.id, title: p.title, category: p.category?.name ?? '', image: primary.url }
         : null
     })
     .filter((p): p is HeroProject => p !== null)
@@ -65,11 +59,11 @@ export default async function HomePage() {
     <>
       {/* ── HERO: Site to Strategy ── */}
       <section className="bg-canvas border-b border-line overflow-hidden">
-        <div className="max-w-6xl mx-auto px-6 lg:px-8 py-10 lg:py-16">
-          <div className="grid lg:grid-cols-[1fr_460px] items-stretch border border-line bg-canvas overflow-hidden shadow-[0_10px_50px_rgba(10,22,40,0.08)]">
+        <div className="max-w-6xl mx-auto px-6 lg:px-8">
+          <div className="grid lg:grid-cols-[1fr_520px] gap-16 items-stretch py-20 lg:py-0">
 
             {/* Left: text */}
-            <div className="flex flex-col justify-center p-8 sm:p-10 lg:p-12">
+            <div className="flex flex-col justify-center lg:py-14">
               <p className="text-[0.65rem] font-semibold text-ink-muted uppercase tracking-[0.2em] mb-6 animate-fade-in">
                 Bangkok, Thailand
               </p>
