@@ -139,7 +139,7 @@ export default async function HomePage() {
                 <div className="max-w-2xl">
                   <p className="text-[0.6rem] font-bold text-accent uppercase tracking-[0.25em] mb-3">One Coordination Layer</p>
                   <p className="font-display text-xl lg:text-[1.7rem] text-white leading-snug tracking-tight">
-                    TMPC sits between 8+ parties, two languages, and every approval &mdash; turning fragmented input into <span className="text-accent-light">aligned delivery</span>.
+                    TMPC sits between 8+ parties, two languages, and every approval, turning fragmented input into <span className="text-accent-light">aligned delivery</span>.
                   </p>
                 </div>
                 <div className="flex gap-5 sm:gap-6 mt-7 lg:mt-0 lg:flex-shrink-0">

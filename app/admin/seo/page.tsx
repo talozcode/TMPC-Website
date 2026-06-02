@@ -26,7 +26,7 @@ export default async function SeoPage() {
             <form action={saveSeo.bind(null, p.page)} className="space-y-4">
               <div>
                 <label className={labelClass}>Page Title</label>
-                <input name="title" defaultValue={p.title ?? ''} className={inputClass} placeholder="Page title — shown in browser tab" />
+                <input name="title" defaultValue={p.title ?? ''} className={inputClass} placeholder="Page title (shown in browser tab)" />
               </div>
               <div>
                 <label className={labelClass}>Meta Description</label>

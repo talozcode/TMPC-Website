@@ -4,7 +4,7 @@ import { deleteProject, togglePublished } from './actions'
 import { DeleteProjectButton } from '@/components/admin/delete-project-button'
 import type { Project } from '@/lib/types'
 
-// Admin dashboard — always render with fresh data, never statically prerendered.
+// Admin dashboard - always render with fresh data, never statically prerendered.
 export const dynamic = 'force-dynamic'
 
 export default async function AdminProjectsPage() {
@@ -51,7 +51,7 @@ export default async function AdminProjectsPage() {
                     {p.subtitle && <p className="text-xs text-gray-400 mt-0.5">{p.subtitle}</p>}
                   </td>
                   <td className="px-5 py-4 text-gray-500">
-                    {(p as any).category?.name ?? <span className="text-gray-300">—</span>}
+                    {(p as any).category?.name ?? <span className="text-gray-300">none</span>}
                   </td>
                   <td className="px-5 py-4">
                     <form action={async () => {

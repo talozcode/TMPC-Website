@@ -33,7 +33,7 @@ export default async function TestimonialsPage() {
           <div>
             <label className={labelClass}>Linked Project</label>
             <select name="project_id" defaultValue={t?.project_id ?? ''} className={inputClass}>
-              <option value="">— None —</option>
+              <option value="">None</option>
               {projects?.map((p) => <option key={p.id} value={p.id}>{p.title}</option>)}
             </select>
           </div>

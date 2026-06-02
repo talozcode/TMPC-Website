@@ -8,7 +8,7 @@ interface Props {
   disabled?: boolean
 }
 
-// Client wrapper so the confirm() handler can live on the button — a server
+// Client wrapper so the confirm() handler can live on the button - a server
 // component cannot pass an onClick handler to the DOM. The server action is
 // passed in already bound (e.g. deleteCategory.bind(null, id)).
 export function ConfirmDeleteButton({ action, message, children, className, disabled }: Props) {

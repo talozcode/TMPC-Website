@@ -6,7 +6,7 @@ import { AdminSidebar } from '@/components/admin/sidebar'
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
 
-  // The login page renders its own full-screen layout — no sidebar/shell.
+  // The login page renders its own full-screen layout - no sidebar/shell.
   if (pathname === '/admin/login') {
     return <>{children}</>
   }

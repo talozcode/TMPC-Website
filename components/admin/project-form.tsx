@@ -95,7 +95,7 @@ export function ProjectForm({ project, categories, onSave }: Props) {
         <div>
           <label className={labelClass}>Category</label>
           <select name="category_id" defaultValue={project?.category_id ?? ''} className={inputClass}>
-            <option value="">— No category —</option>
+            <option value="">No category</option>
             {categories.map((c) => (
               <option key={c.id} value={c.id}>{c.name}</option>
             ))}
@@ -173,7 +173,7 @@ export function ProjectForm({ project, categories, onSave }: Props) {
         </button>
       </div>
 
-      {/* Images — only shown after project is saved */}
+      {/* Images - only shown after project is saved */}
       {savedId && (
         <div className="pt-6 border-t border-gray-200">
           <label className={labelClass}>Project Images</label>
@@ -188,7 +188,7 @@ export function ProjectForm({ project, categories, onSave }: Props) {
 
       {!savedId && (
         <div className="pt-6 border-t border-gray-200 bg-gray-50 px-4 py-3">
-          <p className="text-xs text-gray-500">Save the project first — then you can upload images.</p>
+          <p className="text-xs text-gray-500">Save the project first, then you can upload images.</p>
         </div>
       )}
     </form>

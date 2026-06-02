@@ -69,7 +69,7 @@ export function ProjectsGallery({ projects, categories }: Props) {
         </div>
       </div>
 
-      {/* Projects list — one framed card per project */}
+      {/* Projects list - one framed card per project */}
       <section className="bg-canvas-subtle py-10 lg:py-16">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           {filtered.length === 0 ? (
@@ -92,7 +92,7 @@ export function ProjectsGallery({ projects, categories }: Props) {
                     <article className="bg-canvas border border-line shadow-[0_6px_32px_rgba(10,22,40,0.06)] overflow-hidden">
                       <div className="grid lg:grid-cols-2">
 
-                        {/* Image column — carousel + TMPC Scope underneath */}
+                        {/* Image column - carousel + TMPC Scope underneath */}
                         <div className={`flex flex-col ${i % 2 === 1 ? 'lg:order-2' : ''}`}>
                           {/* Main image */}
                           <div className="relative overflow-hidden flex-1 group min-h-[320px]">
@@ -153,7 +153,7 @@ export function ProjectsGallery({ projects, categories }: Props) {
                             </div>
                           )}
 
-                          {/* TMPC Scope — directly under the image carousel */}
+                          {/* TMPC Scope - directly under the image carousel */}
                           {project.deliverables.length > 0 && (
                             <div className="px-7 py-6 lg:px-9 border-t border-line bg-canvas">
                               <p className="text-[0.58rem] font-bold text-accent uppercase tracking-[0.2em] mb-3">

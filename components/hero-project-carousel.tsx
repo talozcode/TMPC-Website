@@ -67,7 +67,7 @@ export function HeroProjectCarousel({
       onMouseLeave={() => setPaused(false)}
     >
       <div className="border-2 border-canvas-dark bg-canvas-dark">
-        {/* Title bar — project title ABOVE the image */}
+        {/* Title bar - project title ABOVE the image */}
         <div className="px-6 py-5 flex items-end justify-between gap-4">
           <div className="min-w-0">
             <p className="text-[0.5rem] font-bold text-accent uppercase tracking-[0.3em] mb-2">
@@ -85,10 +85,10 @@ export function HeroProjectCarousel({
           </span>
         </div>
 
-        {/* Image stage — swipeable, crossfade + slow Ken Burns on the active slide */}
+        {/* Image stage - swipeable, crossfade + slow Ken Burns on the active slide */}
         <Link
           href="/projects"
-          aria-label={`View projects — ${current.title}`}
+          aria-label={`View projects: ${current.title}`}
           className="relative block overflow-hidden group h-[300px] sm:h-[360px] lg:h-[380px]"
           onTouchStart={onTouchStart}
           onTouchEnd={onTouchEnd}
@@ -126,7 +126,7 @@ export function HeroProjectCarousel({
           </span>
         </Link>
 
-        {/* TMPC Scope — under the image, changes with the slide */}
+        {/* TMPC Scope - under the image, changes with the slide */}
         {current.deliverables.length > 0 && (
           <div key={current.id} className="px-6 py-5 border-t border-white/10 animate-fade-in">
             <p className="text-[0.5rem] font-bold text-accent uppercase tracking-[0.3em] mb-3">TMPC Scope</p>

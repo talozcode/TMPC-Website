@@ -13,7 +13,7 @@ const ASPECTS: { label: string; value: number | undefined }[] = [
 
 interface Props {
   file: File
-  /** e.g. "Image 1 of 3" — optional progress label */
+  /** e.g. "Image 1 of 3" - optional progress label */
   label?: string
   /** crop applied → returns a new cropped File */
   onComplete: (result: File) => void

@@ -199,7 +199,7 @@ async function main() {
         p.images.map((url, j) => ({
           project_id: row.id,
           url,
-          // static assets bundled in /public — not in Supabase storage
+          // static assets bundled in /public, not in Supabase storage
           storage_path: url.replace(/^\//, ''),
           display_order: j,
           is_primary: j === 0,
