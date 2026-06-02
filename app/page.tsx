@@ -34,7 +34,7 @@ export default async function HomePage() {
   const [{ data: heroRows }, { data: slideRows }] = await Promise.all([
     supabase
       .from('projects')
-      .select('id, title, category:categories(name), project_images(url, display_order, is_primary)')
+      .select('id, title, deliverables, category:categories(name), project_images(url, display_order, is_primary)')
       .eq('published', true)
       .order('display_order', { ascending: true })
       .limit(6),
@@ -46,7 +46,13 @@ export default async function HomePage() {
       const imgs = (p.project_images ?? []).slice().sort((a, b) => a.display_order - b.display_order)
       const primary = imgs.find((im) => im.is_primary) ?? imgs[0]
       return primary
-        ? { id: p.id, title: p.title, category: p.category?.name ?? '', image: primary.url }
+        ? {
+            id: p.id,
+            title: p.title,
+            category: p.category?.name ?? '',
+            image: primary.url,
+            deliverables: p.deliverables ?? [],
+          }
         : null
     })
     .filter((p): p is HeroProject => p !== null)

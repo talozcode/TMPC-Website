@@ -9,6 +9,7 @@ export interface HeroProject {
   title: string
   category: string
   image: string
+  deliverables: string[]
 }
 
 const DEFAULT_INTERVAL = 4000
@@ -124,6 +125,21 @@ export function HeroProjectCarousel({
             <span aria-hidden="true">&#8594;</span>
           </span>
         </Link>
+
+        {/* TMPC Scope — under the image, changes with the slide */}
+        {current.deliverables.length > 0 && (
+          <div key={current.id} className="px-6 py-5 border-t border-white/10 animate-fade-in">
+            <p className="text-[0.5rem] font-bold text-accent uppercase tracking-[0.3em] mb-3">TMPC Scope</p>
+            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-5 gap-y-1.5">
+              {current.deliverables.slice(0, 4).map((d) => (
+                <li key={d} className="flex items-start gap-2 text-[0.78rem] text-white/55 leading-snug">
+                  <span className="w-1 h-1 rounded-full bg-accent mt-1.5 flex-shrink-0" />
+                  {d}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
 
         {/* Controls */}
         <div className="flex items-center justify-between px-6 py-4 border-t border-white/10">
