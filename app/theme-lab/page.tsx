@@ -120,6 +120,118 @@ const palettes: { name: string; desc: string; vars: Vars }[] = [
       '--color-line': '#E5E1F0', '--color-line-subtle': '#EFECF8',
     },
   },
+
+  // ---- From attached references ----
+  {
+    name: 'Agent slate + gold',
+    desc: 'Cream · Slate · Gold (Agent branding)',
+    vars: {
+      '--color-canvas': '#F3F2EE', '--color-canvas-subtle': '#EAE9E3', '--color-canvas-muted': '#DDDCD4',
+      '--color-canvas-dark': '#2C3950', '--color-navy': '#3A4A66',
+      '--color-ink': '#20283A', '--color-ink-secondary': '#44506B', '--color-ink-muted': '#7E869A',
+      '--color-accent': '#BFA05A', '--color-accent-light': '#D8BE80', '--color-accent-dark': '#9A7E36', '--color-accent-muted': '#E7DBB8',
+      '--color-line': '#E0DED6', '--color-line-subtle': '#ECEAE3',
+    },
+  },
+  {
+    name: 'Agent mono slate',
+    desc: 'Greys · Slate blue (Agent branding)',
+    vars: {
+      '--color-canvas': '#FFFFFF', '--color-canvas-subtle': '#F0F1F3', '--color-canvas-muted': '#DFE1E5',
+      '--color-canvas-dark': '#11151C', '--color-navy': '#41506B',
+      '--color-ink': '#11151C', '--color-ink-secondary': '#3A4151', '--color-ink-muted': '#767E8C',
+      '--color-accent': '#41506B', '--color-accent-light': '#5B6B89', '--color-accent-dark': '#2E3A50', '--color-accent-muted': '#C2C9D6',
+      '--color-line': '#DEE1E6', '--color-line-subtle': '#EDEFF2',
+    },
+  },
+  {
+    name: 'Aespace editorial',
+    desc: 'Warm paper · Olive (Aespace)',
+    vars: {
+      '--color-canvas': '#F4F2EC', '--color-canvas-subtle': '#ECE9E0', '--color-canvas-muted': '#E0DCD0',
+      '--color-canvas-dark': '#1A1A17', '--color-navy': '#2A2924',
+      '--color-ink': '#1A1A17', '--color-ink-secondary': '#44423A', '--color-ink-muted': '#7A776B',
+      '--color-accent': '#7C7A52', '--color-accent-light': '#9A986E', '--color-accent-dark': '#5E5C3C', '--color-accent-muted': '#D6D4BD',
+      '--color-line': '#E4E0D5', '--color-line-subtle': '#EFEBE2',
+    },
+  },
+  {
+    name: 'Aespace warm sand',
+    desc: 'Sand · Charcoal · Caramel (Aespace)',
+    vars: {
+      '--color-canvas': '#F6F1EA', '--color-canvas-subtle': '#EEE7DC', '--color-canvas-muted': '#E2D9CB',
+      '--color-canvas-dark': '#292420', '--color-navy': '#383029',
+      '--color-ink': '#292420', '--color-ink-secondary': '#4F473E', '--color-ink-muted': '#837868',
+      '--color-accent': '#A9805A', '--color-accent-light': '#C29B77', '--color-accent-dark': '#8A6543', '--color-accent-muted': '#E2CDB8',
+      '--color-line': '#E5DCCE', '--color-line-subtle': '#F0E9DD',
+    },
+  },
+  {
+    name: 'Emerald Essence',
+    desc: 'Pale green · Deep forest (Emerald Essence)',
+    vars: {
+      '--color-canvas': '#F4F8EE', '--color-canvas-subtle': '#E9F0DE', '--color-canvas-muted': '#DBE6CC',
+      '--color-canvas-dark': '#0D2B1D', '--color-navy': '#1C3D2B',
+      '--color-ink': '#11271B', '--color-ink-secondary': '#345635', '--color-ink-muted': '#6B8F71',
+      '--color-accent': '#345635', '--color-accent-light': '#4E7A50', '--color-accent-dark': '#233D24', '--color-accent-muted': '#AEC3B0',
+      '--color-line': '#DCE6D0', '--color-line-subtle': '#E9F0DE',
+    },
+  },
+  {
+    name: 'Emerald sage',
+    desc: 'Sage · Soft green (Emerald Essence)',
+    vars: {
+      '--color-canvas': '#F1F5EA', '--color-canvas-subtle': '#E6EEDB', '--color-canvas-muted': '#D7E2C9',
+      '--color-canvas-dark': '#2A3F2E', '--color-navy': '#38503C',
+      '--color-ink': '#233324', '--color-ink-secondary': '#44593F', '--color-ink-muted': '#7D9079',
+      '--color-accent': '#6B8F71', '--color-accent-light': '#8BAA8F', '--color-accent-dark': '#51745A', '--color-accent-muted': '#C3D6C6',
+      '--color-line': '#DBE5CF', '--color-line-subtle': '#E8EFDD',
+    },
+  },
+  {
+    name: 'Elegant teal + coral',
+    desc: 'Cream · Teal · Coral (ElegantEstate)',
+    vars: {
+      '--color-canvas': '#F6F3EC', '--color-canvas-subtle': '#EDE8DE', '--color-canvas-muted': '#E1DACB',
+      '--color-canvas-dark': '#14403F', '--color-navy': '#1E5957',
+      '--color-ink': '#15302E', '--color-ink-secondary': '#3C5856', '--color-ink-muted': '#74908D',
+      '--color-accent': '#D2603A', '--color-accent-light': '#E5825F', '--color-accent-dark': '#AE4A28', '--color-accent-muted': '#EFC6B5',
+      '--color-line': '#E4DDD0', '--color-line-subtle': '#EFE9DD',
+    },
+  },
+  {
+    name: 'Elegant teal',
+    desc: 'Cream · Teal (ElegantEstate)',
+    vars: {
+      '--color-canvas': '#F4F6F4', '--color-canvas-subtle': '#E8EEEC', '--color-canvas-muted': '#D8E3E0',
+      '--color-canvas-dark': '#123B3A', '--color-navy': '#1C5654',
+      '--color-ink': '#12302E', '--color-ink-secondary': '#34514F', '--color-ink-muted': '#6E8C89',
+      '--color-accent': '#2C8C88', '--color-accent-light': '#45ABA6', '--color-accent-dark': '#1E6B68', '--color-accent-muted': '#B4D8D5',
+      '--color-line': '#DCE6E3', '--color-line-subtle': '#E9F0EE',
+    },
+  },
+  {
+    name: 'Flat midnight + turquoise',
+    desc: 'Slate · Turquoise (Flat UI)',
+    vars: {
+      '--color-canvas': '#FFFFFF', '--color-canvas-subtle': '#ECF0F1', '--color-canvas-muted': '#DCE1E3',
+      '--color-canvas-dark': '#2C3E50', '--color-navy': '#34495E',
+      '--color-ink': '#2C3E50', '--color-ink-secondary': '#45596B', '--color-ink-muted': '#7F8C9A',
+      '--color-accent': '#1ABC9C', '--color-accent-light': '#48D1B5', '--color-accent-dark': '#149276', '--color-accent-muted': '#B8E8DF',
+      '--color-line': '#DDE3E6', '--color-line-subtle': '#ECEFF1',
+    },
+  },
+  {
+    name: 'Flat midnight + carrot',
+    desc: 'Slate · Carrot orange (Flat UI)',
+    vars: {
+      '--color-canvas': '#FFFFFF', '--color-canvas-subtle': '#ECF0F1', '--color-canvas-muted': '#DCE1E3',
+      '--color-canvas-dark': '#2C3E50', '--color-navy': '#34495E',
+      '--color-ink': '#2C3E50', '--color-ink-secondary': '#45596B', '--color-ink-muted': '#7F8C9A',
+      '--color-accent': '#E67E22', '--color-accent-light': '#F0974A', '--color-accent-dark': '#C66514', '--color-accent-muted': '#F8D6B5',
+      '--color-line': '#DDE3E6', '--color-line-subtle': '#ECEFF1',
+    },
+  },
 ]
 
 function Swatches() {
