@@ -109,7 +109,6 @@ export function ProjectsGallery({ projects, categories }: Props) {
                                 className="object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.04]"
                                 sizes="(max-width: 1024px) 100vw, 50vw"
                               />
-                              <div className="absolute inset-0 bg-[#0A1628]/30 transition-colors duration-300 group-hover:bg-[#0A1628]/15" />
                             </button>
                             {/* Expand affordance */}
                             <div className="absolute top-5 right-5 z-20 flex items-center gap-1.5 bg-[#0A1628]/70 backdrop-blur-sm border border-white/15 text-white/90 text-[0.58rem] font-semibold uppercase tracking-[0.18em] px-3 py-1.5 opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 [@media(hover:none)]:opacity-100 [@media(hover:none)]:translate-y-0 transition-all duration-300 pointer-events-none">
