@@ -23,31 +23,24 @@ interface Props {
   onCancel: () => void
 }
 
-function loadImage(src: string): Promise<HTMLImageElement> {
-  return new Promise((resolve, reject) => {
-    const img = new window.Image()
-    img.onload = () => resolve(img)
-    img.onerror = reject
-    img.src = src
-  })
-}
+// Crop server-side (sharp) rather than via a browser <canvas>. A canvas re-encode
+// drops the embedded ICC color profile, which makes wide-gamut (Display P3) photos
+// come out darker; the server route preserves it. See app/api/admin/crop/route.ts.
+async function cropToFile(original: File, area: Area): Promise<File> {
+  const fd = new FormData()
+  fd.append('file', original)
+  fd.append('x', String(Math.round(area.x)))
+  fd.append('y', String(Math.round(area.y)))
+  fd.append('width', String(Math.round(area.width)))
+  fd.append('height', String(Math.round(area.height)))
 
-async function cropToFile(src: string, area: Area, original: File): Promise<File> {
-  const img = await loadImage(src)
-  const canvas = document.createElement('canvas')
-  canvas.width = Math.round(area.width)
-  canvas.height = Math.round(area.height)
-  const ctx = canvas.getContext('2d')
-  if (!ctx) return original
-  ctx.drawImage(img, area.x, area.y, area.width, area.height, 0, 0, canvas.width, canvas.height)
+  const res = await fetch('/api/admin/crop', { method: 'POST', body: fd })
+  if (!res.ok) throw new Error(`crop failed: ${res.status}`)
 
-  const type = original.type === 'image/png' ? 'image/png' : 'image/jpeg'
-  const blob: Blob | null = await new Promise((resolve) =>
-    canvas.toBlob((b) => resolve(b), type, 0.92)
-  )
-  if (!blob) return original // fall back to the original if encoding fails
+  const blob = await res.blob()
+  const type = blob.type || original.type
+  const ext = type === 'image/png' ? 'png' : type === 'image/webp' ? 'webp' : 'jpg'
   const base = original.name.replace(/\.[^.]+$/, '')
-  const ext = type === 'image/png' ? 'png' : 'jpg'
   return new File([blob], `${base}-cropped.${ext}`, { type })
 }
 
@@ -75,7 +68,7 @@ export function ImageCropModal({ file, label, onComplete, onSkip, onCancel }: Pr
     if (!areaPixels) return
     setWorking(true)
     try {
-      const cropped = await cropToFile(src, areaPixels, file)
+      const cropped = await cropToFile(file, areaPixels)
       onComplete(cropped)
     } catch {
       onSkip(file) // if cropping fails, fall back to the original
