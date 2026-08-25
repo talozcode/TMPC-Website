@@ -1,4 +1,6 @@
 import type { Metadata } from 'next'
+import Image from 'next/image'
+import { Reveal, HeroParallax } from '@/components/motion'
 import { siteConfig } from '@/lib/data'
 import { createClient } from '@/lib/supabase/server'
 import { ProjectsGallery, type GalleryProject } from '@/components/projects-gallery'
@@ -48,22 +50,37 @@ export default async function ProjectsPage() {
 
   return (
     <>
-      {/* HERO */}
-      <section className="bg-canvas border-b border-line py-8 lg:py-10">
-        <div className="max-w-6xl mx-auto px-6 lg:px-8">
-          <div className="max-w-3xl">
-            <p className="text-xs font-semibold text-accent uppercase tracking-[0.25em] mb-5 animate-fade-in">
-              Projects
+      <section id="proj-hero" className="on-dark relative bg-canvas-dark overflow-hidden">
+        <div className="absolute inset-0">
+          <Image
+            src="/images/scenario-realestate.jpg"
+            alt=""
+            aria-hidden="true"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover opacity-35 scale-110"
+            style={{ translate: '0 var(--par, 0%)' }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-canvas-dark via-canvas-dark/85 to-canvas-dark/40" />
+          <div className="absolute inset-0 bg-gradient-to-t from-canvas-dark via-transparent to-canvas-dark/60" />
+        </div>
+        <div className="wrap relative z-10 py-[clamp(3.5rem,7vw,6rem)]">
+          <Reveal>
+            <p className="eye">Projects</p>
+          </Reveal>
+          <Reveal delay={90}>
+            <h1 className="t-display text-white mt-6">Some of Our Projects</h1>
+          </Reveal>
+          <Reveal delay={180}>
+            <p className="t-lead !text-white/60 mt-7">
+              Selected work across residential, hospitality, commercial, industrial, and community
+              projects, each one coordinated end to end by TMPC.
             </p>
-            <h1
-              className="font-display font-bold text-5xl sm:text-6xl lg:text-[4.5rem] text-ink leading-[1.08] tracking-tight animate-fade-up"
-              style={{ animationDelay: '0.1s' }}
-            >
-              Some of Our Projects
-            </h1>
-          </div>
+          </Reveal>
         </div>
       </section>
+      <HeroParallax targetId="proj-hero" amount={8} />
 
       <ProjectsGallery projects={projects} categories={categories} />
     </>

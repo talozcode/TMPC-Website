@@ -1,5 +1,12 @@
 @import "tailwindcss";
 
+/* ==========================================================================
+   TMPC Development
+   The palette is unchanged. What changed is the system around it: type sized
+   with its own tracking and leading, depth instead of hairline borders, a
+   generous section rhythm, and an interaction layer built on springs.
+   ========================================================================== */
+
 @theme {
   /* Backgrounds */
   --color-canvas:         #FFFFFF;
@@ -27,12 +34,36 @@
   --font-sans:    var(--font-inter), 'Inter', system-ui, sans-serif;
   --font-display: var(--font-outfit), 'Outfit', system-ui, sans-serif;
 
+  /* Corner radius. Softer than the old hard-edged boxes, but still
+     architectural: a bigger surface carries a bigger radius. */
+  --radius-card:  20px;
+  --radius-panel: 26px;
+  --radius-chip:  12px;
+
+  /* Depth carries hierarchy here instead of a 1px rule on everything. A bigger
+     surface reads as thicker: more spread and a deeper shadow than a chip. */
+  --shadow-soft:  0 1px 2px rgba(10,22,40,0.04), 0 8px 24px rgba(10,22,40,0.06);
+  --shadow-lift:  0 2px 6px rgba(10,22,40,0.05), 0 22px 48px rgba(10,22,40,0.11);
+  --shadow-deep:  0 4px 10px rgba(10,22,40,0.06), 0 40px 80px rgba(10,22,40,0.16);
+
   /* Animations */
   --animate-fade-up:       fade-up 0.6s ease-out both;
   --animate-fade-in:       fade-in 0.5s ease-out both;
   --animate-flow-pulse:    flow-pulse 2.4s ease-in-out infinite;
   --animate-hub-glow:      hub-glow 3s ease-in-out infinite;
   --animate-dot-blink:     dot-blink 2s ease-in-out infinite;
+}
+
+:root {
+  /* Section rhythm. The old page used 32px/48px bands, which read as cramped
+     no matter how good the type inside them was. */
+  --sec: clamp(4.5rem, 8vw, 8.5rem);
+  --sec-tight: clamp(3.25rem, 5.5vw, 5.5rem);
+  --gut: clamp(1.25rem, 4vw, 2rem);
+
+  /* The one easing used for anything that is not a spring, so the site moves
+     with a single voice. */
+  --ease: cubic-bezier(0.2, 0.7, 0.3, 1);
 }
 
 @keyframes fade-up {
@@ -98,13 +129,19 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    /* A larger base so body copy is comfortable rather than merely legible,
+       and so layout spacing expressed in rem scales with the user's setting. */
+    font-size: 17px;
+    -webkit-text-size-adjust: 100%;
   }
 
   body {
     background-color: var(--color-canvas);
     color: var(--color-ink);
+    line-height: 1.62;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
   }
 
   *:focus-visible {
@@ -112,11 +149,549 @@
     outline-offset: 3px;
     border-radius: 1px;
   }
+
+  /* On the navy bands the teal ring all but disappears, so it brightens. */
+  .on-dark *:focus-visible {
+    outline-color: var(--color-accent-light);
+  }
+}
+
+@layer components {
+  /* --- typography ------------------------------------------------------
+     Tracking is a function of size, never one value for every heading. Large
+     text reads too loose as it grows and wants negative tracking; small text
+     wants a touch of positive. Leading moves the other way: tight when large,
+     looser as it gets small. Size, weight and leading are set as a set. */
+  .t-display {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(2.35rem, 5.4vw, 4.4rem);
+    line-height: 1.0;
+    letter-spacing: -0.038em;
+    text-wrap: balance;
+    font-optical-sizing: auto;
+  }
+  .t-h1 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(2.3rem, 4.6vw, 3.6rem);
+    line-height: 1.04;
+    letter-spacing: -0.034em;
+    text-wrap: balance;
+    font-optical-sizing: auto;
+  }
+  .t-h2 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(1.9rem, 3.3vw, 2.7rem);
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+    text-wrap: balance;
+  }
+  .t-h3 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.3rem;
+    line-height: 1.2;
+    letter-spacing: -0.022em;
+  }
+  .t-h4 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.02rem;
+    line-height: 1.32;
+    letter-spacing: -0.01em;
+  }
+  /* Body copy sits near zero tracking; only the extremes get adjusted. */
+  .t-lead {
+    /* Fluid, so a 21px lead does not dominate a 390px screen. */
+    font-size: clamp(1.06rem, 0.9rem + 0.9vw, 1.24rem);
+    line-height: 1.52;
+    letter-spacing: -0.006em;
+    color: var(--color-ink-secondary);
+    max-width: 56ch;
+  }
+  .t-body {
+    font-size: 1rem;
+    line-height: 1.66;
+    letter-spacing: 0;
+  }
+  /* Small and uppercase, so tracking opens up rather than tightening. */
+  .t-micro {
+    font-size: 0.68rem;
+    line-height: 1.4;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  /* --- eyebrow ---------------------------------------------------------- */
+  .eye {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+  .eye::before {
+    content: '';
+    width: 1.6rem;
+    height: 2px;
+    background: var(--color-accent);
+    flex: none;
+    border-radius: 2px;
+  }
+  .on-dark .eye {
+    color: var(--color-accent-light);
+  }
+  .on-dark .eye::before {
+    background: var(--color-accent-light);
+  }
+
+  /* --- layout ----------------------------------------------------------- */
+  .wrap {
+    max-width: 76rem;
+    margin-inline: auto;
+    padding-inline: var(--gut);
+  }
+  .sec {
+    padding-block: var(--sec);
+  }
+  .sec-tight {
+    padding-block: var(--sec-tight);
+  }
+
+  /* --- buttons ---------------------------------------------------------- */
+  .btn,
+  .btn-2 {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    text-decoration: none;
+    padding: 0.95rem 1.75rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: -0.008em;
+    border-radius: 999px;
+    border: 1.5px solid transparent;
+    cursor: pointer;
+    font-family: inherit;
+    white-space: nowrap;
+    transition: transform 0.2s var(--ease), background 0.2s, border-color 0.2s,
+      color 0.2s, box-shadow 0.2s;
+  }
+  .btn {
+    background: var(--color-accent);
+    color: #fff;
+    box-shadow: 0 6px 18px rgba(8, 145, 178, 0.26);
+  }
+  .btn:hover {
+    background: var(--color-accent-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 26px rgba(8, 145, 178, 0.32);
+  }
+  .btn-2 {
+    background: transparent;
+    color: var(--color-ink);
+    border-color: var(--color-line);
+  }
+  .btn-2:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    transform: translateY(-2px);
+  }
+  .on-dark .btn-2 {
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.24);
+  }
+  .on-dark .btn-2:hover {
+    border-color: rgba(255, 255, 255, 0.7);
+    color: #fff;
+    background: rgba(255, 255, 255, 0.08);
+  }
+  .btn-sm {
+    padding: 0.62rem 1.25rem;
+    font-size: 0.88rem;
+  }
+
+  /* A text link that shows where it is going by moving in that direction. */
+  .lnk {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+    color: var(--color-accent);
+    transition: color 0.2s;
+  }
+  .lnk span[aria-hidden] {
+    transition: transform 0.25s var(--ease);
+  }
+  .lnk:hover span[aria-hidden] {
+    transform: translateX(4px);
+  }
+  .on-dark .lnk {
+    color: var(--color-accent-light);
+  }
+
+  /* --- surfaces --------------------------------------------------------- */
+  /* Depth, not a border, is what separates a card from the ground. The border
+     that remains is a hairline highlight, not the separation itself. */
+  .card {
+    background: var(--color-canvas);
+    border: 1px solid var(--color-line-subtle);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-soft);
+    transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease),
+      border-color 0.3s;
+  }
+  .card-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lift);
+    border-color: var(--color-canvas-muted);
+  }
+  .panel {
+    border-radius: var(--radius-panel);
+    box-shadow: var(--shadow-deep);
+    overflow: hidden;
+  }
 }
 
 @layer utilities {
   .bg-grid-dots {
     background-image: radial-gradient(circle, rgba(255,255,255,0.055) 1px, transparent 1px);
     background-size: 28px 28px;
+  }
+
+  /* --- reveal on scroll ------------------------------------------------
+     Scoped to .js, which an inline script in the layout sets before paint.
+     Without JavaScript the hidden state is never applied, so the page renders
+     fully visible rather than blank. */
+  .js .rv {
+    opacity: 0;
+    transform: translateY(26px);
+    transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+    transition-delay: var(--d, 0ms);
+  }
+  .js .rv.in {
+    opacity: 1;
+    transform: none;
+  }
+  /* An image wipes open from its own edge rather than sliding in from nowhere. */
+  .js .rv-img {
+    clip-path: inset(0 0 100% 0);
+    transition: clip-path 0.9s var(--ease);
+    transition-delay: var(--d, 0ms);
+  }
+  .js .rv-img.in {
+    clip-path: inset(0 0 0 0);
+  }
+
+  /* --- press feedback ---------------------------------------------------
+     Feedback belongs on pointer-down, not on release. Waiting for the click to
+     acknowledge a press is the difference between an interface that feels
+     direct and one that feels dead. */
+  .press:active {
+    transform: scale(0.97);
+    transition-duration: 60ms;
+  }
+  .press-sm:active {
+    transform: scale(0.988);
+    transition-duration: 60ms;
+  }
+  .btn:active,
+  .btn-2:active {
+    transform: scale(0.97);
+    transition-duration: 60ms;
+  }
+
+  /* A pointer is precise enough for hover; a finger is not, and a sticky hover
+     state left behind by a tap reads as stuck. */
+  @media (hover: none) {
+    .btn:hover,
+    .btn-2:hover,
+    .card-hover:hover {
+      transform: none;
+    }
+  }
+}
+
+/* ==========================================================================
+   Floating chrome
+   Translucent material with the page passing underneath, rather than an opaque
+   strip that permanently eats a band of the viewport. The separation appears
+   only once content is actually behind it, as a scroll edge effect rather than
+   a 1px rule sitting there against nothing.
+   ========================================================================== */
+.hdr {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(10, 22, 40, 0.72);
+  backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid transparent;
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+.hdr::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  height: 20px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  background: linear-gradient(180deg, rgba(10, 22, 40, 0.12), rgba(10, 22, 40, 0));
+}
+.hdr[data-scrolled='true'] {
+  background: rgba(10, 22, 40, 0.86);
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+.hdr[data-scrolled='true']::after {
+  opacity: 1;
+}
+
+/* The underline grows out of the leading edge toward where you are going. */
+.nav-link {
+  position: relative;
+  text-decoration: none;
+  padding-block: 0.3rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.62);
+  transition: color 0.2s;
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 100%;
+  bottom: 0;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--color-accent-light);
+  transition: right 0.25s var(--ease);
+}
+.nav-link:hover {
+  color: #fff;
+}
+.nav-link:hover::after,
+.nav-link[data-active='true']::after {
+  right: 0;
+}
+.nav-link[data-active='true'] {
+  color: #fff;
+}
+
+/* --- menu button --------------------------------------------------------- */
+.menu-btn {
+  display: inline-flex;
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  cursor: pointer;
+  padding: 0;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  transition: transform 0.2s var(--ease), border-color 0.2s, background 0.2s;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+.menu-btn:hover {
+  border-color: rgba(255, 255, 255, 0.4);
+}
+.menu-btn:active {
+  transform: scale(0.94);
+  transition-duration: 60ms;
+}
+.menu-btn span,
+.menu-btn span::before,
+.menu-btn span::after {
+  display: block;
+  width: 17px;
+  height: 1.5px;
+  border-radius: 2px;
+  background: #fff;
+  content: '';
+  position: relative;
+}
+.menu-btn span::before {
+  position: absolute;
+  top: -6px;
+}
+.menu-btn span::after {
+  position: absolute;
+  top: 6px;
+}
+@media (min-width: 900px) {
+  .menu-btn {
+    display: none;
+  }
+}
+
+/* ==========================================================================
+   Bottom sheet navigation
+   Grabbed anywhere, tracked one to one from wherever it was grabbed, resisting
+   past its open position rather than stopping dead, and thrown away with a
+   flick. See components/layout/mobile-nav.tsx for the mechanics.
+   ========================================================================== */
+.sheet-root {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+}
+.sheet-scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 22, 40, 0.46);
+  will-change: opacity, backdrop-filter;
+}
+.sheet {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  max-height: 88vh;
+  overflow: hidden auto;
+  overscroll-behavior: contain;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: saturate(180%) blur(28px);
+  /* A bright top edge reads as light catching the near edge of the material. */
+  border-top: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: var(--radius-panel) var(--radius-panel) 0 0;
+  box-shadow: 0 -8px 60px rgba(10, 22, 40, 0.3);
+  padding: 0 var(--gut) calc(1.75rem + env(safe-area-inset-bottom));
+  will-change: transform;
+  touch-action: none;
+}
+/* The sheet takes focus itself so it is announced on open; it is a programmatic
+   target, not a tab stop, so it gets no visible ring of its own. */
+.sheet:focus {
+  outline: none;
+}
+.sheet-grip {
+  padding: 0.75rem 0 1rem;
+  display: flex;
+  justify-content: center;
+  cursor: grab;
+}
+.sheet-grip span {
+  width: 42px;
+  height: 5px;
+  border-radius: 999px;
+  background: rgba(17, 24, 39, 0.2);
+}
+.sheet nav {
+  display: flex;
+  flex-direction: column;
+}
+.sheet-link {
+  text-decoration: none;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.32rem;
+  letter-spacing: -0.026em;
+  padding: 0.7rem 0;
+  color: var(--color-ink);
+  border-bottom: 1px solid rgba(17, 24, 39, 0.07);
+  transition: color 0.15s;
+}
+.sheet-link[data-active='true'],
+.sheet-link:active {
+  color: var(--color-accent);
+}
+.sheet-cta {
+  margin-top: 1.5rem;
+  width: 100%;
+}
+.sheet-mail {
+  display: block;
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  color: var(--color-ink-muted);
+  text-decoration: none;
+}
+
+/* ==========================================================================
+   Accessibility signals
+   Reduced motion is not "no feedback"; it is a gentler, non vestibular
+   equivalent. Transparency and contrast are independent preferences and are
+   answered separately.
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .js .rv,
+  .js .rv-img {
+    opacity: 1;
+    transform: none;
+    clip-path: none;
+    transition: none;
+  }
+  .btn:hover,
+  .btn-2:hover,
+  .card-hover:hover {
+    transform: none;
+  }
+  .sheet {
+    transition: opacity 200ms ease;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .hdr,
+  .hdr[data-scrolled='true'] {
+    background: var(--color-canvas-dark);
+    backdrop-filter: none;
+  }
+  .sheet {
+    background: var(--color-canvas);
+    backdrop-filter: none;
+  }
+  .sheet-scrim {
+    background: rgba(10, 22, 40, 0.75);
+    backdrop-filter: none !important;
+  }
+}
+
+@media (prefers-contrast: more) {
+  :root {
+    --color-ink-muted: #4B5563;
+    --color-line: #B3BCCA;
+  }
+  .hdr,
+  .hdr[data-scrolled='true'] {
+    background: var(--color-canvas-dark);
+    backdrop-filter: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+  }
+  .sheet {
+    background: var(--color-canvas);
+    backdrop-filter: none;
+  }
+  .card {
+    border-color: var(--color-line);
+  }
+  .btn-2 {
+    border-color: var(--color-ink);
   }
 }

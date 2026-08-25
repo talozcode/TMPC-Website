@@ -1,45 +1,26 @@
 'use client'
 
-import { useEffect, useRef, useState, type ReactNode } from 'react'
+import type { ReactNode } from 'react'
+import { Reveal } from '@/components/motion'
 
-interface FadeInProps {
+/**
+ * Kept as the name the pages already call, now backed by the shared Reveal so
+ * there is a single reveal implementation and a single easing on the site.
+ */
+export function FadeIn({
+  children,
+  delay = 0,
+  className = '',
+}: {
   children: ReactNode
   delay?: number
+  /** Accepted for call-site compatibility; the distance now comes from the CSS. */
   y?: number
   className?: string
-}
-
-export function FadeIn({ children, delay = 0, y = 18, className = '' }: FadeInProps) {
-  const ref = useRef<HTMLDivElement>(null)
-  const [visible, setVisible] = useState(false)
-
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true)
-          observer.disconnect()
-        }
-      },
-      { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
-    )
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [])
-
+}) {
   return (
-    <div
-      ref={ref}
-      className={className}
-      style={{
-        opacity: visible ? 1 : 0,
-        transform: visible ? 'none' : `translateY(${y}px)`,
-        transition: `opacity 0.65s ease-out ${delay}ms, transform 0.65s ease-out ${delay}ms`,
-      }}
-    >
+    <Reveal delay={delay} className={className}>
       {children}
-    </div>
+    </Reveal>
   )
 }

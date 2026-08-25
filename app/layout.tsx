@@ -39,13 +39,24 @@ export const metadata: Metadata = {
   },
 }
 
+/* Set before first paint. Every scroll-reveal rule is scoped to .js, so without
+   JavaScript the hidden state is never applied and the page renders in full
+   rather than blank. Inline and synchronous on purpose: deferring it to an
+   effect would flash the content in, then hide it again. */
+const JS_FLAG = 'document.documentElement.classList.add("js")'
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${outfit.variable} h-full`}>
+    // suppressHydrationWarning: the inline script below adds a class to <html>
+    // before React hydrates, which React would otherwise flag as a mismatch.
+    <html lang="en" className={`${inter.variable} ${outfit.variable} h-full`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: JS_FLAG }} />
+      </head>
       <body className="min-h-full flex flex-col font-sans antialiased">
         <SiteShell>{children}</SiteShell>
       </body>

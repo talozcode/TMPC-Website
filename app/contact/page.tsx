@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import Image from 'next/image'
+import { Reveal, HeroParallax } from '@/components/motion'
 import { siteConfig } from '@/lib/data'
 import { ContactForm } from '@/components/contact-form'
 
@@ -15,7 +17,7 @@ const contactMethods = [
     action: (
       <a
         href={`mailto:${siteConfig.email}`}
-        className="text-sm font-semibold text-accent hover:text-accent-dark transition-colors duration-150 break-all"
+        className="lnk break-all"
       >
         {siteConfig.email}
       </a>
@@ -29,7 +31,7 @@ const contactMethods = [
         href="https://wa.me/66XXXXXXXXX"
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex items-center gap-2 text-sm font-semibold bg-accent text-white px-5 py-2.5 hover:bg-accent-dark transition-colors duration-200"
+        className="btn btn-sm"
       >
         Chat on WhatsApp <span aria-hidden="true">&#8594;</span>
       </a>
@@ -38,9 +40,7 @@ const contactMethods = [
   {
     label: 'Location',
     description: 'On the ground in Bangkok, available across Thailand.',
-    action: (
-      <p className="text-sm font-semibold text-ink">{siteConfig.location}</p>
-    ),
+    action: <p className="t-h4 text-ink">{siteConfig.location}</p>,
   },
 ]
 
@@ -48,85 +48,99 @@ export default function ContactPage() {
   return (
     <>
       {/* 1. Hero */}
-      <section className="bg-canvas border-b border-line py-10 lg:py-14">
-        <div className="max-w-6xl mx-auto px-6 lg:px-8">
-          <div className="max-w-3xl">
-            <p className="text-xs font-semibold text-accent uppercase tracking-[0.25em] mb-6 animate-fade-in">
-              Get in Touch
+      <section id="contact-hero" className="on-dark relative bg-canvas-dark overflow-hidden">
+        <div className="absolute inset-0">
+          <Image
+            src="/images/hero-home.jpg"
+            alt=""
+            aria-hidden="true"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover opacity-35 scale-110"
+            style={{ translate: '0 var(--par, 0%)' }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-canvas-dark via-canvas-dark/85 to-canvas-dark/40" />
+          <div className="absolute inset-0 bg-gradient-to-t from-canvas-dark via-transparent to-canvas-dark/60" />
+        </div>
+        <div className="wrap relative z-10 py-[clamp(4rem,8vw,7rem)]">
+          <Reveal>
+            <p className="eye">Get in Touch</p>
+          </Reveal>
+          <Reveal delay={90}>
+            <h1 className="t-display text-white mt-6">Discuss Your Project</h1>
+          </Reveal>
+          <Reveal delay={180}>
+            <p className="t-lead !text-white/60 mt-7">
+              Tell us what you are working on. TMPC will give you a clear picture of what delivery
+              looks like in Thailand.
             </p>
-            <h1
-              className="font-display font-bold text-5xl sm:text-6xl lg:text-[4.5rem] text-ink leading-[1.08] tracking-tight mb-4 animate-fade-up"
-              style={{ animationDelay: '0.1s' }}
-            >
-              Discuss Your Project
-            </h1>
-            <p
-              className="text-lg text-ink-secondary leading-relaxed max-w-xl animate-fade-up"
-              style={{ animationDelay: '0.2s' }}
-            >
-              Tell us what you are working on. TMPC will give you a clear picture of what delivery looks like in Thailand.
-            </p>
-          </div>
+          </Reveal>
+          <Reveal delay={260}>
+            <div className="flex flex-wrap gap-3 mt-9">
+              <Link href="#inquiry-form" className="btn">Start the conversation</Link>
+              <a href={`mailto:${siteConfig.email}`} className="btn-2">
+                Email us <span aria-hidden="true">&#8594;</span>
+              </a>
+            </div>
+          </Reveal>
         </div>
       </section>
+      <HeroParallax targetId="contact-hero" amount={8} />
 
       {/* 2. Contact Methods */}
-      <section className="bg-canvas-subtle border-b border-line py-8 lg:py-10">
-        <div className="max-w-6xl mx-auto px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {contactMethods.map((method) => (
-              <div key={method.label} className="bg-canvas border border-line p-8 lg:p-10 hover:border-accent/40 hover:shadow-sm transition-all duration-200">
-                <p className="text-[0.65rem] font-semibold text-accent uppercase tracking-[0.2em] mb-4">
+      <section className="bg-canvas-subtle sec-tight">
+        <div className="wrap grid gap-5 md:grid-cols-3">
+          {contactMethods.map((method, i) => (
+            <Reveal key={method.label} delay={i * 80} className="flex">
+              <div className="card card-hover flex flex-col flex-1 p-8 lg:p-9">
+                <p className="text-[0.62rem] font-bold text-accent uppercase tracking-[0.2em] mb-4">
                   {method.label}
                 </p>
-                <p className="text-sm text-ink-muted leading-relaxed mb-5">
+                <p className="text-[0.95rem] text-ink-muted leading-relaxed mb-6 flex-1">
                   {method.description}
                 </p>
                 {method.action}
               </div>
-            ))}
-          </div>
+            </Reveal>
+          ))}
         </div>
       </section>
 
-      {/* 4. Contact Form */}
-      <section id="inquiry-form" className="bg-canvas border-b border-line py-8 lg:py-12">
-        <div className="max-w-6xl mx-auto px-6 lg:px-8">
-          <div className="grid lg:grid-cols-[280px_1fr] gap-12 lg:gap-20">
-            <div className="pt-1">
-              <p className="text-xs font-semibold text-accent uppercase tracking-[0.25em] mb-4">
-                Inquiry Form
-              </p>
-              <h2 className="font-display font-semibold text-2xl lg:text-3xl text-ink tracking-tight mb-3">
-                Start a Conversation
-              </h2>
-              <p className="text-sm text-ink-muted leading-relaxed">
-                Share a few details about your project. TMPC will follow up to set up an initial call.
-              </p>
+      {/* 3. Contact Form */}
+      <section id="inquiry-form" className="bg-canvas sec scroll-mt-24">
+        <div className="wrap grid lg:grid-cols-[minmax(0,19rem)_1fr] gap-10 lg:gap-20">
+          <Reveal>
+            <p className="eye">Inquiry Form</p>
+            <h2 className="t-h2 text-ink mt-6 mb-4">Start a Conversation</h2>
+            <p className="t-body text-ink-muted max-w-[34ch]">
+              Share a few details about your project. TMPC will follow up to set up an initial call.
+            </p>
+          </Reveal>
+          <Reveal delay={120}>
+            <div className="card p-7 lg:p-10">
+              <ContactForm />
             </div>
-            <ContactForm />
-          </div>
+          </Reveal>
         </div>
       </section>
 
-      {/* 5. CTA */}
-      <section className="bg-canvas-dark py-10 lg:py-12">
-        <div className="max-w-xl mx-auto px-6 lg:px-8 text-center">
-          <p className="text-xs font-semibold text-accent uppercase tracking-[0.25em] mb-6">
-            Ready to Begin
-          </p>
-          <h2 className="font-display font-bold text-2xl lg:text-3xl text-white tracking-tight leading-tight mb-5">
-            One partner. Full accountability.
-          </h2>
-          <p className="text-base text-white/50 leading-relaxed mb-10">
-            Most project problems are easier to manage with the right partner involved early. Get in touch.
-          </p>
-          <Link
-            href="#inquiry-form"
-            className="inline-flex items-center text-sm font-semibold bg-accent text-white px-7 py-3.5 hover:bg-accent-dark transition-colors duration-200"
-          >
-            Discuss Your Project
-          </Link>
+      {/* 4. CTA */}
+      <section className="on-dark bg-canvas-dark">
+        <div className="wrap sec-tight">
+          <Reveal className="max-w-2xl mx-auto text-center">
+            <p className="eye">Ready to Begin</p>
+            <h2 className="t-h1 text-white mt-6">One partner. Full accountability.</h2>
+            <p className="t-lead !text-white/55 mt-6 mx-auto">
+              Most project problems are easier to manage with the right partner involved early.
+            </p>
+            <div className="flex flex-wrap justify-center gap-3 mt-10">
+              <Link href="#inquiry-form" className="btn">Discuss Your Project</Link>
+              <Link href="/projects" className="btn-2">
+                See our work <span aria-hidden="true">&#8594;</span>
+              </Link>
+            </div>
+          </Reveal>
         </div>
       </section>
     </>

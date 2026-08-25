@@ -41,8 +41,31 @@ A marketing site plus a self-serve CMS. **Supabase is the single source of truth
 pages render whatever the admin edits.
 
 **Stack:** Next.js 16 App Router, React 19, Tailwind v4, Supabase (Postgres + Auth + Storage).
-No UI component library; the design system is hand-built (tokens + `animate-*` keyframes in
-`app/globals.css`: `canvas`/`ink`/`accent`/`line` colors, `font-display`).
+No UI component library; the design system is hand-built in `app/globals.css`.
+
+**The design system** (`app/globals.css`). Colors live in the Tailwind v4 `@theme` block
+(`canvas`/`ink`/`accent`/`line`) alongside radius and shadow tokens. On top of them:
+- **Type scale:** `.t-display`, `.t-h1`..`.t-h4`, `.t-lead`, `.t-body`, `.t-micro`. Tracking is a
+  function of size (large text gets negative tracking, small uppercase gets positive) and leading
+  moves inversely. Do not reach for `tracking-tight` on a heading; use the scale class.
+- **Surfaces:** `.card` (+ `.card-hover`) and `.panel`. Separation comes from *depth*, not a 1px
+  rule on everything. Bigger surface, deeper shadow.
+- **Chrome:** `.hdr` is a translucent `backdrop-filter` layer the page scrolls under, with a scroll
+  edge effect (`[data-scrolled]`) rather than a permanent border.
+- Also `.btn`/`.btn-2`/`.btn-sm`, `.lnk`, `.eye` (eyebrow with a rule), `.wrap`, `.sec`/`.sec-tight`.
+- `.on-dark` on a navy section restyles eyebrows, secondary buttons, and focus rings for it.
+- `prefers-reduced-motion`, `prefers-reduced-transparency` and `prefers-contrast` are each answered
+  separately at the foot of the file. Reduced motion means gentler, not absent.
+
+**Motion** (`lib/spring.ts`, `components/motion.tsx`). Anything a user can touch is driven by a
+spring parameterised as **damping ratio + response** (not mass/stiffness), because springs are
+interruptible and carry velocity through a re-target. `project()` gives a flick's resting point
+(exponential decay, not `v^2/2a`), `rubberband()` gives progressive resistance at a boundary, and
+`VelocityTracker` gives a real release velocity over a 100ms window. Used by
+`components/layout/mobile-nav.tsx` (drag-to-dismiss bottom sheet) and
+`components/hero-project-carousel.tsx` (1:1 drag, momentum projection, velocity handoff).
+`components/motion.tsx` exports `Reveal` (scroll reveal, `rise` and `image` variants, `delay` for
+stagger) and `HeroParallax`. `components/fade-in.tsx` is a thin wrapper kept for existing callers.
 
 **Three Supabase clients, pick by context:**
 - `lib/supabase/client.ts`: browser, anon key (client components).
@@ -64,6 +87,24 @@ Content tables: `projects` + `project_images`, `categories`, `services`, `team_m
 Both route every file through `components/admin/image-crop-modal.tsx` (react-easy-crop) before
 upload. The public project gallery (`components/projects-gallery.tsx`) uses
 `yet-another-react-lightbox` for fullscreen + zoom.
+
+## Gotchas that have bitten this repo
+
+**Two `public/images` files are 29-byte HTML stubs, not JPEGs**: `bangkok-bg.jpg` and
+`scenario-industrial.jpg`. `next/image` returns 400 for them. The second is referenced by a
+`project_images` row, so /projects logs one 400 until the real file is supplied. Check
+`file -b --mime-type` before using anything from `public/images`.
+
+**The `.js` class on `<html>`** is set by an inline pre-paint script in `app/layout.tsx`. Every
+scroll-reveal rule is scoped to it so the page renders fully visible without JavaScript. `<html>`
+carries `suppressHydrationWarning` because of it; do not remove either half.
+
+**`backdrop-filter` establishes a containing block for `position: fixed` descendants.** The mobile
+nav sheet must stay portalled to `document.body`, or it gets trapped inside the translucent
+header's height.
+
+**Never hand-write `-webkit-backdrop-filter` next to the standard property in CSS.** Lightning CSS
+dedupes the pair and can keep only the prefixed one, silently killing the blur.
 
 ## Critical gotcha: server components & interactivity
 
