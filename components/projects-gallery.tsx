@@ -59,7 +59,7 @@ export function ProjectsGallery({ projects, categories }: Props) {
                 aria-pressed={activeCategory === cat}
                 className={`press rounded-full text-[0.66rem] font-bold uppercase tracking-[0.16em] px-4 py-2.5 border transition-colors duration-200 ${
                   activeCategory === cat
-                    ? 'bg-accent text-white border-accent shadow-[0_4px_14px_rgba(8,145,178,0.28)]'
+                    ? 'bg-accent text-white border-accent shadow-[0_4px_14px_rgba(13,113,134,0.28)]'
                     : 'text-ink-muted border-line hover:border-accent/50 hover:text-ink'
                 }`}
               >
@@ -258,8 +258,8 @@ export function ProjectsGallery({ projects, categories }: Props) {
         animation={{ fade: 300, swipe: 400 }}
         carousel={{ finite: false, padding: '5%' }}
         styles={{
-          container: { backgroundColor: 'rgba(8,18,33,0.94)' },
-          root: { '--yarl__color_button': 'rgba(255,255,255,0.7)', '--yarl__color_button_active': '#22C5E0' },
+          container: { backgroundColor: 'rgba(11,33,55,0.95)' },
+          root: { '--yarl__color_button': 'rgba(255,255,255,0.7)', '--yarl__color_button_active': '#57BACE' },
         }}
       />
     </>

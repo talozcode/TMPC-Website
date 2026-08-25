@@ -44,7 +44,18 @@ pages render whatever the admin edits.
 No UI component library; the design system is hand-built in `app/globals.css`.
 
 **The design system** (`app/globals.css`). Colors live in the Tailwind v4 `@theme` block
-(`canvas`/`ink`/`accent`/`line`) alongside radius and shadow tokens. On top of them:
+(`canvas`/`ink`/`accent`/`line`) alongside radius and shadow tokens.
+
+**The palette is navy and teal over warm sand**, redrawn 25/08/2026. Every value is deliberate,
+so do not swap one in isolation: the anchor `#0B2137` is a navy with chroma in it rather than a
+near-black; the accent `#0D7186` is a petrol teal chosen specifically because the previous
+`#0891B2` was within a hair of Tailwind's default cyan; and the neutrals (`#FBF9F4` paper,
+`#F0EBE1` sand, `#E0D9CB` rules) are warm so the cool anchor has something to push against. That
+warm/cool tension is the whole point: an earlier all-cool version read sterile. Shadows are
+warm-tinted (`rgba(38,30,20,...)`) to sit in the same world; a blue shadow on sand looks wrong.
+`--color-ink-muted` is `#5C626B` because anything lighter fails AA on the sand band.
+
+On top of them:
 - **Type scale:** `.t-display`, `.t-h1`..`.t-h4`, `.t-lead`, `.t-body`, `.t-micro`. Tracking is a
   function of size (large text gets negative tracking, small uppercase gets positive) and leading
   moves inversely. Do not reach for `tracking-tight` on a heading; use the scale class.
@@ -98,6 +109,11 @@ upload. The public project gallery (`components/projects-gallery.tsx`) uses
 **The `.js` class on `<html>`** is set by an inline pre-paint script in `app/layout.tsx`. Every
 scroll-reveal rule is scoped to it so the page renders fully visible without JavaScript. `<html>`
 carries `suppressHydrationWarning` because of it; do not remove either half.
+
+**The header opacity is load-bearing.** `.hdr` sits at `rgba(11,33,55,0.90)`. It was `0.72`,
+which composites over the page ground to roughly `#4E5764`, a muddy grey: the brand navy visibly
+stopped being navy. Any drop below about `0.88` brings that back. Translucency is traded away
+here on purpose.
 
 **`backdrop-filter` establishes a containing block for `position: fixed` descendants.** The mobile
 nav sheet must stay portalled to `document.body`, or it gets trapped inside the translucent

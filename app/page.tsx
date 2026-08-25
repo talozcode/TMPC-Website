@@ -161,8 +161,8 @@ export default async function HomePage() {
             <Reveal variant="image" delay={120}>
               <div className="panel relative aspect-[4/3]">
                 <Image
-                  src="/images/hero-home.jpg"
-                  alt="The Bangkok skyline at night"
+                  src="/images/scenario-realestate.jpg"
+                  alt="A residential development at dusk"
                   fill
                   className="object-cover"
                   sizes="(max-width: 1024px) 100vw, 50vw"

@@ -12,7 +12,7 @@ const projectTypeOptions = [
 ]
 
 const inputClass =
-  'w-full rounded-[14px] border border-line bg-canvas-subtle text-ink text-[0.95rem] px-4.5 py-3.5 outline-none focus:border-accent focus:bg-canvas focus:shadow-[0_0_0_4px_rgba(8,145,178,0.1)] transition-all duration-200 placeholder:text-ink-muted'
+  'w-full rounded-[14px] border border-line bg-canvas-subtle text-ink text-[0.95rem] px-4.5 py-3.5 outline-none focus:border-accent focus:bg-canvas focus:shadow-[0_0_0_4px_rgba(13,113,134,0.12)] transition-all duration-200 placeholder:text-ink-muted'
 
 const labelClass =
   'block text-[0.62rem] font-bold text-ink-secondary uppercase tracking-[0.14em] mb-2.5'

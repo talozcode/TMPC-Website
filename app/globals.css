@@ -2,33 +2,37 @@
 
 /* ==========================================================================
    TMPC Development
-   The palette is unchanged. What changed is the system around it: type sized
-   with its own tracking and leading, depth instead of hairline borders, a
-   generous section rhythm, and an interaction layer built on springs.
+   Palette: navy and teal, redrawn. The identity is unchanged but every value
+   is deliberate: a navy with chroma in it rather than a near-black, a petrol
+   teal in place of the framework-default cyan, and warm sand neutrals so the
+   cool anchor has something to push against. Shadows are warm-tinted to match
+   the ground. Around it: type sized with its own tracking and leading, depth
+   instead of hairline borders, a generous section rhythm, and an interaction
+   layer built on springs.
    ========================================================================== */
 
 @theme {
   /* Backgrounds */
-  --color-canvas:         #FFFFFF;
-  --color-canvas-subtle:  #F4F7FB;
-  --color-canvas-muted:   #E8EDF5;
-  --color-canvas-dark:    #0A1628;
-  --color-navy:           #0F2040;
+  --color-canvas:         #FBF9F4;
+  --color-canvas-subtle:  #F0EBE1;
+  --color-canvas-muted:   #E5DECF;
+  --color-canvas-dark:    #0B2137;
+  --color-navy:           #123152;
 
   /* Text */
-  --color-ink:            #111827;
-  --color-ink-secondary:  #374151;
-  --color-ink-muted:      #6B7280;
+  --color-ink:            #14202C;
+  --color-ink-secondary:  #3B4651;
+  --color-ink-muted:      #5C626B;
 
   /* Teal: primary accent */
-  --color-accent:         #0891B2;
-  --color-accent-light:   #22C5E0;
-  --color-accent-dark:    #0E7490;
-  --color-accent-muted:   #A5D8E6;
+  --color-accent:         #0D7186;
+  --color-accent-light:   #57BACE;
+  --color-accent-dark:    #0A5A6B;
+  --color-accent-muted:   #A8D3DC;
 
   /* Borders */
-  --color-line:           #E5E9EF;
-  --color-line-subtle:    #EFF2F7;
+  --color-line:           #E0D9CB;
+  --color-line-subtle:    #EDE8DC;
 
   /* Fonts */
   --font-sans:    var(--font-inter), 'Inter', system-ui, sans-serif;
@@ -42,9 +46,9 @@
 
   /* Depth carries hierarchy here instead of a 1px rule on everything. A bigger
      surface reads as thicker: more spread and a deeper shadow than a chip. */
-  --shadow-soft:  0 1px 2px rgba(10,22,40,0.04), 0 8px 24px rgba(10,22,40,0.06);
-  --shadow-lift:  0 2px 6px rgba(10,22,40,0.05), 0 22px 48px rgba(10,22,40,0.11);
-  --shadow-deep:  0 4px 10px rgba(10,22,40,0.06), 0 40px 80px rgba(10,22,40,0.16);
+  --shadow-soft:  0 1px 2px rgba(38, 30, 20, 0.04), 0 8px 24px rgba(38, 30, 20, 0.06);
+  --shadow-lift:  0 2px 6px rgba(38, 30, 20, 0.05), 0 22px 48px rgba(38, 30, 20, 0.11);
+  --shadow-deep:  0 4px 10px rgba(38, 30, 20, 0.06), 0 40px 80px rgba(38, 30, 20, 0.16);
 
   /* Animations */
   --animate-fade-up:       fade-up 0.6s ease-out both;
@@ -82,8 +86,8 @@
 }
 
 @keyframes hub-glow {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(8,145,178,0); }
-  50%       { box-shadow: 0 0 28px 6px rgba(8,145,178,0.18); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(13, 113, 134, 0); }
+  50%       { box-shadow: 0 0 28px 6px rgba(13, 113, 134, 0.18); }
 }
 
 @keyframes dot-blink {
@@ -287,12 +291,12 @@
   .btn {
     background: var(--color-accent);
     color: #fff;
-    box-shadow: 0 6px 18px rgba(8, 145, 178, 0.26);
+    box-shadow: 0 6px 18px rgba(13, 113, 134, 0.26);
   }
   .btn:hover {
     background: var(--color-accent-dark);
     transform: translateY(-2px);
-    box-shadow: 0 12px 26px rgba(8, 145, 178, 0.32);
+    box-shadow: 0 12px 26px rgba(13, 113, 134, 0.32);
   }
   .btn-2 {
     background: transparent;
@@ -432,7 +436,7 @@
   position: sticky;
   top: 0;
   z-index: 50;
-  background: rgba(10, 22, 40, 0.72);
+  background: rgba(11, 33, 55, 0.90);
   backdrop-filter: saturate(180%) blur(20px);
   border-bottom: 1px solid transparent;
   transition: background 0.3s ease, border-color 0.3s ease;
@@ -447,10 +451,10 @@
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.3s ease;
-  background: linear-gradient(180deg, rgba(10, 22, 40, 0.12), rgba(10, 22, 40, 0));
+  background: linear-gradient(180deg, rgba(38, 30, 20, 0.12), rgba(38, 30, 20, 0));
 }
 .hdr[data-scrolled='true'] {
-  background: rgba(10, 22, 40, 0.86);
+  background: rgba(11, 33, 55, 0.96);
   border-bottom-color: rgba(255, 255, 255, 0.08);
 }
 .hdr[data-scrolled='true']::after {
@@ -552,7 +556,7 @@
 .sheet-scrim {
   position: absolute;
   inset: 0;
-  background: rgba(10, 22, 40, 0.46);
+  background: rgba(11, 33, 55, 0.50);
   will-change: opacity, backdrop-filter;
 }
 .sheet {
@@ -568,7 +572,7 @@
   /* A bright top edge reads as light catching the near edge of the material. */
   border-top: 1px solid rgba(255, 255, 255, 0.8);
   border-radius: var(--radius-panel) var(--radius-panel) 0 0;
-  box-shadow: 0 -8px 60px rgba(10, 22, 40, 0.3);
+  box-shadow: 0 -8px 60px rgba(38, 30, 20, 0.30);
   padding: 0 var(--gut) calc(1.75rem + env(safe-area-inset-bottom));
   will-change: transform;
   touch-action: none;
@@ -588,7 +592,7 @@
   width: 42px;
   height: 5px;
   border-radius: 999px;
-  background: rgba(17, 24, 39, 0.2);
+  background: rgba(20, 32, 44, 0.2);
 }
 .sheet nav {
   display: flex;
@@ -602,7 +606,7 @@
   letter-spacing: -0.026em;
   padding: 0.7rem 0;
   color: var(--color-ink);
-  border-bottom: 1px solid rgba(17, 24, 39, 0.07);
+  border-bottom: 1px solid rgba(20, 32, 44, 0.07);
   transition: color 0.15s;
 }
 .sheet-link[data-active='true'],
@@ -668,15 +672,15 @@
     backdrop-filter: none;
   }
   .sheet-scrim {
-    background: rgba(10, 22, 40, 0.75);
+    background: rgba(11, 33, 55, 0.80);
     backdrop-filter: none !important;
   }
 }
 
 @media (prefers-contrast: more) {
   :root {
-    --color-ink-muted: #4B5563;
-    --color-line: #B3BCCA;
+    --color-ink-muted: #474D56;
+    --color-line: #BFB6A4;
   }
   .hdr,
   .hdr[data-scrolled='true'] {
