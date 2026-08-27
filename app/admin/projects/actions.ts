@@ -2,25 +2,38 @@
 
 import { revalidatePath } from 'next/cache'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { slugify } from '@/lib/utils'
 import type { Project } from '@/lib/types'
 
 export async function createProject(data: Partial<Project>): Promise<{ id: string } | { error: string }> {
   if (!data.title?.trim()) return { error: 'Title is required' }
   const supabase = createAdminClient()
-  const { data: project, error } = await supabase.from('projects').insert(data).select().single()
-  if (error) return { error: error.message }
+  const payload = { ...data, slug: data.slug?.trim() || slugify(data.title) }
+  const { data: project, error } = await supabase.from('projects').insert(payload).select().single()
+  if (error) {
+    if (error.code === '23505') return { error: 'That URL slug is already used by another project.' }
+    return { error: error.message }
+  }
   revalidatePath('/admin/projects')
   revalidatePath('/projects')
+  revalidatePath('/projects/[slug]', 'page')
   return { id: project.id }
 }
 
 export async function updateProject(id: string, data: Partial<Project>): Promise<{ id: string } | { error: string }> {
   if (!data.title?.trim()) return { error: 'Title is required' }
   const supabase = createAdminClient()
-  const { error } = await supabase.from('projects').update(data).eq('id', id)
-  if (error) return { error: error.message }
+  // Only ever fill a blank slug. Regenerating it from a changed title would
+  // silently break every link that already points at this project.
+  const payload = { ...data, slug: data.slug?.trim() || slugify(data.title) }
+  const { error } = await supabase.from('projects').update(payload).eq('id', id)
+  if (error) {
+    if (error.code === '23505') return { error: 'That URL slug is already used by another project.' }
+    return { error: error.message }
+  }
   revalidatePath('/admin/projects')
   revalidatePath('/projects')
+  revalidatePath('/projects/[slug]', 'page')
   return { id }
 }
 
@@ -43,6 +56,7 @@ export async function deleteProject(id: string): Promise<{ error?: string }> {
   if (error) return { error: error.message }
   revalidatePath('/admin/projects')
   revalidatePath('/projects')
+  revalidatePath('/projects/[slug]', 'page')
   return {}
 }
 
@@ -52,5 +66,6 @@ export async function togglePublished(id: string, published: boolean): Promise<{
   if (error) return { error: error.message }
   revalidatePath('/admin/projects')
   revalidatePath('/projects')
+  revalidatePath('/projects/[slug]', 'page')
   return {}
 }

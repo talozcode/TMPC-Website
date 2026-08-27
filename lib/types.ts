@@ -1,3 +1,5 @@
+import type { ProjectPhase } from '@/lib/project-phases'
+
 export interface Category {
   id: string
   name: string
@@ -11,8 +13,11 @@ export interface ProjectImage {
   project_id: string
   storage_path: string
   url: string
+  /** Scoped per phase, not global: each phase numbers its own images from 0. */
   display_order: number
+  /** First of its phase, so up to three rows per project can be true. */
   is_primary: boolean
+  phase: ProjectPhase
   created_at: string
 }
 
@@ -30,6 +35,7 @@ export interface Project {
   published: boolean
   created_at: string
   updated_at: string
+  slug: string | null
   category?: Category | null
   project_images?: ProjectImage[]
 }

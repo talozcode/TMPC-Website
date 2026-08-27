@@ -52,6 +52,7 @@ export function ProjectForm({ project, categories, onSave }: Props) {
       brief: (fd.get('brief') as string) || null,
       deliverables: deliverables.filter(Boolean),
       published: fd.get('published') === 'true',
+      slug: (fd.get('slug') as string)?.trim() || null,
     }
 
     const result = await onSave(data)
@@ -88,6 +89,21 @@ export function ProjectForm({ project, categories, onSave }: Props) {
           <label className={labelClass}>Subtitle</label>
           <input name="subtitle" defaultValue={project?.subtitle ?? ''} className={inputClass} placeholder="e.g. Mixed-Use Commercial Development" />
         </div>
+      </div>
+
+      {/* URL slug */}
+      <div>
+        <label className={labelClass}>URL slug</label>
+        <input
+          name="slug"
+          defaultValue={project?.slug ?? ''}
+          className={inputClass}
+          placeholder="generated-from-the-title"
+        />
+        <p className="text-xs text-gray-500 mt-1">
+          The address of this project, /projects/your-slug. Leave blank to generate it from the
+          title. Changing it breaks any link that already points here.
+        </p>
       </div>
 
       {/* Category + Location */}
@@ -177,7 +193,7 @@ export function ProjectForm({ project, categories, onSave }: Props) {
       {savedId && (
         <div className="pt-6 border-t border-gray-200">
           <label className={labelClass}>Project Images</label>
-          <p className="text-xs text-gray-500 mb-4">First image is the main photo. Hover thumbnails to reorder or delete.</p>
+          <p className="text-xs text-gray-500 mb-4">Drop images into the phase they belong to. Hover a thumbnail to reorder or delete it, or use the dropdown beneath it to move it to another phase.</p>
           <ImageUploader
             projectId={savedId}
             existing={images}

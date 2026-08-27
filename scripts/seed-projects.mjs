@@ -181,6 +181,7 @@ async function main() {
       headers: { Prefer: 'return=representation' },
       body: JSON.stringify({
         title: p.title,
+        slug: p.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''),
         subtitle: p.subtitle,
         category_id: catId[p.category] ?? null,
         location: p.location,

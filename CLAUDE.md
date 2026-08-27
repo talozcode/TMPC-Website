@@ -93,6 +93,28 @@ public pages (`app/`, anon server client) read it. Public/admin data pages are d
 Content tables: `projects` + `project_images`, `categories`, `services`, `team_members`,
 `testimonials`, `blog_posts`, `site_settings`, `seo_metadata`, `media_files`, `contact_inquiries`.
 
+**Project image phases.** Every `project_images` row carries a `phase` of `rendering`,
+`in_progress` or `completed` (text plus a CHECK, not a Postgres enum, so the spellings stay
+editable). Three rules follow from it, and all three live in `lib/project-phases.ts`:
+- `display_order` is scoped **per phase**: each phase numbers its own images from 0.
+- `is_primary` means **first of its phase**, so up to three rows per project are true. Any
+  reader must filter by phase as well.
+- `toPhaseGroups()` drops empty phases, and `groups.length > 1` **is** the show-the-control
+  rule. A project with images in only one phase renders exactly as it did before phases
+  existed: no chip, no group labels. That is deliberate, not an oversight.
+
+`components/project-image-stage.tsx` is the shared viewer used by both the list card and the
+detail page. It runs one reel straight through every phase, swaps the label as it crosses a
+boundary, and autoplays **only while the card is on screen** and the pointer is elsewhere
+(seven cards cycling at once is unreadable). The lightbox is scoped to the phase on screen,
+because `finite: false` would otherwise wrap from the last completed photograph into an
+unlabelled rendering.
+
+**Project detail pages** live at `/projects/[slug]`. `projects.slug` is generated from the
+title on create and then **never regenerated**, so editing a title cannot break a live link.
+The route resolves by slug first and falls back to the uuid, with `alternates.canonical`
+pointing at the slug. It is dynamic, like every other public data page.
+
 **Images:** uploaded client-side straight to Supabase Storage: `project-images` bucket
 (`components/admin/image-uploader.tsx`) and `media-library` bucket (`app/admin/media/page.tsx`).
 Both route every file through `components/admin/image-crop-modal.tsx` (react-easy-crop) before
@@ -109,6 +131,15 @@ upload. The public project gallery (`components/projects-gallery.tsx`) uses
 **The `.js` class on `<html>`** is set by an inline pre-paint script in `app/layout.tsx`. Every
 scroll-reveal rule is scoped to it so the page renders fully visible without JavaScript. `<html>`
 carries `suppressHydrationWarning` because of it; do not remove either half.
+
+**Image reorder writes with `update`, never `upsert`.** `components/admin/image-uploader.tsx`
+used to send partial rows `{id, display_order, is_primary}` through `.upsert()`, which
+PostgREST turns into `INSERT ... ON CONFLICT`. Postgres checks NOT NULL on the proposed tuple
+before resolving the conflict, so `project_id`, `storage_path` and `url` being absent made
+every reorder and delete fail with `23502`. Neither call checked `error` and both updated
+local state anyway, so the order looked right until the next refresh. It now uses per-row
+`.update().eq('id', ...)`, which names only the columns it touches, so no future NOT NULL
+column can break that path. Do not reintroduce a partial upsert here.
 
 **The header opacity is load-bearing.** `.hdr` sits at `rgba(11,33,55,0.90)`. It was `0.72`,
 which composites over the page ground to roughly `#4E5764`, a muddy grey: the brand navy visibly

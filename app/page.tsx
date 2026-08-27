@@ -5,6 +5,7 @@ import { Reveal } from '@/components/motion'
 import { siteConfig } from '@/lib/data'
 import { createClient } from '@/lib/supabase/server'
 import { HeroProjectCarousel, type HeroProject } from '@/components/hero-project-carousel'
+import { pickLeadImage } from '@/lib/project-phases'
 import type { Project } from '@/lib/types'
 
 export const metadata: Metadata = {
@@ -32,7 +33,7 @@ export default async function HomePage() {
   const [{ data: heroRows }, { data: slideRows }] = await Promise.all([
     supabase
       .from('projects')
-      .select('id, title, deliverables, category:categories(name), project_images(url, display_order, is_primary)')
+      .select('id, title, deliverables, category:categories(name), project_images(url, display_order, phase)')
       .eq('published', true)
       .order('display_order', { ascending: true })
       .limit(6),
@@ -41,14 +42,17 @@ export default async function HomePage() {
 
   const heroProjects: HeroProject[] = ((heroRows as unknown as Project[]) ?? [])
     .map((p) => {
-      const imgs = (p.project_images ?? []).slice().sort((a, b) => a.display_order - b.display_order)
-      const primary = imgs.find((im) => im.is_primary) ?? imgs[0]
-      return primary
+      // The same rule as the list and the detail page: a project is represented
+      // by the most advanced phase it has, so it is never a rendering here and a
+      // finished building there. Returns null when there are no images at all,
+      // which keeps the existing "drop it from the hero" behaviour.
+      const image = pickLeadImage(p.project_images)
+      return image
         ? {
             id: p.id,
             title: p.title,
             category: p.category?.name ?? '',
-            image: primary.url,
+            image,
             deliverables: p.deliverables ?? [],
           }
         : null

@@ -1,5 +1,5 @@
 -- ============================================================
--- TMPC Website CMS — Initial Schema
+-- TMPC Website CMS : Initial Schema
 -- Run this in: Supabase Dashboard → SQL Editor → Run
 -- ============================================================
 
