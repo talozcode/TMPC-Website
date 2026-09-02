@@ -94,6 +94,15 @@ export function toPhaseGroups(images: PhaseInput[] | null | undefined): PhaseGro
 }
 
 /**
+ * The phase a viewer should land on by default: the most advanced one that
+ * actually has images. Used by the phase tabs (which phase opens first) and by
+ * pickLeadImage (which photograph represents the project), so both agree.
+ */
+export function initialPhase(groups: PhaseGroup[]): ProjectPhase {
+  return groups[groups.length - 1].phase
+}
+
+/**
  * One representative image for a project: the first image of the most advanced
  * phase it has. A portfolio should lead with the project as it stands today
  * rather than with a rendering of what it might have been, and using one rule
@@ -106,19 +115,4 @@ export function pickLeadImage(images: PhaseInput[] | null | undefined): string |
   const groups = toPhaseGroups(images)
   const url = groups[groups.length - 1].images[0]
   return url === FALLBACK_PROJECT_IMAGE ? null : url
-}
-
-/** Flattens groups into one running order, which is what the reel traverses. */
-export interface FlatFrame {
-  src: string
-  /** Index into the PhaseGroup array, not into PHASES. */
-  groupIndex: number
-  /** Index within that group's own images. */
-  imageIndex: number
-}
-
-export function flattenPhases(groups: PhaseGroup[]): FlatFrame[] {
-  return groups.flatMap((group, groupIndex) =>
-    group.images.map((src, imageIndex) => ({ src, groupIndex, imageIndex }))
-  )
 }

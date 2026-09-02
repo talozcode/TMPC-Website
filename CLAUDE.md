@@ -104,11 +104,14 @@ editable). Three rules follow from it, and all three live in `lib/project-phases
   existed: no chip, no group labels. That is deliberate, not an oversight.
 
 `components/project-image-stage.tsx` is the shared viewer used by both the list card and the
-detail page. It runs one reel straight through every phase, swaps the label as it crosses a
-boundary, and autoplays **only while the card is on screen** and the pointer is elsewhere
-(seven cards cycling at once is unreadable). The lightbox is scoped to the phase on screen,
-because `finite: false` would otherwise wrap from the last completed photograph into an
-unlabelled rendering.
+detail page. Three segmented tabs on the image chrome scope everything below them, the strip,
+the arrows, the counter, the lightbox, to one phase at a time; it opens on the most advanced
+phase with images (`initialPhase()`). A per-phase index is remembered, so switching tabs and
+back restores the photograph you were on rather than resetting to the first one. Autoplay
+cycles within the active phase only, and runs **only while the card is on screen** and the
+pointer is elsewhere (seven cards cycling at once is unreadable). The lightbox is scoped to the
+active phase, because `finite: false` would otherwise wrap from the last completed photograph
+into an unlabelled rendering.
 
 **Project detail pages** live at `/projects/[slug]`. `projects.slug` is generated from the
 title on create and then **never regenerated**, so editing a title cannot break a live link.
