@@ -74,7 +74,7 @@ interruptible and carry velocity through a re-target. `project()` gives a flick'
 (exponential decay, not `v^2/2a`), `rubberband()` gives progressive resistance at a boundary, and
 `VelocityTracker` gives a real release velocity over a 100ms window. Used by
 `components/layout/mobile-nav.tsx` (drag-to-dismiss bottom sheet) and
-`components/hero-project-carousel.tsx` (1:1 drag, momentum projection, velocity handoff).
+`components/hero-before-after.tsx` (the homepage hero's drag handle, plus its one-time mount hint).
 `components/motion.tsx` exports `Reveal` (scroll reveal, `rise` and `image` variants, `delay` for
 stagger) and `HeroParallax`. `components/fade-in.tsx` is a thin wrapper kept for existing callers.
 
@@ -112,6 +112,16 @@ cycles within the active phase only, and runs **only while the card is on screen
 pointer is elsewhere (seven cards cycling at once is unreadable). The lightbox is scoped to the
 active phase, because `finite: false` would otherwise wrap from the last completed photograph
 into an unlabelled rendering.
+
+**Homepage hero** (`components/hero-before-after.tsx`) is a drag-to-reveal before/after
+comparison, backed by the single-row `hero_before_after` table (`supabase/migrations/
+003_hero_before_after.sql`). One row, not a list: the homepage has exactly one hero, so there is
+no "which row is active" logic anywhere, admin included. Edited from `/admin/hero`
+(`components/admin/hero-before-after-form.tsx`), which uploads straight to the `media-library`
+bucket under a `hero/` prefix and shows a live preview using the same public component. Both
+images are cropped to a fixed 3:2 (`ImageCropModal`'s `fixedAspect` prop, which also hides its
+aspect picker), so the two photos line up rather than the compare edge jumping at the seam. The
+link to `/projects` is fixed in the component, not admin-editable.
 
 **Project detail pages** live at `/projects/[slug]`. `projects.slug` is generated from the
 title on create and then **never regenerated**, so editing a title cannot break a live link.

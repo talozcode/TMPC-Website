@@ -7,6 +7,11 @@ import { createClient } from '@/lib/supabase/client'
 const navSections = [
   {
     items: [
+      { href: '/admin/hero', label: 'Homepage Hero' },
+    ],
+  },
+  {
+    items: [
       { href: '/admin/projects', label: 'Projects' },
       { href: '/admin/categories', label: 'Categories' },
     ],

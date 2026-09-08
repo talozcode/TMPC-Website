@@ -127,6 +127,16 @@ export interface MediaFile {
   created_at: string
 }
 
+export interface HeroBeforeAfter {
+  id: string
+  before_storage_path: string | null
+  before_url: string | null
+  after_storage_path: string | null
+  after_url: string | null
+  caption: string | null
+  updated_at: string
+}
+
 export interface SeoMetadata {
   page: string
   title: string | null

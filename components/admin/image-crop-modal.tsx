@@ -15,6 +15,9 @@ interface Props {
   file: File
   /** e.g. "Image 1 of 3" - optional progress label */
   label?: string
+  /** Lock the aspect ratio and hide the picker, for callers where two crops
+   *  must line up exactly (the hero before/after pair). Free-form elsewhere. */
+  fixedAspect?: number
   /** crop applied → returns a new cropped File */
   onComplete: (result: File) => void
   /** upload this file as-is, no crop */
@@ -44,11 +47,11 @@ async function cropToFile(original: File, area: Area): Promise<File> {
   return new File([blob], `${base}-cropped.${ext}`, { type })
 }
 
-export function ImageCropModal({ file, label, onComplete, onSkip, onCancel }: Props) {
+export function ImageCropModal({ file, label, fixedAspect, onComplete, onSkip, onCancel }: Props) {
   const [src, setSrc] = useState('')
   const [crop, setCrop] = useState({ x: 0, y: 0 })
   const [zoom, setZoom] = useState(1)
-  const [aspect, setAspect] = useState<number | undefined>(3 / 2)
+  const [aspect, setAspect] = useState<number | undefined>(fixedAspect ?? 3 / 2)
   const [areaPixels, setAreaPixels] = useState<Area | null>(null)
   const [working, setWorking] = useState(false)
 
@@ -106,22 +109,24 @@ export function ImageCropModal({ file, label, onComplete, onSkip, onCancel }: Pr
 
         {/* Controls */}
         <div className="px-5 py-4 border-t border-gray-200 space-y-4">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider mr-1">Aspect</span>
-            {ASPECTS.map((a) => (
-              <button
-                key={a.label}
-                onClick={() => setAspect(a.value)}
-                className={`text-xs font-semibold px-3 py-1.5 border transition-colors ${
-                  aspect === a.value
-                    ? 'bg-accent text-white border-accent'
-                    : 'border-gray-300 text-gray-600 hover:border-accent/50'
-                }`}
-              >
-                {a.label}
-              </button>
-            ))}
-          </div>
+          {fixedAspect === undefined && (
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider mr-1">Aspect</span>
+              {ASPECTS.map((a) => (
+                <button
+                  key={a.label}
+                  onClick={() => setAspect(a.value)}
+                  className={`text-xs font-semibold px-3 py-1.5 border transition-colors ${
+                    aspect === a.value
+                      ? 'bg-accent text-white border-accent'
+                      : 'border-gray-300 text-gray-600 hover:border-accent/50'
+                  }`}
+                >
+                  {a.label}
+                </button>
+              ))}
+            </div>
+          )}
 
           <div className="flex items-center gap-3">
             <span className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Zoom</span>

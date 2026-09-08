@@ -4,9 +4,8 @@ import Image from 'next/image'
 import { Reveal } from '@/components/motion'
 import { siteConfig } from '@/lib/data'
 import { createClient } from '@/lib/supabase/server'
-import { HeroProjectCarousel, type HeroProject } from '@/components/hero-project-carousel'
-import { pickLeadImage } from '@/lib/project-phases'
-import type { Project } from '@/lib/types'
+import { HeroBeforeAfter } from '@/components/hero-before-after'
+import type { HeroBeforeAfter as HeroBeforeAfterRow } from '@/lib/types'
 
 export const metadata: Metadata = {
   title: `${siteConfig.shortName} - Project Consulting and Development Management in Thailand`,
@@ -30,38 +29,11 @@ const rail = [
 
 export default async function HomePage() {
   const supabase = await createClient()
-  const [{ data: heroRows }, { data: slideRows }] = await Promise.all([
-    supabase
-      .from('projects')
-      .select('id, title, deliverables, category:categories(name), project_images(url, display_order, phase)')
-      .eq('published', true)
-      .order('display_order', { ascending: true })
-      .limit(6),
-    supabase.from('site_settings').select('value').eq('key', 'hero_slide_seconds').limit(1),
-  ])
-
-  const heroProjects: HeroProject[] = ((heroRows as unknown as Project[]) ?? [])
-    .map((p) => {
-      // The same rule as the list and the detail page: a project is represented
-      // by the most advanced phase it has, so it is never a rendering here and a
-      // finished building there. Returns null when there are no images at all,
-      // which keeps the existing "drop it from the hero" behaviour.
-      const image = pickLeadImage(p.project_images)
-      return image
-        ? {
-            id: p.id,
-            title: p.title,
-            category: p.category?.name ?? '',
-            image,
-            deliverables: p.deliverables ?? [],
-          }
-        : null
-    })
-    .filter((p): p is HeroProject => p !== null)
-
-  // Admin-configurable slide duration (Settings, "Hero Slide Duration"); defaults to 4s.
-  const slideSeconds = Number(slideRows?.[0]?.value)
-  const heroIntervalMs = Number.isFinite(slideSeconds) && slideSeconds >= 1 ? slideSeconds * 1000 : 4000
+  const { data: hero } = await supabase
+    .from('hero_before_after')
+    .select('*')
+    .limit(1)
+    .maybeSingle<HeroBeforeAfterRow>()
 
   return (
     <>
@@ -117,7 +89,7 @@ export default async function HomePage() {
             </div>
 
             <Reveal delay={200}>
-              <HeroProjectCarousel projects={heroProjects} intervalMs={heroIntervalMs} />
+              <HeroBeforeAfter beforeUrl={hero?.before_url} afterUrl={hero?.after_url} caption={hero?.caption} />
             </Reveal>
           </div>
         </div>
