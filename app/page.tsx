@@ -39,9 +39,11 @@ export default async function HomePage() {
     <>
       {/* ── HERO ── */}
       <section className="bg-canvas overflow-hidden">
-        <div className="wrap">
-          <div className="grid lg:grid-cols-[1fr_minmax(0,30rem)] gap-14 lg:gap-16 items-center pt-[clamp(3rem,7vw,6rem)] pb-[clamp(3.5rem,7vw,6.5rem)]">
-
+        <div className="wrap pt-[clamp(3rem,7vw,6rem)] pb-[clamp(3.5rem,7vw,6.5rem)]">
+          {/* items-center here centers the image against just this row (headline,
+              lead, CTAs) - the stats strip is deliberately outside it, below, so
+              its extra height does not pull the image down off that center. */}
+          <div className="grid lg:grid-cols-[1fr_minmax(0,30rem)] gap-14 lg:gap-16 items-center">
             <div className="flex flex-col">
               <Reveal>
                 <p className="eye">Bangkok, Thailand</p>
@@ -66,32 +68,38 @@ export default async function HomePage() {
                   </Link>
                 </div>
               </Reveal>
-              <Reveal delay={330}>
-                {/* An even three-up grid rather than inline dividers: the labels
-                    set at different widths, so hand-spaced rules collided with them. */}
-                <div className="hidden lg:grid grid-cols-3 max-w-lg mt-12 pt-8 border-t border-line">
-                  {[
-                    { value: '1', label: 'Point of Accountability' },
-                    { value: '10+', label: 'Parties per Project' },
-                    { value: 'Full', label: 'Lifecycle Coverage' },
-                  ].map((stat, i) => (
-                    <div key={stat.label} className={i > 0 ? 'pl-6 border-l border-line' : 'pr-6'}>
-                      <p className="font-display font-bold text-[1.6rem] text-ink leading-none tracking-[-0.03em] mb-2.5">
-                        {stat.value}
-                      </p>
-                      <p className="text-[0.6rem] text-ink-muted uppercase tracking-[0.11em] leading-[1.5]">
-                        {stat.label}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </Reveal>
             </div>
 
             <Reveal delay={200}>
-              <HeroBeforeAfter beforeUrl={hero?.before_url} afterUrl={hero?.after_url} caption={hero?.caption} />
+              <HeroBeforeAfter
+                beforeUrl={hero?.before_url}
+                afterUrl={hero?.after_url}
+                projectName={hero?.project_name}
+                projectDetails={hero?.project_details}
+              />
             </Reveal>
           </div>
+
+          <Reveal delay={330}>
+            {/* An even three-up grid rather than inline dividers: the labels
+                set at different widths, so hand-spaced rules collided with them. */}
+            <div className="hidden lg:grid grid-cols-3 max-w-lg mt-12 pt-8 border-t border-line">
+              {[
+                { value: '1', label: 'Point of Accountability' },
+                { value: '10+', label: 'Parties per Project' },
+                { value: 'Full', label: 'Lifecycle Coverage' },
+              ].map((stat, i) => (
+                <div key={stat.label} className={i > 0 ? 'pl-6 border-l border-line' : 'pr-6'}>
+                  <p className="font-display font-bold text-[1.6rem] text-ink leading-none tracking-[-0.03em] mb-2.5">
+                    {stat.value}
+                  </p>
+                  <p className="text-[0.6rem] text-ink-muted uppercase tracking-[0.11em] leading-[1.5]">
+                    {stat.label}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </Reveal>
         </div>
       </section>
 

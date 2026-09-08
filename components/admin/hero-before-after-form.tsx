@@ -18,11 +18,12 @@ const SIDE_LABEL: Record<Side, string> = { before: 'Before', after: 'After' }
 
 export function HeroBeforeAfterForm({ initial }: { initial: HeroBeforeAfterRow }) {
   const [record, setRecord] = useState(initial)
-  const [caption, setCaption] = useState(initial.caption ?? '')
+  const [projectName, setProjectName] = useState(initial.project_name ?? '')
+  const [projectDetails, setProjectDetails] = useState(initial.project_details ?? '')
   const [pendingSide, setPendingSide] = useState<Side | null>(null)
   const [pendingFile, setPendingFile] = useState<File | null>(null)
   const [uploading, setUploading] = useState<Side | null>(null)
-  const [savingCaption, setSavingCaption] = useState(false)
+  const [savingLabel, setSavingLabel] = useState(false)
   const [error, setError] = useState('')
   const beforeInput = useRef<HTMLInputElement>(null)
   const afterInput = useRef<HTMLInputElement>(null)
@@ -89,18 +90,21 @@ export function HeroBeforeAfterForm({ initial }: { initial: HeroBeforeAfterRow }
     setPendingFile(null)
   }
 
-  async function saveCaption() {
-    setSavingCaption(true)
+  async function saveLabel() {
+    setSavingLabel(true)
     setError('')
-    const value = caption.trim() || null
-    const { error: dbError } = await supabase
-      .from('hero_before_after')
-      .update({ caption: value })
-      .eq('id', record.id)
-    if (dbError) setError(`Could not save caption: ${dbError.message}`)
-    else setRecord((r) => ({ ...r, caption: value }))
-    setSavingCaption(false)
+    const patch = {
+      project_name: projectName.trim() || null,
+      project_details: projectDetails.trim() || null,
+    }
+    const { error: dbError } = await supabase.from('hero_before_after').update(patch).eq('id', record.id)
+    if (dbError) setError(`Could not save: ${dbError.message}`)
+    else setRecord((r) => ({ ...r, ...patch }))
+    setSavingLabel(false)
   }
+
+  const labelDirty =
+    projectName.trim() !== (record.project_name ?? '') || projectDetails.trim() !== (record.project_details ?? '')
 
   return (
     <div className="space-y-8">
@@ -152,22 +156,34 @@ export function HeroBeforeAfterForm({ initial }: { initial: HeroBeforeAfterRow }
       </div>
 
       <div className="max-w-md">
-        <label className="text-xs font-semibold text-gray-700 uppercase tracking-wider">
-          Caption <span className="text-gray-400 normal-case font-normal">(optional)</span>
-        </label>
-        <div className="flex items-center gap-3 mt-2">
-          <input
-            value={caption}
-            onChange={(e) => setCaption(e.target.value)}
-            placeholder="e.g. Regional Distribution Hub, Bangkok"
-            className="flex-1 border border-gray-300 bg-white text-gray-900 text-sm px-3 py-2 outline-none focus:border-accent"
-          />
+        <h4 className="text-xs font-semibold text-gray-700 uppercase tracking-wider mb-3">
+          Project label <span className="text-gray-400 normal-case font-normal">(optional)</span>
+        </h4>
+        <div className="space-y-3">
+          <div>
+            <label className="text-[11px] text-gray-500">Project name</label>
+            <input
+              value={projectName}
+              onChange={(e) => setProjectName(e.target.value)}
+              placeholder="e.g. Regional Distribution Hub"
+              className="w-full mt-1 border border-gray-300 bg-white text-gray-900 text-sm px-3 py-2 outline-none focus:border-accent"
+            />
+          </div>
+          <div>
+            <label className="text-[11px] text-gray-500">Details</label>
+            <input
+              value={projectDetails}
+              onChange={(e) => setProjectDetails(e.target.value)}
+              placeholder="e.g. Industrial, Bangkok"
+              className="w-full mt-1 border border-gray-300 bg-white text-gray-900 text-sm px-3 py-2 outline-none focus:border-accent"
+            />
+          </div>
           <button
-            onClick={saveCaption}
-            disabled={savingCaption || caption.trim() === (record.caption ?? '')}
-            className="flex-shrink-0 bg-accent text-white text-xs font-semibold px-4 py-2 hover:bg-accent-dark transition-colors disabled:opacity-40"
+            onClick={saveLabel}
+            disabled={savingLabel || !labelDirty}
+            className="bg-accent text-white text-xs font-semibold px-4 py-2 hover:bg-accent-dark transition-colors disabled:opacity-40"
           >
-            {savingCaption ? 'Saving...' : 'Save'}
+            {savingLabel ? 'Saving...' : 'Save'}
           </button>
         </div>
       </div>
@@ -175,7 +191,12 @@ export function HeroBeforeAfterForm({ initial }: { initial: HeroBeforeAfterRow }
       <div>
         <h4 className="text-xs font-semibold text-gray-700 uppercase tracking-wider mb-3">Live preview</h4>
         <div className="max-w-[30rem]">
-          <HeroBeforeAfter beforeUrl={record.before_url} afterUrl={record.after_url} caption={record.caption} />
+          <HeroBeforeAfter
+            beforeUrl={record.before_url}
+            afterUrl={record.after_url}
+            projectName={record.project_name}
+            projectDetails={record.project_details}
+          />
         </div>
       </div>
 

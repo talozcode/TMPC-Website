@@ -133,7 +133,8 @@ export interface HeroBeforeAfter {
   before_url: string | null
   after_storage_path: string | null
   after_url: string | null
-  caption: string | null
+  project_name: string | null
+  project_details: string | null
   updated_at: string
 }
 

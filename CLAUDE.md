@@ -115,13 +115,20 @@ into an unlabelled rendering.
 
 **Homepage hero** (`components/hero-before-after.tsx`) is a drag-to-reveal before/after
 comparison, backed by the single-row `hero_before_after` table (`supabase/migrations/
-003_hero_before_after.sql`). One row, not a list: the homepage has exactly one hero, so there is
-no "which row is active" logic anywhere, admin included. Edited from `/admin/hero`
-(`components/admin/hero-before-after-form.tsx`), which uploads straight to the `media-library`
-bucket under a `hero/` prefix and shows a live preview using the same public component. Both
-images are cropped to a fixed 3:2 (`ImageCropModal`'s `fixedAspect` prop, which also hides its
-aspect picker), so the two photos line up rather than the compare edge jumping at the seam. The
-link to `/projects` is fixed in the component, not admin-editable.
+003_hero_before_after.sql`, `004_hero_before_after_project_label.sql`). One row, not a list: the
+homepage has exactly one hero, so there is no "which row is active" logic anywhere, admin
+included. Edited from `/admin/hero` (`components/admin/hero-before-after-form.tsx`), which
+uploads straight to the `media-library` bucket under a `hero/` prefix and shows a live preview
+using the same public component. Both images are cropped to a fixed 3:2 (`ImageCropModal`'s
+`fixedAspect` prop, which also hides its aspect picker), so the two photos line up rather than
+the compare edge jumping at the seam. `project_name`/`project_details` are the optional title-bar
+label (shown top-left on the card, same treatment the old carousel gave a project's category and
+title). The link to `/projects` is fixed in the component, not admin-editable.
+
+On the homepage itself, the hero's three-stat strip (`1 / Point of Accountability`, etc.) sits
+**below** the two-column headline/image grid rather than stacked inside the text column with it.
+That split matters: `items-center` on the two-column grid centers the image against just the
+headline/lead/CTAs, and the stat strip's extra height would otherwise pull that center down.
 
 **Project detail pages** live at `/projects/[slug]`. `projects.slug` is generated from the
 title on create and then **never regenerated**, so editing a title cannot break a live link.

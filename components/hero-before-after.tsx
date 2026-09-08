@@ -20,11 +20,13 @@ const STEP = 5
 export function HeroBeforeAfter({
   beforeUrl = FALLBACK_BEFORE_IMAGE,
   afterUrl = FALLBACK_AFTER_IMAGE,
-  caption,
+  projectName,
+  projectDetails,
 }: {
   beforeUrl?: string | null
   afterUrl?: string | null
-  caption?: string | null
+  projectName?: string | null
+  projectDetails?: string | null
 }) {
   const [position, setPosition] = useState(50)
   const [dragging, setDragging] = useState(false)
@@ -107,11 +109,22 @@ export function HeroBeforeAfter({
 
   return (
     <div className="on-dark panel bg-canvas-dark">
-      <div className="px-7 py-5 flex items-center justify-between gap-4">
-        <p className="text-[0.55rem] font-bold text-accent-light uppercase tracking-[0.28em]">
-          Before / After
-        </p>
-        {caption && <p className="text-[0.7rem] text-white/40 truncate">{caption}</p>}
+      <div className="px-7 py-5 flex items-end justify-between gap-4">
+        <div className="min-w-0">
+          <p className="text-[0.55rem] font-bold text-accent-light uppercase tracking-[0.28em] mb-2.5">
+            Before / After
+          </p>
+          {projectName && (
+            <p className="font-display font-bold text-[1.45rem] text-white tracking-[-0.03em] leading-tight truncate">
+              {projectName}
+            </p>
+          )}
+        </div>
+        {projectDetails && (
+          <span className="flex-shrink-0 text-[0.68rem] text-white/40 leading-snug text-right max-w-[9rem]">
+            {projectDetails}
+          </span>
+        )}
       </div>
 
       <div className="relative">
