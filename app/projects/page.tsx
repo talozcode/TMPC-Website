@@ -3,13 +3,29 @@ import Image from 'next/image'
 import { Reveal, HeroParallax } from '@/components/motion'
 import { siteConfig } from '@/lib/data'
 import { createClient } from '@/lib/supabase/server'
+import { getSeoRow } from '@/lib/seo'
 import { ProjectsGallery, type GalleryProject } from '@/components/projects-gallery'
 import { toPhaseGroups } from '@/lib/project-phases'
 import type { Project } from '@/lib/types'
 
-export const metadata: Metadata = {
-  title: 'Projects',
-  description: `Selected project work by ${siteConfig.name} across residential, hospitality, commercial, industrial, and community projects in Thailand.`,
+const FALLBACK_TITLE = 'TMPC Projects: Completed Work Across Thailand'
+const FALLBACK_DESCRIPTION = `Selected project work by ${siteConfig.name} across residential, hospitality, commercial, industrial, and community projects in Thailand.`
+
+export async function generateMetadata(): Promise<Metadata> {
+  const seo = await getSeoRow('projects')
+  const title = seo?.title || FALLBACK_TITLE
+  const description = seo?.description || FALLBACK_DESCRIPTION
+  return {
+    title: { absolute: title },
+    description,
+    alternates: { canonical: '/projects' },
+    openGraph: {
+      title: seo?.og_title || title,
+      description: seo?.og_description || description,
+      url: '/projects',
+      images: ['/images/scenario-realestate.jpg'],
+    },
+  }
 }
 
 export default async function ProjectsPage() {

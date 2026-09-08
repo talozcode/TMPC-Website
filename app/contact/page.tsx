@@ -3,48 +3,84 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Reveal, HeroParallax } from '@/components/motion'
 import { siteConfig } from '@/lib/data'
+import { createClient } from '@/lib/supabase/server'
+import { getSeoRow } from '@/lib/seo'
 import { ContactForm } from '@/components/contact-form'
 
-export const metadata: Metadata = {
-  title: 'Contact',
-  description: `Get in touch with ${siteConfig.name} to discuss your project in Thailand. Project consulting, coordination, and development management inquiries welcome.`,
+const FALLBACK_TITLE = 'Contact TMPC | Discuss Your Thailand Project'
+const FALLBACK_DESCRIPTION = `Get in touch with ${siteConfig.name} to discuss your project in Thailand. Project consulting, coordination, and development management inquiries welcome.`
+
+export async function generateMetadata(): Promise<Metadata> {
+  const seo = await getSeoRow('contact')
+  const title = seo?.title || FALLBACK_TITLE
+  const description = seo?.description || FALLBACK_DESCRIPTION
+  return {
+    title: { absolute: title },
+    description,
+    alternates: { canonical: '/contact' },
+    openGraph: {
+      title: seo?.og_title || title,
+      description: seo?.og_description || description,
+      url: '/contact',
+      images: ['/images/hero-home.jpg'],
+    },
+  }
 }
 
-const contactMethods = [
-  {
-    label: 'Email',
-    description: 'For project inquiries, documentation, and coordination discussions.',
-    action: (
-      <a
-        href={`mailto:${siteConfig.email}`}
-        className="lnk break-all"
-      >
-        {siteConfig.email}
-      </a>
-    ),
-  },
-  {
-    label: 'WhatsApp',
-    description: 'For quick questions and initial project discussions.',
-    action: (
-      <a
-        href="https://wa.me/66XXXXXXXXX"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="btn btn-sm"
-      >
-        Chat on WhatsApp <span aria-hidden="true">&#8594;</span>
-      </a>
-    ),
-  },
-  {
-    label: 'Location',
-    description: 'On the ground in Bangkok, available across Thailand.',
-    action: <p className="t-h4 text-ink">{siteConfig.location}</p>,
-  },
-]
+// Guards against ever shipping a placeholder again: the WhatsApp button used
+// to be hardcoded to the seed value '66XXXXXXXXX', a dead link live on the
+// contact page. Only a value that looks like a real phone number renders it.
+function isRealPhoneNumber(value: string | null | undefined): value is string {
+  return !!value && /^\d{8,15}$/.test(value)
+}
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const supabase = await createClient()
+  const { data: settingsRows } = await supabase
+    .from('site_settings')
+    .select('key, value')
+    .in('key', ['whatsapp', 'email', 'location'])
+
+  const settings = Object.fromEntries((settingsRows ?? []).map((s) => [s.key, s.value]))
+  const email = settings.email || siteConfig.email
+  const location = settings.location || siteConfig.location
+  const whatsapp = isRealPhoneNumber(settings.whatsapp) ? settings.whatsapp : null
+
+  const contactMethods = [
+    {
+      label: 'Email',
+      description: 'For project inquiries, documentation, and coordination discussions.',
+      action: (
+        <a href={`mailto:${email}`} className="lnk break-all">
+          {email}
+        </a>
+      ),
+    },
+    ...(whatsapp
+      ? [
+          {
+            label: 'WhatsApp',
+            description: 'For quick questions and initial project discussions.',
+            action: (
+              <a
+                href={`https://wa.me/${whatsapp}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-sm"
+              >
+                Chat on WhatsApp <span aria-hidden="true">&#8594;</span>
+              </a>
+            ),
+          },
+        ]
+      : []),
+    {
+      label: 'Location',
+      description: 'On the ground in Bangkok, available across Thailand.',
+      action: <p className="t-h4 text-ink">{location}</p>,
+    },
+  ]
+
   return (
     <>
       {/* 1. Hero */}
@@ -79,7 +115,7 @@ export default function ContactPage() {
           <Reveal delay={260}>
             <div className="flex flex-wrap gap-3 mt-9">
               <Link href="#inquiry-form" className="btn">Start the conversation</Link>
-              <a href={`mailto:${siteConfig.email}`} className="btn-2">
+              <a href={`mailto:${email}`} className="btn-2">
                 Email us <span aria-hidden="true">&#8594;</span>
               </a>
             </div>
@@ -90,7 +126,9 @@ export default function ContactPage() {
 
       {/* 2. Contact Methods */}
       <section className="bg-canvas-subtle sec-tight">
-        <div className="wrap grid gap-5 md:grid-cols-3">
+        {/* Grid tracks the real method count, so a hidden WhatsApp card (no
+            valid number set) never leaves an empty third column. */}
+        <div className={`wrap grid gap-5 ${contactMethods.length === 3 ? 'md:grid-cols-3' : 'sm:grid-cols-2 max-w-2xl mx-auto'}`}>
           {contactMethods.map((method, i) => (
             <Reveal key={method.label} delay={i * 80} className="flex">
               <div className="card card-hover flex flex-col flex-1 p-8 lg:p-9">

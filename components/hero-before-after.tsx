@@ -121,7 +121,7 @@ export function HeroBeforeAfter({
           )}
         </div>
         {projectDetails && (
-          <span className="flex-shrink-0 text-[0.68rem] text-white/40 leading-snug text-right max-w-[9rem]">
+          <span className="flex-shrink-0 text-[0.68rem] text-white/60 leading-snug text-right max-w-[9rem]">
             {projectDetails}
           </span>
         )}
@@ -137,10 +137,13 @@ export function HeroBeforeAfter({
           onPointerUp={endDrag}
           onPointerCancel={endDrag}
         >
-          {/* After: the full-bleed base layer. */}
+          {/* After: the full-bleed base layer, and the LCP candidate, so priority
+              lives here only. The before layer below loads normally instead of
+              doubling the hero's eager image payload for a photo that starts
+              half clipped away anyway. */}
           <Image
             src={afterUrl || FALLBACK_AFTER_IMAGE}
-            alt="After"
+            alt={projectName ? `${projectName}, after` : 'After'}
             fill
             priority
             draggable={false}
@@ -155,9 +158,8 @@ export function HeroBeforeAfter({
           <div className="absolute inset-0 overflow-hidden" style={{ clipPath: `inset(0 ${100 - clamped}% 0 0)` }}>
             <Image
               src={beforeUrl || FALLBACK_BEFORE_IMAGE}
-              alt="Before"
+              alt={projectName ? `${projectName}, before` : 'Before'}
               fill
-              priority
               draggable={false}
               sizes="(max-width: 1024px) 100vw, 30rem"
               className="object-cover pointer-events-none"

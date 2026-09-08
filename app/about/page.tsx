@@ -4,11 +4,27 @@ import Image from 'next/image'
 import { Reveal, HeroParallax } from '@/components/motion'
 import { siteConfig } from '@/lib/data'
 import { createClient } from '@/lib/supabase/server'
+import { getSeoRow } from '@/lib/seo'
 import type { TeamMember } from '@/lib/types'
 
-export const metadata: Metadata = {
-  title: 'About',
-  description: `${siteConfig.name} is a Thailand-based project consulting and development management company supporting clients across commercial, industrial, hospitality, wellness, and real estate projects.`,
+const FALLBACK_TITLE = 'About TMPC | Project Consultants & Development Managers in Thailand'
+const FALLBACK_DESCRIPTION = `${siteConfig.name} is a Thailand-based project consulting and development management company supporting clients across commercial, industrial, hospitality, wellness, and real estate projects.`
+
+export async function generateMetadata(): Promise<Metadata> {
+  const seo = await getSeoRow('about')
+  const title = seo?.title || FALLBACK_TITLE
+  const description = seo?.description || FALLBACK_DESCRIPTION
+  return {
+    title: { absolute: title },
+    description,
+    alternates: { canonical: '/about' },
+    openGraph: {
+      title: seo?.og_title || title,
+      description: seo?.og_description || description,
+      url: '/about',
+      images: ['/images/hero-about.jpg'],
+    },
+  }
 }
 
 export default async function AboutPage() {

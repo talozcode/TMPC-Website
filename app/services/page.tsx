@@ -4,11 +4,27 @@ import Image from 'next/image'
 import { Reveal, HeroParallax } from '@/components/motion'
 import { siteConfig } from '@/lib/data'
 import { createClient } from '@/lib/supabase/server'
+import { getSeoRow } from '@/lib/seo'
 import type { Service } from '@/lib/types'
 
-export const metadata: Metadata = {
-  title: 'Services',
-  description: `${siteConfig.name} provides project consulting, development management, project coordination, and execution oversight across commercial, industrial, hospitality, wellness, and real estate projects in Thailand.`,
+const FALLBACK_TITLE = 'TMPC Services: Consulting, Coordination & Execution Oversight'
+const FALLBACK_DESCRIPTION = `${siteConfig.name} provides project consulting, development management, project coordination, and execution oversight across commercial, industrial, hospitality, wellness, and real estate projects in Thailand.`
+
+export async function generateMetadata(): Promise<Metadata> {
+  const seo = await getSeoRow('services')
+  const title = seo?.title || FALLBACK_TITLE
+  const description = seo?.description || FALLBACK_DESCRIPTION
+  return {
+    title: { absolute: title },
+    description,
+    alternates: { canonical: '/services' },
+    openGraph: {
+      title: seo?.og_title || title,
+      description: seo?.og_description || description,
+      url: '/services',
+      images: ['/images/hero-services.jpg'],
+    },
+  }
 }
 
 const processSteps = [
@@ -77,7 +93,8 @@ export default async function ServicesPage() {
           <Reveal delay={180}>
             <p className="t-lead !text-white/60 mt-7">
               From the first planning conversation to handover, TMPC manages the coordination,
-              oversight, and reporting across every phase. One accountable partner throughout.
+              oversight, and reporting across every phase, in Bangkok, Phuket, and beyond. One
+              accountable partner throughout.
             </p>
           </Reveal>
         </div>

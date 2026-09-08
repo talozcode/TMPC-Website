@@ -141,12 +141,48 @@ Both route every file through `components/admin/image-crop-modal.tsx` (react-eas
 upload. The public project gallery (`components/projects-gallery.tsx`) uses
 `yet-another-react-lightbox` for fullscreen + zoom.
 
+**Testimonials** (`components/testimonials.tsx`) renders active rows from the `testimonials`
+table on the homepage, right after Services. Returns `null` when there are none, which is the
+case today: the table and its `/admin/testimonials` editor existed for a while with nothing on
+the public site reading from them.
+
+**Blog** is public at `/blog` and `/blog/[slug]` (`app/blog/`), reading published `blog_posts`
+rows. The admin editor (`/admin/blog`) predates these routes; `content` is authored as plain text
+in a textarea, so the detail page splits on blank lines for paragraphs rather than parsing
+markdown or HTML, there is no markdown/sanitizer dependency in this repo. `/blog` shows an empty
+state instead of a blank grid when there are zero published posts (true today), and only shows up
+in `sitemap.ts` once there is at least one.
+
+**SEO** (`lib/seo.ts`, `app/sitemap.ts`, `app/robots.ts`). `getSeoRow(page)` reads one row from
+the `seo_metadata` table; `generateMetadata()` on Home/About/Services/Projects/Contact calls it
+and falls back to a hardcoded default, so `/admin/seo` now actually changes what ships instead of
+writing to a table nothing read. `metadataBase` in `app/layout.tsx` is a `SITE_URL` constant
+pointed at the live Vercel URL: `tmpc.co.th` doesn't resolve, so every canonical/OG tag used to
+point at a dead domain. Update `SITE_URL` (in `app/layout.tsx`, `app/sitemap.ts`, `app/robots.ts`)
+the day a real custom domain goes live. `app/layout.tsx` also carries a site-wide
+`ProfessionalService` JSON-LD block; there was none before.
+
+**Contact page** (`app/contact/page.tsx`) reads `whatsapp`/`email`/`location` from `site_settings`
+live rather than the hardcoded `siteConfig` defaults, falling back to `siteConfig` only if a
+setting is empty. The WhatsApp card is conditional on `isRealPhoneNumber()`, digits only, 8 to 15
+of them, because the seed placeholder `'66XXXXXXXXX'` was hardcoded straight into the page and
+shipped live as a dead, clickable link. Don't hardcode a phone number back into this page; set the
+real one at `/admin/settings` instead. The methods grid's column count tracks the real card count
+so a hidden WhatsApp card never leaves an empty third column.
+
+**The "10+ parties" stat** is repeated three places and must stay in sync if it ever changes:
+the homepage hero rail, the homepage statement band (`app/page.tsx`), and the Project
+Coordination service description (`services` table, number `03`). It used to read 10+/8+/five in
+those three spots respectively, which read as an invented number rather than a counted one.
+
 ## Gotchas that have bitten this repo
 
 **Two `public/images` files are 29-byte HTML stubs, not JPEGs**: `bangkok-bg.jpg` and
-`scenario-industrial.jpg`. `next/image` returns 400 for them. The second is referenced by a
-`project_images` row, so /projects logs one 400 until the real file is supplied. Check
-`file -b --mime-type` before using anything from `public/images`.
+`scenario-industrial.jpg`. `next/image` returns 400 for them. Neither is referenced by a
+`project_images` row anymore (the Khon Kaen Community Hub row pointing at the second one was
+removed after it rendered as an empty box in production); `scenario-industrial.jpg` is still used
+by the internal `/hero` design-reference page, so don't delete it without checking there first.
+Check `file -b --mime-type` before using anything from `public/images`.
 
 **The `.js` class on `<html>`** is set by an inline pre-paint script in `app/layout.tsx`. Every
 scroll-reveal rule is scoped to it so the page renders fully visible without JavaScript. `<html>`

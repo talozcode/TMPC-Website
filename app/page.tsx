@@ -4,12 +4,28 @@ import Image from 'next/image'
 import { Reveal } from '@/components/motion'
 import { siteConfig } from '@/lib/data'
 import { createClient } from '@/lib/supabase/server'
+import { getSeoRow } from '@/lib/seo'
 import { HeroBeforeAfter } from '@/components/hero-before-after'
-import type { HeroBeforeAfter as HeroBeforeAfterRow } from '@/lib/types'
+import { Testimonials } from '@/components/testimonials'
+import type { HeroBeforeAfter as HeroBeforeAfterRow, Testimonial } from '@/lib/types'
 
-export const metadata: Metadata = {
-  title: `${siteConfig.shortName} - Project Consulting and Development Management in Thailand`,
-  description: siteConfig.description,
+const FALLBACK_TITLE = `${siteConfig.shortName} - Project Consulting and Development Management in Thailand`
+
+export async function generateMetadata(): Promise<Metadata> {
+  const seo = await getSeoRow('home')
+  const title = seo?.title || FALLBACK_TITLE
+  const description = seo?.description || siteConfig.description
+  return {
+    title: { absolute: title },
+    description,
+    alternates: { canonical: '/' },
+    openGraph: {
+      title: seo?.og_title || title,
+      description: seo?.og_description || description,
+      url: '/',
+      images: ['/images/hero-home.jpg'],
+    },
+  }
 }
 
 const services = [
@@ -29,11 +45,15 @@ const rail = [
 
 export default async function HomePage() {
   const supabase = await createClient()
-  const { data: hero } = await supabase
-    .from('hero_before_after')
-    .select('*')
-    .limit(1)
-    .maybeSingle<HeroBeforeAfterRow>()
+  const [{ data: hero }, { data: testimonialRows }] = await Promise.all([
+    supabase.from('hero_before_after').select('*').limit(1).maybeSingle<HeroBeforeAfterRow>(),
+    supabase
+      .from('testimonials')
+      .select('*')
+      .eq('active', true)
+      .order('display_order', { ascending: true }),
+  ])
+  const testimonials = (testimonialRows as Testimonial[]) ?? []
 
   return (
     <>
@@ -164,13 +184,13 @@ export default async function HomePage() {
                 <div className="max-w-2xl">
                   <p className="eye">One Coordination Layer</p>
                   <p className="t-h3 text-white mt-5 !text-[1.35rem] lg:!text-[1.75rem] !leading-snug">
-                    TMPC sits between 8+ parties, two languages, and every approval, turning
+                    TMPC sits between 10+ parties, two languages, and every approval, turning
                     fragmented input into <span className="text-accent-light">aligned delivery</span>.
                   </p>
                 </div>
                 <div className="flex gap-7 mt-9 lg:mt-0 lg:flex-shrink-0">
                   {[
-                    { v: '8+', l: 'Parties' },
+                    { v: '10+', l: 'Parties' },
                     { v: '2', l: 'Languages' },
                     { v: '1', l: 'Accountable Partner' },
                   ].map((s, i) => (
@@ -205,9 +225,23 @@ export default async function HomePage() {
             </div>
           </Reveal>
 
+          {/* First row fills the 3-column grid exactly; the last two are their
+              own centered row, so 5 cards never leave an empty slot on lg. */}
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {services.map((s, i) => (
-              <Reveal key={s.title} delay={(i % 3) * 80} className="flex">
+            {services.slice(0, 3).map((s, i) => (
+              <Reveal key={s.title} delay={i * 80} className="flex">
+                <div className="card card-hover press-sm group flex flex-col flex-1 p-8 lg:p-9">
+                  <p className="text-[0.68rem] font-bold text-accent tracking-[0.2em] mb-6">{s.number}</p>
+                  <h3 className="t-h3 text-ink mb-3.5">{s.title}</h3>
+                  <p className="text-[0.95rem] text-ink-muted leading-relaxed flex-1">{s.description}</p>
+                  <div className="mt-7 w-9 h-0.5 rounded-full bg-accent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+                </div>
+              </Reveal>
+            ))}
+          </div>
+          <div className="grid gap-5 sm:grid-cols-2 lg:max-w-[calc(2/3*100%+1.25rem)] mt-5 lg:mx-auto">
+            {services.slice(3).map((s, i) => (
+              <Reveal key={s.title} delay={(i + 3) * 80} className="flex">
                 <div className="card card-hover press-sm group flex flex-col flex-1 p-8 lg:p-9">
                   <p className="text-[0.68rem] font-bold text-accent tracking-[0.2em] mb-6">{s.number}</p>
                   <h3 className="t-h3 text-ink mb-3.5">{s.title}</h3>
@@ -219,6 +253,9 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* ── TESTIMONIALS ── */}
+      <Testimonials testimonials={testimonials} />
 
       {/* ── CTA ── */}
       <section className="on-dark relative bg-canvas-dark overflow-hidden">
