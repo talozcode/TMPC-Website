@@ -170,10 +170,21 @@ shipped live as a dead, clickable link. Don't hardcode a phone number back into 
 real one at `/admin/settings` instead. The methods grid's column count tracks the real card count
 so a hidden WhatsApp card never leaves an empty third column.
 
-**The "10+ parties" stat** is repeated three places and must stay in sync if it ever changes:
-the homepage hero rail, the homepage statement band (`app/page.tsx`), and the Project
-Coordination service description (`services` table, number `03`). It used to read 10+/8+/five in
-those three spots respectively, which read as an invented number rather than a counted one.
+**The "10+ parties" stat was retired** (22/09/2026), replaced by client-outcome framing ("We
+Represent You" / "One Point of Contact" / "Concept to Completion" in the hero, and
+`components/coordination-flow.tsx`'s "Multiple Teams, 2 Languages, 1 Point of Contact" line
+replacing the old numeric statement band). It used to be repeated three places and had drifted out
+of sync (10+/8+/five); the Project Coordination service description (`services` table, number
+`03`, CMS content) was updated to "multiple parties" in the same pass so nothing on the site still
+carries the old figure.
+
+**Homepage sections removed 22/09/2026, per client review**: the "Bangkok, Thailand" hero eyebrow
+and the Quick Facts Rail (Bangkok based / English and Thai / Owner side / Concept to handover)
+are both gone. `components/coordination-flow.tsx` replaced the "One Coordination Layer" statement
+band, its own file comment explains the design constraints (a near-identical multi-box diagram
+was tried on this homepage once before and removed for being "confusing/long on mobile," see
+`git show 6431fd5` / `git show dd2c2cc`; this version is a single short vertical stack with no
+responsive branching, built specifically to not repeat that failure).
 
 ## Gotchas that have bitten this repo
 

@@ -7,6 +7,7 @@ import { createClient } from '@/lib/supabase/server'
 import { getSeoRow } from '@/lib/seo'
 import { HeroBeforeAfter } from '@/components/hero-before-after'
 import { Testimonials } from '@/components/testimonials'
+import { CoordinationFlow } from '@/components/coordination-flow'
 import type { HeroBeforeAfter as HeroBeforeAfterRow, Testimonial } from '@/lib/types'
 
 const FALLBACK_TITLE = `${siteConfig.shortName} - Project Consulting and Development Management in Thailand`
@@ -36,13 +37,6 @@ const services = [
   { number: '05', title: 'Operational Setup', description: 'Construction finished but operations not ready. We coordinate the handover so opening day is not improvised.' },
 ]
 
-const rail = [
-  { value: 'Bangkok based', label: 'On the ground in Thailand' },
-  { value: 'English and Thai', label: 'Bilingual coordination' },
-  { value: 'Owner side', label: 'We do not build, we manage' },
-  { value: 'Concept to handover', label: 'Full lifecycle coverage' },
-]
-
 export default async function HomePage() {
   const supabase = await createClient()
   const [{ data: hero }, { data: testimonialRows }] = await Promise.all([
@@ -59,28 +53,27 @@ export default async function HomePage() {
     <>
       {/* ── HERO ── */}
       <section className="bg-canvas overflow-hidden">
-        <div className="wrap pt-[clamp(3rem,7vw,6rem)] pb-[clamp(3.5rem,7vw,6.5rem)]">
+        {/* Top padding shrunk (was clamp(3rem,7vw,6rem)): the eyebrow above the
+            h1 is gone, and the client flagged the header-to-h1 gap as too big. */}
+        <div className="wrap pt-[clamp(1.5rem,3.5vw,3rem)] pb-[clamp(3.5rem,7vw,6.5rem)]">
           {/* items-center here centers the image against just this row (headline,
               lead, CTAs) - the stats strip is deliberately outside it, below, so
               its extra height does not pull the image down off that center. */}
           <div className="grid lg:grid-cols-[1fr_minmax(0,30rem)] gap-14 lg:gap-16 items-center">
             <div className="flex flex-col">
               <Reveal>
-                <p className="eye">Bangkok, Thailand</p>
-              </Reveal>
-              <Reveal delay={90}>
-                <h1 className="t-display text-ink mt-6">
+                <h1 className="t-display text-ink">
                   Planning a project in Thailand? You need someone on the ground.
                 </h1>
               </Reveal>
-              <Reveal delay={170}>
+              <Reveal delay={90}>
                 <p className="t-lead mt-7">
                   For international clients and investors, Thailand projects bring real complexity:
                   unfamiliar contractors, approval processes, language barriers, and a delivery
                   environment where local presence makes the difference. TMPC provides that presence.
                 </p>
               </Reveal>
-              <Reveal delay={250}>
+              <Reveal delay={170}>
                 <div className="flex flex-wrap items-center gap-3 mt-9">
                   <Link href="/contact" className="btn">Discuss Your Project</Link>
                   <Link href="/services" className="btn-2">
@@ -100,42 +93,35 @@ export default async function HomePage() {
             </Reveal>
           </div>
 
-          <Reveal delay={330}>
-            {/* An even three-up grid rather than inline dividers: the labels
-                set at different widths, so hand-spaced rules collided with them. */}
-            <div className="hidden lg:grid grid-cols-3 max-w-lg mt-12 pt-8 border-t border-line">
+          {/* Client-advocacy line, replacing the old numeric stat row (1 / 10+ /
+              Full): reuses the value+caption pattern the Quick Facts Rail used
+              before it was removed, since that pairing was built for a short
+              bold phrase plus a sentence-case caption, not for single tokens.
+              Visible on every width now, not desktop-only, since the rail's
+              mobile real estate is free. */}
+          <Reveal delay={260}>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 max-w-2xl mt-12 pt-8 border-t border-line">
               {[
-                { value: '1', label: 'Point of Accountability' },
-                { value: '10+', label: 'Parties per Project' },
-                { value: 'Full', label: 'Lifecycle Coverage' },
+                { value: 'We Represent You', label: 'Not the contractor. Your interests, first.' },
+                { value: 'One Point of Contact', label: 'One team, start to finish.' },
+                { value: 'Concept to Completion', label: 'Full lifecycle coverage, on the ground.' },
               ].map((stat, i) => (
-                <div key={stat.label} className={i > 0 ? 'pl-6 border-l border-line' : 'pr-6'}>
-                  <p className="font-display font-bold text-[1.6rem] text-ink leading-none tracking-[-0.03em] mb-2.5">
+                <div
+                  key={stat.value}
+                  className={
+                    i > 0
+                      ? 'pt-5 sm:pt-0 border-t sm:border-t-0 sm:border-l border-line sm:pl-6'
+                      : ''
+                  }
+                >
+                  <p className="font-display font-semibold text-[1.05rem] text-ink tracking-[-0.02em] leading-tight">
                     {stat.value}
                   </p>
-                  <p className="text-[0.6rem] text-ink-muted uppercase tracking-[0.11em] leading-[1.5]">
-                    {stat.label}
-                  </p>
+                  <p className="text-[0.85rem] text-ink-muted leading-snug mt-1.5">{stat.label}</p>
                 </div>
               ))}
             </div>
           </Reveal>
-        </div>
-      </section>
-
-      {/* ── QUICK FACTS RAIL ── */}
-      <section className="bg-canvas-subtle border-y border-line-subtle">
-        <div className="wrap">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-7 py-9">
-            {rail.map((r, i) => (
-              <Reveal key={r.value} delay={i * 70}>
-                <p className="font-display font-semibold text-[1.05rem] text-ink tracking-[-0.02em] leading-tight">
-                  {r.value}
-                </p>
-                <p className="text-[0.85rem] text-ink-muted leading-snug mt-1.5">{r.label}</p>
-              </Reveal>
-            ))}
-          </div>
         </div>
       </section>
 
@@ -144,16 +130,17 @@ export default async function HomePage() {
         <div className="wrap">
           <div className="grid lg:grid-cols-2 gap-14 lg:gap-20 items-center">
             <Reveal>
-              <p className="eye">The Challenge</p>
-              <h2 className="t-h1 text-ink mt-6">What most projects are missing from day one.</h2>
+              <p className="eye">Cost Protection</p>
+              <h2 className="t-h1 text-ink mt-6">We save you money.</h2>
               <p className="t-lead mt-7">
-                International projects in Thailand bring together architects, contractors,
-                subcontractors, MEP engineers, government approval processes, and suppliers, often
-                managed by an owner who is overseas and unfamiliar with how things work here.
+                Projects in Thailand involve many people, many steps, and countless decisions.
+                Without one team managing the full process, mistakes happen, costs increase, and
+                timelines slip.
               </p>
               <p className="t-body text-ink-muted mt-5 max-w-[56ch]">
-                No single party coordinates the whole. Communication breaks down, timelines drift,
-                and accountability disappears. TMPC closes that gap.
+                TMPC represents you: we check quotes, negotiate with contractors and suppliers, and
+                use our local network to find the right people at the right price. We manage the
+                process and protect your budget.
               </p>
               <div className="mt-9">
                 <Link href="/about" className="btn-2">
@@ -162,11 +149,14 @@ export default async function HomePage() {
               </div>
             </Reveal>
 
+            {/* Placeholder: the client wants an image combining construction and
+                budget/finance here. No such photo exists in public/images yet;
+                swap this for a real one once available. */}
             <Reveal variant="image" delay={120}>
               <div className="panel relative aspect-[4/3]">
                 <Image
-                  src="/images/scenario-realestate.jpg"
-                  alt="A residential development at dusk"
+                  src="/images/scenario-office.jpg"
+                  alt="An office workspace"
                   fill
                   className="object-cover"
                   sizes="(max-width: 1024px) 100vw, 50vw"
@@ -176,36 +166,11 @@ export default async function HomePage() {
             </Reveal>
           </div>
 
-          {/* Statement band */}
+          {/* Coordination flow: replaces the old one-sentence statement band.
+              See components/coordination-flow.tsx for why this shape and not
+              the multi-box diagram this homepage tried and removed before. */}
           <Reveal delay={100}>
-            <div className="on-dark panel relative bg-canvas-dark mt-[clamp(3rem,6vw,5rem)] px-8 py-10 lg:px-14 lg:py-14">
-              <div className="absolute inset-0 bg-grid-dots opacity-30 pointer-events-none" />
-              <div className="relative z-10 lg:flex lg:items-center lg:justify-between lg:gap-14">
-                <div className="max-w-2xl">
-                  <p className="eye">One Coordination Layer</p>
-                  <p className="t-h3 text-white mt-5 !text-[1.35rem] lg:!text-[1.75rem] !leading-snug">
-                    TMPC sits between 10+ parties, two languages, and every approval, turning
-                    fragmented input into <span className="text-accent-light">aligned delivery</span>.
-                  </p>
-                </div>
-                <div className="flex gap-7 mt-9 lg:mt-0 lg:flex-shrink-0">
-                  {[
-                    { v: '10+', l: 'Parties' },
-                    { v: '2', l: 'Languages' },
-                    { v: '1', l: 'Accountable Partner' },
-                  ].map((s, i) => (
-                    <div key={s.l} className={i > 0 ? 'pl-7 border-l border-white/10' : ''}>
-                      <p className="font-display font-bold text-[1.9rem] lg:text-[2.2rem] text-white leading-none tracking-[-0.035em] mb-2">
-                        {s.v}
-                      </p>
-                      <p className="text-[0.58rem] text-white/40 uppercase tracking-[0.16em] leading-tight max-w-[9ch]">
-                        {s.l}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
+            <CoordinationFlow />
           </Reveal>
         </div>
       </section>
