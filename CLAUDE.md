@@ -76,7 +76,21 @@ interruptible and carry velocity through a re-target. `project()` gives a flick'
 `components/layout/mobile-nav.tsx` (drag-to-dismiss bottom sheet) and
 `components/hero-before-after.tsx` (the homepage hero's drag handle, plus its one-time mount hint).
 `components/motion.tsx` exports `Reveal` (scroll reveal, `rise` and `image` variants, `delay` for
-stagger) and `HeroParallax`. `components/fade-in.tsx` is a thin wrapper kept for existing callers.
+stagger) and `HeroParallax`.
+
+**v3 redesign (adopted 05/11/2026, branch `feat/v3`).** Tal built a heavier redesign in a copy of
+the repo (`tmpc-website-v3/`, untracked, kept as the reference) and it was copied over the app
+wholesale. On top of the spring layer it adds GSAP (`components/anim/gsap.ts`, `split-heading`,
+`word-scrub`, `parallax`), anime.js (`components/anim/anime.ts`), Lenis smooth scroll
+(`components/anim/smooth-scroll.tsx`), framer-motion and three. Self-hosted fonts live in
+`app/fonts/` (Archivo, IBM Plex Sans, Geist Mono). Page sections are grouped by page:
+`components/home/*` (hero, fx strip, owner table, core services, phone motion),
+`components/about/*`, `components/contact/*` (hero, steps, ways, office map, Bangkok time),
+`components/sections/*` (shared page hero, process timeline, service index, featured projects,
+CTA band), `components/compare/*` (the before/after compare family, slots in
+`lib/compare-slots.ts`) and `components/transform/*` (the floors/grid geometry piece). There is a
+proper `app/not-found.tsx`. The internal `/hero` and `/theme-lab` design pages and the
+`coordination-flow` and `fade-in` components were removed with it.
 
 **Three Supabase clients, pick by context:**
 - `lib/supabase/client.ts`: browser, anon key (client components).
@@ -172,8 +186,8 @@ so a hidden WhatsApp card never leaves an empty third column.
 
 **The "10+ parties" stat was retired** (22/09/2026), replaced by client-outcome framing ("We
 Represent You" / "One Point of Contact" / "Concept to Completion" in the hero, and
-`components/coordination-flow.tsx`'s "Multiple Teams, 2 Languages, 1 Point of Contact" line
-replacing the old numeric statement band). It used to be repeated three places and had drifted out
+the coordination-flow line "Multiple Teams, 2 Languages, 1 Point of Contact"
+replacing the old numeric statement band; that component itself was retired by v3). It used to be repeated three places and had drifted out
 of sync (10+/8+/five); the Project Coordination service description (`services` table, number
 `03`, CMS content) was updated to "multiple parties" in the same pass so nothing on the site still
 carries the old figure.
@@ -191,8 +205,8 @@ responsive branching, built specifically to not repeat that failure).
 **Two `public/images` files are 29-byte HTML stubs, not JPEGs**: `bangkok-bg.jpg` and
 `scenario-industrial.jpg`. `next/image` returns 400 for them. Neither is referenced by a
 `project_images` row anymore (the Khon Kaen Community Hub row pointing at the second one was
-removed after it rendered as an empty box in production); `scenario-industrial.jpg` is still used
-by the internal `/hero` design-reference page, so don't delete it without checking there first.
+removed after it rendered as an empty box in production); The `/hero` page that used
+`scenario-industrial.jpg` is gone since v3, so both stubs are now unreferenced.
 Check `file -b --mime-type` before using anything from `public/images`.
 
 **The `.js` class on `<html>`** is set by an inline pre-paint script in `app/layout.tsx`. Every
