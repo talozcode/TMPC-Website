@@ -40,7 +40,7 @@ export function HomeHero() {
               alt=""
               aria-hidden="true"
               fill
-              priority
+              loading="eager"
               sizes="100vw"
               className="hero-lights object-cover object-[64%_18%]"
               data-part={l.part}

@@ -15,6 +15,9 @@ import { Parallax } from '@/components/anim/parallax'
 import { TransformFloors } from '@/components/transform/transform-floors'
 import { COMPARE } from '@/lib/compare-slots'
 
+// Cached and refreshed at most once a minute; admin edits call revalidatePath so they show sooner.
+export const revalidate = 60
+
 // The two core services show their before/after pair as floors rising
 // (TransformFloors), so swapping that pair in lib/compare-slots.ts updates
 // this page too. The other services keep a single photograph.

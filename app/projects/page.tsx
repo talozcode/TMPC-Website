@@ -10,6 +10,9 @@ import { COMPARE } from '@/lib/compare-slots'
 import { ScannerCardStream } from '@/components/ui/scanner-card-stream'
 import { SplitHeading } from '@/components/anim/split-heading'
 
+// Cached and refreshed at most once a minute; admin edits call revalidatePath so they show sooner.
+export const revalidate = 60
+
 const FALLBACK_TITLE = 'TMPC Projects: Completed Work Across Thailand'
 const FALLBACK_DESCRIPTION = `Selected project work by ${siteConfig.name} across residential, hospitality, commercial, industrial, and community projects in Thailand.`
 

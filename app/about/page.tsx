@@ -11,6 +11,9 @@ import { TransformGrid } from '@/components/transform/transform-grid'
 import { COMPARE } from '@/lib/compare-slots'
 import { ScopeBand } from '@/components/about/scope-band'
 
+// Cached and refreshed at most once a minute; admin edits call revalidatePath so they show sooner.
+export const revalidate = 60
+
 const FALLBACK_TITLE = 'About TMPC | Project Consultants & Development Managers in Thailand'
 const FALLBACK_DESCRIPTION = `${siteConfig.name} is a Thailand-based project consulting and development management company supporting clients across commercial, industrial, hospitality, wellness, and real estate projects.`
 

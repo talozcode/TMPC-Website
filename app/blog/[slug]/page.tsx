@@ -5,8 +5,16 @@ import { notFound } from 'next/navigation'
 import { Reveal } from '@/components/motion'
 import { SplitHeading } from '@/components/anim/split-heading'
 import { CtaBand } from '@/components/sections/cta-band'
-import { getPost } from '@/lib/content'
+import { getPost, getPosts } from '@/lib/content'
 import { Arrow } from '@/components/ui/arrow-link'
+
+// Cached and refreshed at most once a minute; admin edits call revalidatePath so they show sooner.
+export const revalidate = 60
+
+export async function generateStaticParams() {
+  const posts = await getPosts()
+  return posts.map((p) => ({ slug: p.slug }))
+}
 
 function formatDate(iso: string | null) {
   if (!iso) return ''

@@ -1,6 +1,9 @@
 import type { MetadataRoute } from 'next'
 import { getPosts, getProjects } from '@/lib/content'
 
+// Cached and refreshed at most once a minute; admin edits call revalidatePath so they show sooner.
+export const revalidate = 60
+
 const SITE_URL = 'https://tmpc-website.vercel.app'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

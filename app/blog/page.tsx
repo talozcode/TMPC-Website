@@ -7,6 +7,9 @@ import { PageHero } from '@/components/sections/page-hero'
 import { CtaBand } from '@/components/sections/cta-band'
 import { Arrow, ButtonLink } from '@/components/ui/arrow-link'
 
+// Cached and refreshed at most once a minute; admin edits call revalidatePath so they show sooner.
+export const revalidate = 60
+
 export const metadata: Metadata = {
   title: 'Insights: Project Delivery in Thailand',
   description:

@@ -1,5 +1,5 @@
 import { cache } from 'react'
-import { createClient } from '@/lib/supabase/server'
+import { createPublicClient } from '@/lib/supabase/public'
 import {
   fallbackCategories,
   fallbackProjects,
@@ -34,7 +34,7 @@ export function supabaseConfigured() {
 
 export async function getHero(): Promise<HeroBeforeAfter | null> {
   if (!supabaseConfigured()) return null
-  const supabase = await createClient()
+  const supabase = createPublicClient()
   const { data } = await supabase
     .from('hero_before_after')
     .select('*')
@@ -45,7 +45,7 @@ export async function getHero(): Promise<HeroBeforeAfter | null> {
 
 export async function getTestimonials(): Promise<Testimonial[]> {
   if (!supabaseConfigured()) return []
-  const supabase = await createClient()
+  const supabase = createPublicClient()
   const { data } = await supabase
     .from('testimonials')
     .select('*')
@@ -56,7 +56,7 @@ export async function getTestimonials(): Promise<Testimonial[]> {
 
 export async function getServices(): Promise<Service[]> {
   if (!supabaseConfigured()) return fallbackServices
-  const supabase = await createClient()
+  const supabase = createPublicClient()
   const { data } = await supabase
     .from('services')
     .select('*')
@@ -67,7 +67,7 @@ export async function getServices(): Promise<Service[]> {
 
 export async function getTeam(): Promise<TeamMember[]> {
   if (!supabaseConfigured()) return fallbackTeam
-  const supabase = await createClient()
+  const supabase = createPublicClient()
   const { data } = await supabase
     .from('team_members')
     .select('*')
@@ -78,7 +78,7 @@ export async function getTeam(): Promise<TeamMember[]> {
 
 export async function getProjects(): Promise<Project[]> {
   if (!supabaseConfigured()) return fallbackProjects
-  const supabase = await createClient()
+  const supabase = createPublicClient()
   const { data } = await supabase
     .from('projects')
     .select(PROJECT_COLUMNS)
@@ -90,7 +90,7 @@ export async function getProjects(): Promise<Project[]> {
 
 export async function getCategoryNames(): Promise<string[]> {
   if (!supabaseConfigured()) return fallbackCategories.map((c) => c.name)
-  const supabase = await createClient()
+  const supabase = createPublicClient()
   const { data } = await supabase.from('categories').select('name').order('display_order')
   return (data ?? []).map((c) => c.name as string)
 }
@@ -104,7 +104,7 @@ export const getProject = cache(async (param: string): Promise<Project | null> =
   if (!supabaseConfigured()) {
     return fallbackProjects.find((p) => p.slug === param || p.id === param) ?? null
   }
-  const supabase = await createClient()
+  const supabase = createPublicClient()
   const bySlug = await supabase
     .from('projects')
     .select(PROJECT_COLUMNS)
@@ -124,7 +124,7 @@ export const getProject = cache(async (param: string): Promise<Project | null> =
 
 export async function getPosts(): Promise<BlogPost[]> {
   if (!supabaseConfigured()) return []
-  const supabase = await createClient()
+  const supabase = createPublicClient()
   const { data } = await supabase
     .from('blog_posts')
     .select('*')
@@ -135,7 +135,7 @@ export async function getPosts(): Promise<BlogPost[]> {
 
 export const getPost = cache(async (slug: string): Promise<BlogPost | null> => {
   if (!supabaseConfigured()) return null
-  const supabase = await createClient()
+  const supabase = createPublicClient()
   const { data } = await supabase
     .from('blog_posts')
     .select('*')
@@ -147,7 +147,7 @@ export const getPost = cache(async (slug: string): Promise<BlogPost | null> => {
 
 export async function getSettings(keys: string[]): Promise<Record<string, string | null>> {
   if (!supabaseConfigured()) return {}
-  const supabase = await createClient()
+  const supabase = createPublicClient()
   const { data } = await supabase.from('site_settings').select('key, value').in('key', keys)
   return Object.fromEntries((data ?? []).map((s) => [s.key as string, s.value as string | null]))
 }

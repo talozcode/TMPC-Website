@@ -792,14 +792,21 @@ export function ScannerCardStream({
                 <div className="relative overflow-hidden bg-ink shadow-[0_15px_40px_rgba(0,0,0,0.4)]" style={{ height: `calc(${ssrW} / ${ratio})` }}>
                   {/* The first card is scanned straight away: fetch its After photo now too. */}
                   {k === 0 && (
-                    <Image src={item.after} alt="" fill sizes={sizes} loading="eager" draggable={false} className="object-cover pointer-events-none" />
+                    <Image src={item.after} alt="" fill sizes={sizes}
+                    quality={60} loading="eager" draggable={false} className="object-cover pointer-events-none" />
                   )}
                   <Image
                     src={item.before}
                     alt=""
                     fill
                     sizes={sizes}
+                    quality={60}
                     priority={k === 0 || k === -1}
+                    // The cards beyond the first scan are fetched after the
+                    // centre ones rather than alongside them: on a phone all
+                    // eighteen photographs used to download at once and the
+                    // card being read was the last to paint.
+                    fetchPriority={Math.abs(k) > 1 ? 'low' : undefined}
                     draggable={false}
                     className="object-cover pointer-events-none grayscale-[0.85] contrast-[1.05]"
                   />
@@ -838,6 +845,8 @@ export function ScannerCardStream({
                     alt=""
                     fill
                     sizes={sizes}
+                    quality={60}
+                    fetchPriority="low"
                     draggable={false}
                     className="object-cover pointer-events-none"
                   />
@@ -851,6 +860,8 @@ export function ScannerCardStream({
                       alt=""
                       fill
                       sizes={sizes}
+                      quality={60}
+                      fetchPriority="low"
                       draggable={false}
                       className="object-cover pointer-events-none grayscale-[0.85] contrast-[1.05]"
                     />

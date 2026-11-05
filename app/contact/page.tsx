@@ -3,12 +3,15 @@ import { Reveal } from '@/components/motion'
 import { siteConfig } from '@/lib/data'
 import { getSeoRow } from '@/lib/seo'
 import { getSettings } from '@/lib/content'
-import { ContactForm, type ContactMode } from '@/components/contact-form'
+import { ContactForm } from '@/components/contact-form'
 import { ArrowSwap } from '@/components/ui/arrow-link'
 import { SplitHeading } from '@/components/anim/split-heading'
 import { ContactHero } from '@/components/contact/contact-hero'
 import { OfficeMap } from '@/components/contact/office-map'
 import { ContactSteps } from '@/components/contact/contact-steps'
+
+// Cached and refreshed at most once a minute; admin edits call revalidatePath so they show sooner.
+export const revalidate = 60
 
 const FALLBACK_TITLE = 'Contact TMPC | Discuss Your Thailand Project'
 const FALLBACK_DESCRIPTION = `Get in touch with ${siteConfig.name} to discuss your project in Thailand. Project consulting, coordination, and development management inquiries welcome.`
@@ -37,13 +40,8 @@ function isRealPhoneNumber(value: string | null | undefined): value is string {
   return !!value && /^\d{8,15}$/.test(value)
 }
 
-export default async function ContactPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ mode?: string | string[] }>
-}) {
-  const [{ mode }, settings] = await Promise.all([searchParams, getSettings(['whatsapp', 'email', 'location'])])
-  const initialMode: ContactMode = mode === 'call' ? 'call' : 'inquiry'
+export default async function ContactPage() {
+  const settings = await getSettings(['whatsapp', 'email', 'location'])
   const email = settings.email || siteConfig.email
   const location = settings.location || siteConfig.location
   const whatsapp = [settings.whatsapp, siteConfig.whatsapp].find(isRealPhoneNumber) ?? null
@@ -54,7 +52,7 @@ export default async function ContactPage({
 
       <section id="brief" className="sec bg-paper scroll-mt-[var(--hdr-h)]">
         <div className="wrap">
-          <ContactForm initialMode={initialMode} aside={<ContactSteps />} />
+          <ContactForm aside={<ContactSteps />} />
         </div>
       </section>
 

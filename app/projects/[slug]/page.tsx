@@ -12,6 +12,16 @@ import { PHASE_LABELS, pickLeadImage, toPhaseGroups } from '@/lib/project-phases
 import { COMPARE } from '@/lib/compare-slots'
 import { AnimatedGallery } from '@/components/ui/animated-gallery'
 
+// Cached and refreshed at most once a minute; admin edits call revalidatePath so they show sooner.
+export const revalidate = 60
+
+// Every published project is built up front and refreshed on the same
+// schedule; a slug that is not in the list is still rendered on demand.
+export async function generateStaticParams() {
+  const projects = await getProjects()
+  return projects.map((p) => ({ slug: p.slug ?? p.id }))
+}
+
 export async function generateMetadata({
   params,
 }: {

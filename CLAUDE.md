@@ -102,8 +102,15 @@ on login goes to `/admin/projects`). RLS (see `supabase/migrations/001_initial_c
 allows public read of *published/active* rows; the admin escapes RLS via the service-role client.
 
 **Data flow:** admin (`app/admin/*`, service-role client + server actions) mutates Postgres, then
-public pages (`app/`, anon server client) read it. Public/admin data pages are dynamic
-(`export const dynamic = 'force-dynamic'` or cookie use) so edits appear without a redeploy.
+public pages (`app/`) read it through `lib/content.ts` and `lib/seo.ts`, which use the
+cookie-free anon client in `lib/supabase/public.ts`. **Public pages are cached (ISR), not
+dynamic**, since 05/11/2026: each carries `export const revalidate = 60`, the two detail routes
+also `generateStaticParams()`, and the admin's server actions call `revalidatePath` after every
+write, so edits still show within seconds. Before this every public hit waited on 2 to 4 Supabase
+round trips to Tokyo (150 to 300 ms TTFB); now the cached HTML is served in a few ms. Do not
+import `lib/supabase/server.ts` (it reads cookies, which forces per-request rendering) from a
+public page, and do not read `searchParams` in one: `/contact` reads `?mode=call` client-side in
+`components/contact-form.tsx` for exactly this reason. Admin pages stay dynamic.
 Content tables: `projects` + `project_images`, `categories`, `services`, `team_members`,
 `testimonials`, `blog_posts`, `site_settings`, `seo_metadata`, `media_files`, `contact_inquiries`.
 
@@ -126,6 +133,14 @@ cycles within the active phase only, and runs **only while the card is on screen
 pointer is elsewhere (seven cards cycling at once is unreadable). The lightbox is scoped to the
 active phase, because `finite: false` would otherwise wrap from the last completed photograph
 into an unlabelled rendering.
+
+**Image budget notes (05/11/2026).** `next.config.ts` allows `qualities: [60, 75]`; the
+before/after card streams (`components/ui/scanner-card-stream.tsx`) use 60 because AVIF at 75
+came out heavier than WebP on those busy site photographs. In that stream only the centre cards
+are fetched at normal priority, the rest carry `fetchPriority="low"`, otherwise all eighteen
+photographs download at once on a phone and the card being read paints last. On the homepage hero
+only the base photograph is `priority`; the two light-layer PNGs are `loading="eager"` without
+preload so they no longer compete with the LCP image.
 
 **Homepage hero** (`components/hero-before-after.tsx`) is a drag-to-reveal before/after
 comparison, backed by the single-row `hero_before_after` table (`supabase/migrations/

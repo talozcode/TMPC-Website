@@ -20,6 +20,9 @@ import { ArrowSwap, TextLink } from '@/components/ui/arrow-link'
 import { COMPARE } from '@/lib/compare-slots'
 import { PhoneMotion } from '@/components/home/phone-motion'
 
+// Cached and refreshed at most once a minute; admin edits call revalidatePath so they show sooner.
+export const revalidate = 60
+
 const FALLBACK_TITLE = `${siteConfig.shortName} - Project Consulting and Development Management in Thailand`
 
 export async function generateMetadata(): Promise<Metadata> {

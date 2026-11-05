@@ -134,6 +134,12 @@ export function ContactForm({ initialMode = 'inquiry', aside }: { initialMode?: 
     return () => window.removeEventListener(CONTACT_MODE_EVENT, on)
   }, [])
 
+  // ?mode=call is read here rather than from the page's searchParams, so the
+  // contact page can be cached like the others instead of rendering per request.
+  useEffect(() => {
+    if (new URLSearchParams(window.location.search).get('mode') === 'call') setMode('call')
+  }, [])
+
   function onTabKey(e: React.KeyboardEvent<HTMLDivElement>) {
     if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return
     e.preventDefault()
