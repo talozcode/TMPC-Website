@@ -78,6 +78,43 @@ interruptible and carry velocity through a re-target. `project()` gives a flick'
 `components/motion.tsx` exports `Reveal` (scroll reveal, `rise` and `image` variants, `delay` for
 stagger). `components/fade-in.tsx` is a thin wrapper kept for existing callers.
 
+**Homepage motion (05/11/2026, feat/professional, after the owner called the professional home
+"boring and not sleek").** Brought over from `feat/v3` and recoloured (v3 orange = teal: `#57BACE`
+on navy, `#0D7186` on paper; v3 ink = navy; light text = paper). All CSS lives in the commented
+"Homepage motion" block at the foot of `app/globals.css`.
+- **Libraries:** `gsap` 3.15.0 (ScrollTrigger + SplitText), `@gsap/react` 2.1.2, `lenis` 1.3.27.
+  No three.js, framer-motion or animejs. `components/anim/gsap.ts` registers the plugins once and
+  exports `MOTION_OK` (`prefers-reduced-motion: no-preference`); every scroll effect is gated on it.
+- **Shared (every public page):** `components/anim/smooth-scroll.tsx` (Lenis, mounted in
+  `site-shell.tsx`, off for coarse pointers and reduced motion, synced to ScrollTrigger) and the
+  footer, now v3's `components/ui/beam-wordmark-footer.tsx` (navy, light-teal beam that drifts only
+  while on screen, giant TMPC wordmark in the heading face; grain and vertical bands removed). The
+  header is unchanged.
+- **Home only** (`app/page.tsx`, wrapped in `.home-motion`, which also gives reveals v3's longer
+  1.6rem / 0.9s rise): `components/home/home-hero.tsx` (full-bleed skyline
+  `public/images/hero-home-skyline.jpg` + the two light masks; only the base photo is `priority`,
+  the masks are `loading="eager"` without preload; shutter open, lights-on, `HeroMotion` scroll
+  depth, fine-pointer `Reticle`; the 22/09 "We Represent You / One Point of Contact / Concept to
+  Completion" line is the hero's foot). The skyline is atmospheric, not presented as TMPC work, so
+  it is allowed under the no-stock rule. `public/images/hero-home.jpg` is a different photo
+  (Chinatown) still used by `/hero`; the masks only fit the skyline file.
+  `FxStrip`/`FxDrift` (ECB rates in baht via `lib/fx-rates.ts`, cached 1h, absent on failure);
+  the before/after slider directly under it (`priority={false}` there); `OwnerTable` (v3's "we
+  represent you" fan, its lit line now a CSS `stroke-dashoffset` transition instead of anime.js;
+  it replaced `components/coordination-flow.tsx`, deleted, which said the same thing);
+  `WordScrub` on its lead; `Parallax` (4%) on the Aura photo; `CoreServices` (five ruled rows,
+  teal rule draws on hover, title steps in, arrow handed on; v3's sticky stock photos dropped);
+  `ProcessTimeline scrub` (v3's reading-line fill, text only; Services still uses it static);
+  Testimonials unchanged; `components/sections/cta-band.tsx` + `cta-band-motion.tsx` (navy, no
+  photo, teal datum drawn on scroll, survey grid drift, low teal glow, Bangkok time).
+  `SplitHeading` on the h1 and every section h2 (`.split-line-mask` has extra bottom room or the
+  1.04 to 1.12 leading cuts descenders). `ButtonLink`/`TextLink`/`ArrowSwap` in
+  `components/ui/arrow-link.tsx` (`.btn-x` wipe, `RollLabel`, `Magnetic` on primaries) are only
+  used on the home page so far; plain `.btn` elsewhere is untouched.
+- **Reduced motion:** headings and reveals are simply there, the hero opens lit and still, no
+  reticle, Lenis off, the process marks the row being read without a travelling fill, hovers
+  change instantly. Phones (< 900px) paint the hero copy without waiting for script.
+
 **Professional pass (branch `feat/professional`, 05/11/2026).** The site should read like a
 serious professional-services firm: restraint and proof, not effects.
 - **No stock photography.** Every image on a public page is a real TMPC project photograph from
@@ -94,11 +131,11 @@ serious professional-services firm: restraint and proof, not effects.
 - **The home hero `hero_before_after` row also points at stock** (`scenario-warehouse.jpg` /
   `scenario-commercial.jpg`); it was deliberately left as is. Replace it at `/admin/hero` with a
   real before/after (only Aura Wellness Phuket has rendering/in-progress/completed photos).
-- **One before/after interaction only:** the home hero slider. The compare components, the
-  projects card stream, GSAP, SplitText and anime.js are gone (gsap, @gsap/react, animejs removed
-  from package.json). `components/sections/process-timeline.tsx` is a static ruled, numbered list
-  (no photos); `service-index.tsx` is a plain sticky list. `HeroParallax` was removed; `Reveal` is
-  the only scroll motion (10px rise, 0.5s; the image variant is a plain fade).
+- **One before/after interaction only:** the home slider. The compare components, the projects
+  card stream and anime.js are gone. GSAP, SplitText and Lenis came back on 05/11/2026 for the
+  homepage only (see Homepage motion above). Off the home page `process-timeline.tsx` is a static
+  ruled, numbered list (no photos); `service-index.tsx` is a plain sticky list; `Reveal` is the
+  only scroll motion there (10px rise, 0.5s; the image variant is a plain fade).
 - **UI:** square corners (radius tokens are 0), no card shadows (1px `line` rule instead), thin
   rules between consecutive light sections, the teal kept for links, eyebrow rules and focus.
   `.btn` is solid navy (paper on navy bands), `.btn-2` is text plus a thin border; the header CTA
@@ -158,10 +195,8 @@ the compare edge jumping at the seam. `project_name`/`project_details` are the o
 label (shown top-left on the card, same treatment the old carousel gave a project's category and
 title). The link to `/projects` is fixed in the component, not admin-editable.
 
-On the homepage itself, the hero's three-stat strip (`1 / Point of Accountability`, etc.) sits
-**below** the two-column headline/image grid rather than stacked inside the text column with it.
-That split matters: `items-center` on the two-column grid centers the image against just the
-headline/lead/CTAs, and the stat strip's extra height would otherwise pull that center down.
+On the homepage itself (since 05/11/2026) the slider is no longer in the hero: it sits in its own
+"From site to opening" section directly under the full-bleed hero and the rates strip.
 
 **Project detail pages** live at `/projects/[slug]`. `projects.slug` is generated from the
 title on create and then **never regenerated**, so editing a title cannot break a live link.
@@ -206,7 +241,9 @@ so a hidden WhatsApp card never leaves an empty third column.
 **The "10+ parties" stat was retired** (22/09/2026), replaced by client-outcome framing ("We
 Represent You" / "One Point of Contact" / "Concept to Completion" in the hero, and
 `components/coordination-flow.tsx`'s "Multiple Teams, 2 Languages, 1 Point of Contact" line
-replacing the old numeric statement band). It used to be repeated three places and had drifted out
+replacing the old numeric statement band; on 05/11/2026 that component was replaced by
+`components/home/owner-table.tsx`, whose lead carries the same "multiple teams, two languages,
+one point of contact" line). It used to be repeated three places and had drifted out
 of sync (10+/8+/five); the Project Coordination service description (`services` table, number
 `03`, CMS content) was updated to "multiple parties" in the same pass so nothing on the site still
 carries the old figure.

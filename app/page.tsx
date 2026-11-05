@@ -1,13 +1,20 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
 import { Reveal } from '@/components/motion'
 import { siteConfig } from '@/lib/data'
 import { createClient } from '@/lib/supabase/server'
 import { getSeoRow } from '@/lib/seo'
 import { HeroBeforeAfter } from '@/components/hero-before-after'
 import { Testimonials } from '@/components/testimonials'
-import { CoordinationFlow } from '@/components/coordination-flow'
 import { ProcessTimeline } from '@/components/sections/process-timeline'
+import { SplitHeading } from '@/components/anim/split-heading'
+import { WordScrub } from '@/components/anim/word-scrub'
+import { Parallax } from '@/components/anim/parallax'
+import { HomeHero } from '@/components/home/home-hero'
+import { FxStrip } from '@/components/home/fx-strip'
+import { OwnerTable } from '@/components/home/owner-table'
+import { CoreServices } from '@/components/home/core-services'
+import { CtaBand } from '@/components/sections/cta-band'
+import { ButtonLink, TextLink } from '@/components/ui/arrow-link'
 import { ProjectPhoto } from '@/components/project-photo'
 import { getPublishedProjects, getShareImage, projectPhoto } from '@/lib/projects'
 import { PROCESS } from '@/lib/service-meta'
@@ -56,175 +63,130 @@ export default async function HomePage() {
   const testimonials = (testimonialRows as Testimonial[]) ?? []
 
   return (
-    <>
-      {/* ── HERO ── */}
-      <section className="bg-canvas overflow-hidden">
-        {/* Top padding shrunk (was clamp(3rem,7vw,6rem)): the eyebrow above the
-            h1 is gone, and the client flagged the header-to-h1 gap as too big. */}
-        <div className="wrap pt-[clamp(1.5rem,3.5vw,3rem)] pb-[clamp(3.5rem,7vw,6.5rem)]">
-          {/* items-center here centers the image against just this row (headline,
-              lead, CTAs) - the stats strip is deliberately outside it, below, so
-              its extra height does not pull the image down off that center. */}
-          <div className="grid lg:grid-cols-[1fr_minmax(0,30rem)] gap-14 lg:gap-16 items-center">
-            <div className="flex flex-col">
-              <Reveal>
-                <h1 className="t-display text-ink">
-                  Planning a project in Thailand? You need someone on the ground.
-                </h1>
-              </Reveal>
-              <Reveal delay={90}>
+    // .home-motion scopes the v3 reveal timing (a longer, softer rise) to this
+    // page; every other page keeps the professional 10px / 0.5s reveal.
+    <div className="home-motion">
+      {/* ── HERO: full-bleed Bangkok skyline, v3 motion ── */}
+      <HomeHero />
+
+      {/* ── EXCHANGE RATES: a slow belt of ECB reference rates in baht ── */}
+      <FxStrip />
+
+      {/* ── BEFORE / AFTER: the one drag interaction, directly under the hero ── */}
+      <section className="bg-canvas sec-tight">
+        <div className="wrap">
+          <div className="grid lg:grid-cols-[1fr_minmax(0,30rem)] gap-12 lg:gap-16 items-center">
+            <div>
+              <p className="eye">Before / After</p>
+              <SplitHeading className="t-h1 text-ink mt-6 max-w-[14ch]">
+                From site <em>to opening.</em>
+              </SplitHeading>
+              <Reveal delay={120}>
                 <p className="t-lead mt-7">
-                  For international clients and investors, Thailand projects bring real complexity:
-                  unfamiliar contractors, approval processes, language barriers, and a delivery
-                  environment where local presence makes the difference. TMPC provides that presence.
+                  Drag the handle to compare. TMPC stays with a project from the empty site to the day it opens.
                 </p>
               </Reveal>
-              <Reveal delay={170}>
-                <div className="flex flex-wrap items-center gap-3 mt-9">
-                  <Link href="/contact" className="btn">Discuss Your Project</Link>
-                  <Link href="/services" className="btn-2">
-                    Our Services <span aria-hidden="true">&#8594;</span>
-                  </Link>
-                </div>
-              </Reveal>
             </div>
-
-            <Reveal delay={200}>
+            <Reveal delay={160}>
               <HeroBeforeAfter
                 beforeUrl={hero?.before_url}
                 afterUrl={hero?.after_url}
                 projectName={hero?.project_name}
                 projectDetails={hero?.project_details}
+                priority={false}
               />
             </Reveal>
           </div>
-
-          {/* Client-advocacy line, replacing the old numeric stat row (1 / 10+ /
-              Full): reuses the value+caption pattern the Quick Facts Rail used
-              before it was removed, since that pairing was built for a short
-              bold phrase plus a sentence-case caption, not for single tokens.
-              Visible on every width now, not desktop-only, since the rail's
-              mobile real estate is free. */}
-          <Reveal delay={260}>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 max-w-2xl mt-12 pt-8 border-t border-line">
-              {[
-                { value: 'We Represent You', label: 'Not the contractor. Your interests, first.' },
-                { value: 'One Point of Contact', label: 'One team, start to finish.' },
-                { value: 'Concept to Completion', label: 'Full lifecycle coverage, on the ground.' },
-              ].map((stat, i) => (
-                <div
-                  key={stat.value}
-                  className={
-                    i > 0
-                      ? 'pt-5 sm:pt-0 border-t sm:border-t-0 sm:border-l border-line sm:pl-6'
-                      : ''
-                  }
-                >
-                  <p className="font-display font-semibold text-[1.05rem] text-ink tracking-[-0.02em] leading-tight">
-                    {stat.value}
-                  </p>
-                  <p className="text-[0.85rem] text-ink-muted leading-snug mt-1.5">{stat.label}</p>
-                </div>
-              ))}
-            </div>
-          </Reveal>
         </div>
       </section>
 
-      {/* ── THE CHALLENGE ── */}
+      {/* ── WE REPRESENT YOU: v3's owner table, replacing the static coordination box ── */}
+      <section className="bg-canvas sec">
+        <div className="wrap">
+          <div className="grid lg:grid-cols-12 gap-x-10 gap-y-8">
+            <div className="lg:col-span-7">
+              <p className="eye">We Represent You</p>
+              <SplitHeading className="t-h1 text-ink mt-6 max-w-[16ch]">
+                Many teams on your project. <em>One conversation for you.</em>
+              </SplitHeading>
+            </div>
+            <div className="lg:col-span-5 lg:pt-14">
+              <WordScrub
+                className="t-lead"
+                text="Architects, engineers, contractors and suppliers all report through TMPC. Multiple teams, two languages, *one point of contact.*"
+              />
+            </div>
+          </div>
+          <div className="mt-[clamp(3rem,6vw,5rem)]">
+            <OwnerTable />
+          </div>
+        </div>
+      </section>
+
+      {/* ── COST PROTECTION (content unchanged; the real Aura photo drifts a few percent) ── */}
       <section className="bg-canvas sec">
         <div className="wrap">
           <div className="grid lg:grid-cols-2 gap-14 lg:gap-20 items-center">
-            <Reveal>
+            <div>
               <p className="eye">Cost Protection</p>
-              <h2 className="t-h1 text-ink mt-6">We save you money.</h2>
-              <p className="t-lead mt-7">
-                Projects in Thailand involve many people, many steps, and countless decisions.
-                Without one team managing the full process, mistakes happen, costs increase, and
-                timelines slip.
-              </p>
-              <p className="t-body text-ink-muted mt-5 max-w-[56ch]">
-                TMPC represents you: we check quotes, negotiate with contractors and suppliers, and
-                use our local network to find the right people at the right price. We manage the
-                process and protect your budget.
-              </p>
-              <div className="mt-9">
-                <Link href="/about" className="btn-2">
-                  How we work <span aria-hidden="true">&#8594;</span>
-                </Link>
-              </div>
-            </Reveal>
+              <SplitHeading className="t-h1 text-ink mt-6">We save you money.</SplitHeading>
+              <Reveal delay={100}>
+                <p className="t-lead mt-7">
+                  Projects in Thailand involve many people, many steps, and countless decisions.
+                  Without one team managing the full process, mistakes happen, costs increase, and
+                  timelines slip.
+                </p>
+                <p className="t-body text-ink-muted mt-5 max-w-[56ch]">
+                  TMPC represents you: we check quotes, negotiate with contractors and suppliers, and
+                  use our local network to find the right people at the right price. We manage the
+                  process and protect your budget.
+                </p>
+                <div className="mt-9">
+                  <ButtonLink href="/about" variant="ghost">How we work</ButtonLink>
+                </div>
+              </Reveal>
+            </div>
 
             {costPhoto && (
-              <Reveal delay={120}>
-                <ProjectPhoto photo={costPhoto} />
+              <Reveal delay={120} className="cost-photo">
+                <Parallax amount={4} className="cost-photo-drift">
+                  <ProjectPhoto photo={costPhoto} />
+                </Parallax>
               </Reveal>
             )}
           </div>
-
-          {/* Coordination flow: replaces the old one-sentence statement band.
-              See components/coordination-flow.tsx for why this shape and not
-              the multi-box diagram this homepage tried and removed before. */}
-          <Reveal delay={100}>
-            <CoordinationFlow />
-          </Reveal>
         </div>
       </section>
 
-      {/* ── SERVICES ── */}
+      {/* ── SERVICES: ruled rows with v3 hover motion ── */}
       <section className="bg-canvas-subtle sec">
         <div className="wrap">
-          <Reveal>
-            <div className="flex flex-wrap items-end justify-between gap-6 mb-[clamp(2.5rem,4vw,3.5rem)]">
-              <div>
-                <p className="eye">Services</p>
-                <h2 className="t-h1 text-ink mt-6">What We Do</h2>
-              </div>
-              <Link href="/services" className="lnk">
-                All services <span aria-hidden="true">&#8594;</span>
-              </Link>
+          <div className="flex flex-wrap items-end justify-between gap-6 mb-[clamp(2.5rem,4vw,3.5rem)]">
+            <div>
+              <p className="eye">Services</p>
+              <SplitHeading className="t-h1 text-ink mt-6">What We Do</SplitHeading>
             </div>
-          </Reveal>
-
-          {/* First row fills the 3-column grid exactly; the last two are their
-              own centered row, so 5 cards never leave an empty slot on lg. */}
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {services.slice(0, 3).map((s, i) => (
-              <Reveal key={s.title} delay={i * 80} className="flex">
-                <div className="card flex flex-col flex-1 p-8 lg:p-9">
-                  <p className="text-[0.68rem] font-bold text-accent tracking-[0.2em] mb-6">{s.number}</p>
-                  <h3 className="t-h3 text-ink mb-3.5">{s.title}</h3>
-                  <p className="text-[0.95rem] text-ink-muted leading-relaxed flex-1">{s.description}</p>
-                </div>
-              </Reveal>
-            ))}
+            <Reveal>
+              <TextLink href="/services">All services</TextLink>
+            </Reveal>
           </div>
-          <div className="grid gap-5 sm:grid-cols-2 lg:max-w-[calc(2/3*100%+1.25rem)] mt-5 lg:mx-auto">
-            {services.slice(3).map((s, i) => (
-              <Reveal key={s.title} delay={(i + 3) * 80} className="flex">
-                <div className="card flex flex-col flex-1 p-8 lg:p-9">
-                  <p className="text-[0.68rem] font-bold text-accent tracking-[0.2em] mb-6">{s.number}</p>
-                  <h3 className="t-h3 text-ink mb-3.5">{s.title}</h3>
-                  <p className="text-[0.95rem] text-ink-muted leading-relaxed flex-1">{s.description}</p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
+          <CoreServices services={services} />
         </div>
       </section>
 
-      {/* ── PROCESS (hybrid: the v3 process index, on a navy band) ── */}
+      {/* ── PROCESS: v3's scroll-scrubbed index, text only ── */}
       <section className="dark-band on-dark sec">
         <div className="wrap">
           <ProcessTimeline
+            scrub
             steps={PROCESS}
             heading={
               <>
                 <div>
                   <p className="eye">How It Works</p>
-                  <h2 className="t-h1 text-white mt-6 max-w-[16ch]">
+                  <SplitHeading className="t-h1 text-white mt-6 max-w-[16ch]">
                     One team, from first conversation <em>to opening day.</em>
-                  </h2>
+                  </SplitHeading>
                 </div>
                 <Reveal delay={120}>
                   <p className="t-lead">
@@ -237,25 +199,11 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ── TESTIMONIALS ── */}
+      {/* ── TESTIMONIALS (unchanged) ── */}
       <Testimonials testimonials={testimonials} />
 
-      {/* ── CTA ── */}
-      <section className="on-dark bg-canvas-dark">
-        <div className="wrap sec">
-          <Reveal className="max-w-2xl mx-auto text-center">
-            <p className="eye">Work With TMPC</p>
-            <h2 className="t-h1 text-white mt-6">Most project problems are preventable.</h2>
-            <p className="t-lead !text-white/55 mt-6 mx-auto">Talk to TMPC before work begins.</p>
-            <div className="flex flex-wrap justify-center gap-3 mt-10">
-              <Link href="/contact" className="btn">Schedule a Consultation</Link>
-              <Link href="/projects" className="btn-2">
-                See our work <span aria-hidden="true">&#8594;</span>
-              </Link>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-    </>
+      {/* ── CTA: v3's closing band, navy, no photograph ── */}
+      <CtaBand />
+    </div>
   )
 }

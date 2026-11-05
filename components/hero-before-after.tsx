@@ -22,11 +22,14 @@ export function HeroBeforeAfter({
   afterUrl = FALLBACK_AFTER_IMAGE,
   projectName,
   projectDetails,
+  priority = true,
 }: {
   beforeUrl?: string | null
   afterUrl?: string | null
   projectName?: string | null
   projectDetails?: string | null
+  /** Off where something else is the page's largest paint (the home hero photo). */
+  priority?: boolean
 }) {
   const [position, setPosition] = useState(50)
   const [dragging, setDragging] = useState(false)
@@ -145,7 +148,7 @@ export function HeroBeforeAfter({
             src={afterUrl || FALLBACK_AFTER_IMAGE}
             alt={projectName ? `${projectName}, after` : 'After'}
             fill
-            priority
+            priority={priority}
             draggable={false}
             sizes="(max-width: 1024px) 100vw, 30rem"
             className="object-cover pointer-events-none"
