@@ -309,3 +309,18 @@ buttons, so it sneaks past). Patterns used here:
   REST API with the service-role key from `.env.local` (e.g. `node scripts/seed-projects.mjs`).
 - Renaming a UI label is not the same as touching DB columns / form `name=` keys. Keep data keys
   stable to avoid migrations.
+
+## Where things stand, 05/11/2026 (read before touching main)
+
+Branches: `main` d5180cb is the 22/09 design and is live. `feat/v3` a9b446d is Tal's heavier
+redesign plus the page caching work (cookie-free `lib/supabase/public.ts`, `revalidate = 60`,
+generateStaticParams, image qualities); that caching is not on this branch yet and should be
+re-applied before anything goes to main. `feat/hybrid` ddd2056 was a middle step. This branch,
+`feat/professional`, is Tal's current favourite: professional styling with v3's motion on the
+home page. The heading typeface switch (`?type=serif`) is a review aid to delete once chosen.
+
+Open with Tal: (1) "Aura Wellness Phuket" photos show Chabad House Bangkok, relabel or split;
+(2) four projects have only stock image rows and render text-only, need real photos or a decision;
+(3) `hero_before_after` still points at two stock files, needs a real pair; (4) trust block facts
+(team names, credentials, numbers, registration, address, fee basis, reporting cadence);
+(5) serif or sans; (6) headline rewrites to approve; (7) which branch goes live.
