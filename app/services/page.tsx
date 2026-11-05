@@ -1,24 +1,15 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import Image from 'next/image'
-import { Reveal, HeroParallax } from '@/components/motion'
+import { Reveal } from '@/components/motion'
 import { siteConfig } from '@/lib/data'
 import { createClient } from '@/lib/supabase/server'
 import { getSeoRow } from '@/lib/seo'
 import type { Service } from '@/lib/types'
-import { COMPARE } from '@/lib/compare-slots'
-import { isCore, PROCESS, serviceImage, serviceSlug } from '@/lib/service-meta'
+import { isCore, PROCESS, serviceSlug } from '@/lib/service-meta'
 import { ServiceIndex } from '@/components/sections/service-index'
 import { ProcessTimeline } from '@/components/sections/process-timeline'
-import { CompareDrag } from '@/components/compare/compare-drag'
-import { SplitHeading } from '@/components/anim/split-heading'
-
-// Hybrid: the two core services show their before/after pair (drag to
-// compare) from lib/compare-slots.ts; the others keep a single photograph.
-const CORE_COMPARE: Record<string, (typeof COMPARE)['services-dm' | 'services-eo']> = {
-  'development-management': COMPARE['services-dm'],
-  'execution-oversight': COMPARE['services-eo'],
-}
+import { ProjectPhoto } from '@/components/project-photo'
+import { getPublishedProjects, getShareImage, projectPhoto, type ProjectPhoto as Photo } from '@/lib/projects'
 
 const FALLBACK_TITLE = 'TMPC Services: Consulting, Coordination & Execution Oversight'
 const FALLBACK_DESCRIPTION = `${siteConfig.name} provides project consulting, development management, project coordination, and execution oversight across commercial, industrial, hospitality, wellness, and real estate projects in Thailand.`
@@ -35,18 +26,28 @@ export async function generateMetadata(): Promise<Metadata> {
       title: seo?.og_title || title,
       description: seo?.og_description || description,
       url: '/services',
-      images: ['/images/hero-services.jpg'],
+      images: await getShareImage(),
     },
   }
 }
 
 export default async function ServicesPage() {
   const supabase = await createClient()
-  const { data: serviceRows } = await supabase
-    .from('services')
-    .select('*')
-    .eq('active', true)
-    .order('display_order', { ascending: true })
+  const [{ data: serviceRows }, projects] = await Promise.all([
+    supabase
+      .from('services')
+      .select('*')
+      .eq('active', true)
+      .order('display_order', { ascending: true }),
+    getPublishedProjects(),
+  ])
+
+  // Only the two core services carry a photograph, each a real TMPC project;
+  // the rest are text. No stock, no compare sliders.
+  const photos: Record<string, { photo: Photo | null; note?: string }> = {
+    'development-management': { photo: projectPhoto(projects, 'bright-phuket') },
+    'execution-oversight': { photo: projectPhoto(projects, 'aura-wellness-phuket', 'in_progress'), note: 'On site' },
+  }
 
   const coreServices = ((serviceRows as Service[]) ?? []).map((s, i) => ({
     slug: serviceSlug(s.title),
@@ -61,22 +62,8 @@ export default async function ServicesPage() {
   return (
     <>
       {/* 1. Hero */}
-      <section id="svc-hero" className="on-dark relative bg-canvas-dark overflow-hidden">
-        <div className="absolute inset-0">
-          <Image
-            src="/images/hero-services.jpg"
-            alt=""
-            aria-hidden="true"
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover opacity-40 scale-110"
-            style={{ translate: '0 var(--par, 0%)' }}
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-canvas-dark via-canvas-dark/85 to-canvas-dark/40" />
-          <div className="absolute inset-0 bg-gradient-to-t from-canvas-dark via-transparent to-canvas-dark/60" />
-        </div>
-        <div className="wrap relative z-10 py-[clamp(4.5rem,9vw,8rem)]">
+      <section className="on-dark bg-canvas-dark">
+        <div className="wrap py-[clamp(4.5rem,9vw,8rem)]">
           <Reveal>
             <p className="eye">Services</p>
           </Reveal>
@@ -92,7 +79,6 @@ export default async function ServicesPage() {
           </Reveal>
         </div>
       </section>
-      <HeroParallax targetId="svc-hero" amount={8} />
 
       {/* 2. Core Services. Hybrid: v3's services rail beside one article per
           service, so the reader always sees where they are in the list. */}
@@ -112,14 +98,14 @@ export default async function ServicesPage() {
               {/* Below 1024px the rail has no room beside the text, so the same
                   index opens the section: every service, numbered, one tap away. */}
               <nav aria-label="Services on this page" className="lg:hidden -mb-[clamp(1rem,3vw,2rem)]">
-                <ol className="card grid sm:grid-cols-2 sm:gap-x-8 px-6 py-2">
+                <ol className="grid sm:grid-cols-2 sm:gap-x-8 border-t border-line">
                   {indexItems.map((i) => (
                     <li key={i.slug}>
                       <a
                         href={`#${i.slug}`}
-                        className="grid grid-cols-[2.5rem_1fr_auto] items-baseline gap-x-2 min-h-[3.25rem] py-3.5 border-b border-line-subtle"
+                        className="grid grid-cols-[2.5rem_1fr_auto] items-baseline gap-x-2 min-h-[3.25rem] py-3.5 border-b border-line"
                       >
-                        <span className="t-meta text-accent">{i.number}</span>
+                        <span className="t-meta text-ink-muted">{i.number}</span>
                         <span className="font-display font-semibold text-ink">{i.title}</span>
                         <span aria-hidden="true" className="text-ink-muted">&#8595;</span>
                       </a>
@@ -129,8 +115,7 @@ export default async function ServicesPage() {
               </nav>
 
               {coreServices.map((service, i) => {
-                const compare = service.core ? CORE_COMPARE[service.slug] : undefined
-                const img = serviceImage(service.title)
+                const pic = service.core ? photos[service.slug] : undefined
                 return (
                   <article key={service.title} id={service.slug} className="scroll-mt-[calc(var(--hdr-h)+2rem)]">
                     <Reveal>
@@ -138,43 +123,27 @@ export default async function ServicesPage() {
                         <span>{service.number}</span>
                         {service.core && (
                           <>
-                            <span className="inline-block w-1.5 h-1.5 rounded-full bg-accent" aria-hidden="true" />
+                            <span className="inline-block w-4 h-px bg-line" aria-hidden="true" />
                             <span className="text-ink">Core service</span>
                           </>
                         )}
                       </p>
                     </Reveal>
-                    <SplitHeading className="t-h2 text-ink mt-4">{service.title}</SplitHeading>
+                    <h2 className="t-h2 text-ink mt-4">{service.title}</h2>
                     {service.description && (
                       <Reveal delay={80}>
                         <p className="t-lead mt-5">{service.description}</p>
                       </Reveal>
                     )}
-                    {compare ? (
+                    {pic?.photo && (
                       <Reveal delay={120} className="mt-9">
-                        <CompareDrag
-                          before={compare.before}
-                          after={compare.after}
-                          labels={compare.labels}
-                          aspect="panel aspect-[4/3] md:aspect-[16/9]"
+                        <ProjectPhoto
+                          photo={pic.photo}
+                          note={pic.note}
+                          aspect="aspect-[4/3] md:aspect-[16/9]"
                           sizes="(max-width: 1024px) 100vw, 66vw"
-                          preload={i === 0}
-                          label={`Reveal before or after, ${service.title}`}
+                          priority={i === 0}
                         />
-                      </Reveal>
-                    ) : (
-                      <Reveal variant="image" delay={120} className="mt-9">
-                        <div className="panel relative aspect-[16/9]">
-                          <Image
-                            src={img.src}
-                            alt={img.alt}
-                            fill
-                            sizes="(max-width: 1024px) 100vw, 66vw"
-                            priority={i === 0}
-                            className="object-cover"
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-canvas-dark/35 via-transparent to-transparent" />
-                        </div>
                       </Reveal>
                     )}
                     {service.scope.length > 0 && (
@@ -185,7 +154,7 @@ export default async function ServicesPage() {
                         <ul className="grid sm:grid-cols-2 gap-x-8">
                           {service.scope.map((item) => (
                             <li key={item} className="flex items-start gap-2.5 py-3 border-b border-line text-[0.95rem] text-ink-secondary leading-snug">
-                              <span className="w-1 h-1 rounded-full bg-accent/60 mt-2.5 flex-shrink-0" />
+                              <span className="w-1 h-1 bg-ink-muted mt-2.5 flex-shrink-0" />
                               {item}
                             </li>
                           ))}
@@ -209,9 +178,9 @@ export default async function ServicesPage() {
               <>
                 <div>
                   <p className="eye">Process</p>
-                  <SplitHeading className="t-h1 text-white mt-6 max-w-[14ch]">
+                  <h2 className="t-h1 text-white mt-6 max-w-[14ch]">
                     How TMPC <em>works</em>
-                  </SplitHeading>
+                  </h2>
                 </div>
                 <Reveal delay={120}>
                   <p className="t-lead">

@@ -3,13 +3,12 @@
 import { useEffect, useRef, type CSSProperties, type ReactNode } from 'react'
 
 /**
- * Scroll choreography, kept to two primitives so the whole site reads as one
- * system rather than a pile of separate effects:
+ * Scroll choreography, kept to one primitive so the whole site reads as one
+ * calm system rather than a pile of separate effects:
  *
- *   Reveal        fade and rise, or an image wiping open, with a stagger delay
- *   HeroParallax  a hero photograph drifting slower than the page
+ *   Reveal        a short fade and small rise, with a stagger delay
  *
- * Both are progressive. Without JavaScript the `.js` class is never set, so the
+ * It is progressive. Without JavaScript the `.js` class is never set, so the
  * hidden state never applies and the page renders fully visible. With reduced
  * motion requested, everything is simply visible and static.
  */
@@ -100,41 +99,4 @@ export function Reveal({
       {children}
     </Tag>
   )
-}
-
-/**
- * Drifts a hero photograph at a fraction of scroll speed. The element it is
- * pointed at must contain an <img>; the drift is published as a custom property
- * so the CSS decides how to use it.
- */
-export function HeroParallax({ targetId, amount = 10 }: { targetId: string; amount?: number }) {
-  useEffect(() => {
-    if (prefersReduced()) return
-    const el = document.getElementById(targetId)
-    const img = el?.querySelector('img')
-    if (!el || !img) return
-
-    let ticking = false
-    const update = () => {
-      ticking = false
-      const rect = el.getBoundingClientRect()
-      if (rect.bottom <= 0 || rect.top >= window.innerHeight) return
-      const progress = Math.min(1, Math.max(0, -rect.top / (rect.height || 1)))
-      img.style.setProperty('--par', `${(-progress * amount).toFixed(2)}%`)
-    }
-    const onScroll = () => {
-      if (ticking) return
-      ticking = true
-      requestAnimationFrame(update)
-    }
-    update()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    window.addEventListener('resize', onScroll, { passive: true })
-    return () => {
-      window.removeEventListener('scroll', onScroll)
-      window.removeEventListener('resize', onScroll)
-    }
-  }, [targetId, amount])
-
-  return null
 }

@@ -17,9 +17,8 @@
  */
 export function CoordinationFlow() {
   return (
-    <div className="on-dark panel relative bg-canvas-dark mt-[clamp(3rem,6vw,5rem)] px-8 py-10 lg:px-14 lg:py-14">
-      <div className="absolute inset-0 bg-grid-dots opacity-30 pointer-events-none" />
-      <div className="relative z-10 flex flex-col items-center text-center gap-5 lg:gap-6 max-w-md mx-auto">
+    <div className="on-dark bg-canvas-dark mt-[clamp(3rem,6vw,5rem)] px-8 py-10 lg:px-14 lg:py-14">
+      <div className="flex flex-col items-center text-center gap-5 lg:gap-6 max-w-md mx-auto">
         <p className="eye">One Coordination Layer</p>
 
         <div>
@@ -32,8 +31,8 @@ export function CoordinationFlow() {
         <Connector />
 
         <div>
-          <span className="inline-flex items-center rounded-full border border-accent-light/30 bg-accent/10 px-5 py-2 animate-hub-glow">
-            <span className="font-display font-bold text-white text-[1.05rem] tracking-[-0.01em]">TMPC</span>
+          <span className="inline-flex items-center border border-white/25 px-5 py-2">
+            <span className="font-display font-semibold text-white text-[1.05rem] tracking-[-0.01em]">TMPC</span>
           </span>
           <p className="text-white/60 text-[0.82rem] leading-snug mt-2">
             We coordinate. We review. We negotiate. We manage.
@@ -63,7 +62,7 @@ export function CoordinationFlow() {
 function Connector() {
   return (
     <div className="relative w-px h-6 bg-white/15" aria-hidden="true">
-      <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-accent-light animate-dot-blink" />
+      <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-white/40" />
     </div>
   )
 }

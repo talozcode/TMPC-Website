@@ -102,11 +102,14 @@ export default async function ProjectDetailPage({
 
       <section className="bg-canvas-subtle sec-tight">
         <div className="wrap">
-          <Reveal>
-            <ProjectImageStage title={project.title} phases={phases} variant="detail" />
-          </Reveal>
+          {/* No real photograph (stock stand-ins are filtered out): text only. */}
+          {phases.length > 0 && (
+            <Reveal>
+              <ProjectImageStage title={project.title} phases={phases} variant="detail" />
+            </Reveal>
+          )}
 
-          <div className="grid lg:grid-cols-[1.35fr_1fr] gap-6 mt-6">
+          <div className={`grid lg:grid-cols-[1.35fr_1fr] gap-6 ${phases.length > 0 ? 'mt-6' : ''}`}>
             <Reveal className="flex">
               <div className="card flex-1 p-8 lg:p-10">
                 <p className="eye">The Project</p>
@@ -117,7 +120,7 @@ export default async function ProjectDetailPage({
                 )}
 
                 {facts.length > 0 && (
-                  <dl className="mt-8 pt-6 border-t border-line-subtle space-y-3">
+                  <dl className="mt-8 pt-6 border-t border-line space-y-3">
                     {facts.map((f) => (
                       <div key={f.label} className="flex gap-4">
                         <dt className="w-20 flex-shrink-0 text-[0.62rem] font-bold text-ink-muted uppercase tracking-[0.12em] pt-1">
@@ -140,7 +143,7 @@ export default async function ProjectDetailPage({
                   <ul className="mt-6 space-y-2.5">
                     {project.deliverables.map((d) => (
                       <li key={d} className="flex items-start gap-2.5 text-[0.92rem] text-ink-muted leading-snug">
-                        <span className="w-1 h-1 rounded-full bg-accent mt-2.5 flex-shrink-0" />
+                        <span className="w-1 h-1 bg-ink-muted mt-2.5 flex-shrink-0" />
                         {d}
                       </li>
                     ))}

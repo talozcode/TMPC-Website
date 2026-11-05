@@ -1,11 +1,11 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import Image from 'next/image'
-import { Reveal, HeroParallax } from '@/components/motion'
+import { Reveal } from '@/components/motion'
 import { siteConfig } from '@/lib/data'
 import { createClient } from '@/lib/supabase/server'
 import { getSeoRow } from '@/lib/seo'
 import { ContactForm } from '@/components/contact-form'
+import { getShareImage } from '@/lib/projects'
 
 const FALLBACK_TITLE = 'Contact TMPC | Discuss Your Thailand Project'
 const FALLBACK_DESCRIPTION = `Get in touch with ${siteConfig.name} to discuss your project in Thailand. Project consulting, coordination, and development management inquiries welcome.`
@@ -22,7 +22,7 @@ export async function generateMetadata(): Promise<Metadata> {
       title: seo?.og_title || title,
       description: seo?.og_description || description,
       url: '/contact',
-      images: ['/images/hero-home.jpg'],
+      images: await getShareImage(),
     },
   }
 }
@@ -84,22 +84,8 @@ export default async function ContactPage() {
   return (
     <>
       {/* 1. Hero */}
-      <section id="contact-hero" className="on-dark relative bg-canvas-dark overflow-hidden">
-        <div className="absolute inset-0">
-          <Image
-            src="/images/hero-home.jpg"
-            alt=""
-            aria-hidden="true"
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover opacity-35 scale-110"
-            style={{ translate: '0 var(--par, 0%)' }}
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-canvas-dark via-canvas-dark/85 to-canvas-dark/40" />
-          <div className="absolute inset-0 bg-gradient-to-t from-canvas-dark via-transparent to-canvas-dark/60" />
-        </div>
-        <div className="wrap relative z-10 py-[clamp(4rem,8vw,7rem)]">
+      <section className="on-dark bg-canvas-dark">
+        <div className="wrap py-[clamp(4rem,8vw,7rem)]">
           <Reveal>
             <p className="eye">Get in Touch</p>
           </Reveal>
@@ -122,7 +108,6 @@ export default async function ContactPage() {
           </Reveal>
         </div>
       </section>
-      <HeroParallax targetId="contact-hero" amount={8} />
 
       {/* 2. Contact Methods */}
       <section className="bg-canvas-subtle sec-tight">
@@ -131,7 +116,7 @@ export default async function ContactPage() {
         <div className={`wrap grid gap-5 ${contactMethods.length === 3 ? 'md:grid-cols-3' : 'sm:grid-cols-2 max-w-2xl mx-auto'}`}>
           {contactMethods.map((method, i) => (
             <Reveal key={method.label} delay={i * 80} className="flex">
-              <div className="card card-hover flex flex-col flex-1 p-8 lg:p-9">
+              <div className="card flex flex-col flex-1 p-8 lg:p-9">
                 <p className="text-[0.62rem] font-bold text-accent uppercase tracking-[0.2em] mb-4">
                   {method.label}
                 </p>

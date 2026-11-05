@@ -1,14 +1,12 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import Image from 'next/image'
-import { Reveal, HeroParallax } from '@/components/motion'
+import { Reveal } from '@/components/motion'
 import { siteConfig } from '@/lib/data'
 import { createClient } from '@/lib/supabase/server'
 import { getSeoRow } from '@/lib/seo'
 import type { TeamMember } from '@/lib/types'
-import { COMPARE } from '@/lib/compare-slots'
-import { CompareScrub } from '@/components/compare/compare-scrub'
-import { CompareLens } from '@/components/compare/compare-lens'
+import { ProjectPhoto } from '@/components/project-photo'
+import { getPublishedProjects, getShareImage, projectPhoto } from '@/lib/projects'
 
 const FALLBACK_TITLE = 'About TMPC | Project Consultants & Development Managers in Thailand'
 const FALLBACK_DESCRIPTION = `${siteConfig.name} is a Thailand-based project consulting and development management company supporting clients across commercial, industrial, hospitality, wellness, and real estate projects.`
@@ -25,18 +23,23 @@ export async function generateMetadata(): Promise<Metadata> {
       title: seo?.og_title || title,
       description: seo?.og_description || description,
       url: '/about',
-      images: ['/images/hero-about.jpg'],
+      images: await getShareImage(),
     },
   }
 }
 
 export default async function AboutPage() {
   const supabase = await createClient()
-  const { data: teamRows } = await supabase
-    .from('team_members')
-    .select('*')
-    .eq('active', true)
-    .order('display_order', { ascending: true })
+  const [{ data: teamRows }, projects] = await Promise.all([
+    supabase
+      .from('team_members')
+      .select('*')
+      .eq('active', true)
+      .order('display_order', { ascending: true }),
+    getPublishedProjects(),
+  ])
+  // Our Approach carries one real project photograph, captioned.
+  const approachPhoto = projectPhoto(projects, 'bright-phuket')
 
   const leadership = ((teamRows as TeamMember[]) ?? []).map((m) => ({
     name: m.name,
@@ -47,22 +50,8 @@ export default async function AboutPage() {
   return (
     <>
       {/* 1. Hero, passing under the floating chrome */}
-      <section id="about-hero" className="on-dark relative bg-canvas-dark overflow-hidden">
-        <div className="absolute inset-0">
-          <Image
-            src="/images/hero-about.jpg"
-            alt=""
-            aria-hidden="true"
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover opacity-40 scale-110"
-            style={{ translate: '0 var(--par, 0%)' }}
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-canvas-dark via-canvas-dark/85 to-canvas-dark/40" />
-          <div className="absolute inset-0 bg-gradient-to-t from-canvas-dark via-transparent to-canvas-dark/60" />
-        </div>
-        <div className="wrap relative z-10 py-[clamp(4.5rem,9vw,8rem)]">
+      <section className="on-dark bg-canvas-dark">
+        <div className="wrap py-[clamp(4.5rem,9vw,8rem)]">
           <Reveal>
             <p className="eye">About TMPC</p>
           </Reveal>
@@ -79,7 +68,6 @@ export default async function AboutPage() {
           </Reveal>
         </div>
       </section>
-      <HeroParallax targetId="about-hero" amount={8} />
 
       {/* 2. Who We Are */}
       <section className="bg-canvas sec">
@@ -109,17 +97,6 @@ export default async function AboutPage() {
         </div>
       </section>
 
-      {/* Hybrid: v3's scroll-scrubbed before/after. The section pins while the
-          scroll wipes the site from day one to opening day. */}
-      <CompareScrub
-        before={COMPARE['about-scrub'].before}
-        after={COMPARE['about-scrub'].after}
-        labels={COMPARE['about-scrub'].labels}
-        heading={COMPARE['about-scrub'].heading}
-        days={COMPARE['about-scrub'].days}
-        captions={COMPARE['about-scrub'].captions}
-      />
-
       {/* 3. Our Approach */}
       <section className="bg-canvas-subtle sec">
         <div className="wrap grid lg:grid-cols-2 gap-14 lg:gap-20 items-center">
@@ -137,17 +114,15 @@ export default async function AboutPage() {
               are involved or how far the owner is from the ground.
             </p>
           </Reveal>
-          {/* Hybrid: v3's before/after lens. Hover shows the after photograph
-              through a square lens; touch and keyboard use the switch on it. */}
-          <Reveal variant="image" delay={120}>
-            <CompareLens
-              before={COMPARE['about-lens'].before}
-              after={COMPARE['about-lens'].after}
-              labels={COMPARE['about-lens'].labels}
-              sizes="(max-width: 1024px) 100vw, 50vw"
-              className="panel aspect-[4/5] lg:aspect-square"
-            />
-          </Reveal>
+          {approachPhoto && (
+            <Reveal delay={120}>
+              <ProjectPhoto
+                photo={approachPhoto}
+                aspect="aspect-[4/5] lg:aspect-square"
+                sizes="(max-width: 1024px) 100vw, 50vw"
+              />
+            </Reveal>
+          )}
         </div>
       </section>
 
@@ -166,8 +141,7 @@ export default async function AboutPage() {
             <div className="grid gap-5 md:grid-cols-2 max-w-4xl">
               {leadership.map((person, i) => (
                 <Reveal key={person.name} delay={(i % 2) * 90} className="flex">
-                  <div className="card card-hover flex-1 p-9 lg:p-10">
-                    <div className="w-9 h-0.5 rounded-full bg-accent mb-7" />
+                  <div className="card flex-1 p-9 lg:p-10">
                     <p className="t-h3 text-ink !text-[1.5rem] mb-2">{person.name}</p>
                     <p className="text-[0.68rem] font-bold text-accent uppercase tracking-[0.18em] mb-6">
                       {person.title}

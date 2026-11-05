@@ -63,7 +63,7 @@ export function Header() {
           ))}
         </nav>
 
-        <Link href="/contact" className="btn btn-sm hidden min-[900px]:inline-flex">
+        <Link href="/contact" className="btn-2 btn-sm hidden min-[900px]:inline-flex">
           Discuss Your Project
         </Link>
 

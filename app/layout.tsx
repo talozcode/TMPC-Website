@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
-import { Inter, Outfit } from 'next/font/google'
+import { IBM_Plex_Sans, Inter, Source_Serif_4 } from 'next/font/google'
 import { SiteShell } from '@/components/layout/site-shell'
+import { TypeSwitch } from '@/components/type-switch'
 import { siteConfig } from '@/lib/data'
 import './globals.css'
 
@@ -10,11 +11,21 @@ const inter = Inter({
   display: 'swap',
 })
 
-const outfit = Outfit({
+// Heading typeface, two candidates loaded side by side for review. A (IBM Plex
+// Sans) is the default; B (Source Serif 4) shows with ?type=serif, see
+// components/type-switch.tsx. Remove the loser once a face is chosen.
+const headingA = IBM_Plex_Sans({
   subsets: ['latin'],
-  variable: '--font-outfit',
+  variable: '--font-heading-a',
   display: 'swap',
-  weight: ['500', '600', '700', '800'],
+  weight: ['400', '500', '600'],
+})
+
+const headingB = Source_Serif_4({
+  subsets: ['latin'],
+  variable: '--font-heading-b',
+  display: 'swap',
+  weight: ['400', '500', '600'],
 })
 
 // tmpc.co.th does not currently resolve; every canonical/OG url on the site
@@ -77,7 +88,7 @@ export default function RootLayout({
   return (
     // suppressHydrationWarning: the inline script below adds a class to <html>
     // before React hydrates, which React would otherwise flag as a mismatch.
-    <html lang="en" className={`${inter.variable} ${outfit.variable} h-full`} suppressHydrationWarning>
+    <html lang="en" className={`${inter.variable} ${headingA.variable} ${headingB.variable} h-full`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: JS_FLAG }} />
         <script
@@ -86,6 +97,7 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-full flex flex-col font-sans antialiased">
+        <TypeSwitch />
         <SiteShell>{children}</SiteShell>
       </body>
     </html>

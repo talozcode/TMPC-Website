@@ -24,8 +24,15 @@ export const PHASE_LABELS_LONG: Record<ProjectPhase, string> = {
   completed: 'Completed',
 }
 
-/** A real JPEG. Do not point this at one of the 29-byte stubs in public/images. */
-export const FALLBACK_PROJECT_IMAGE = '/images/scenario-commercial.jpg'
+/**
+ * A project photograph is real only if it was uploaded to Supabase Storage.
+ * Some seeded rows still point at the stock stand-ins in public/images
+ * (scenario-*.jpg); the public site never shows those (05/11/2026, no stock
+ * photography). The rows are left untouched; they are filtered at render.
+ */
+export function isRealProjectImage(url: string | null | undefined): url is string {
+  return !!url && /^https?:\/\//.test(url)
+}
 
 export function isPhase(value: unknown): value is ProjectPhase {
   return typeof value === 'string' && (PHASES as readonly string[]).includes(value)
@@ -58,8 +65,8 @@ interface PhaseInput {
  * has a story to tell, `length === 1` means render exactly as the site did before
  * phases existed. Expressing it here means no caller can forget it.
  *
- * Never returns an empty array. With no images at all it returns a single
- * completed group holding the fallback, so `groups[0].images[0]` is always safe.
+ * Returns an empty array when a project has no real photographs (stock
+ * stand-ins are dropped), and callers then lay the project out without an image.
  */
 export function toPhaseGroups(images: PhaseInput[] | null | undefined): PhaseGroup[] {
   const buckets: Record<ProjectPhase, PhaseInput[]> = {
@@ -67,7 +74,9 @@ export function toPhaseGroups(images: PhaseInput[] | null | undefined): PhaseGro
     in_progress: [],
     completed: [],
   }
-  for (const image of images ?? []) buckets[coercePhase(image.phase)].push(image)
+  for (const image of images ?? []) {
+    if (isRealProjectImage(image.url)) buckets[coercePhase(image.phase)].push(image)
+  }
 
   const groups = PHASES.map((phase) => ({
     phase,
@@ -81,16 +90,7 @@ export function toPhaseGroups(images: PhaseInput[] | null | undefined): PhaseGro
       .map((image) => image.url),
   })).filter((group) => group.images.length > 0)
 
-  return groups.length
-    ? groups
-    : [
-        {
-          phase: 'completed' as const,
-          label: PHASE_LABELS.completed,
-          labelLong: PHASE_LABELS_LONG.completed,
-          images: [FALLBACK_PROJECT_IMAGE],
-        },
-      ]
+  return groups
 }
 
 /**
@@ -99,7 +99,7 @@ export function toPhaseGroups(images: PhaseInput[] | null | undefined): PhaseGro
  * pickLeadImage (which photograph represents the project), so both agree.
  */
 export function initialPhase(groups: PhaseGroup[]): ProjectPhase {
-  return groups[groups.length - 1].phase
+  return groups[groups.length - 1]?.phase ?? 'completed'
 }
 
 /**
@@ -113,6 +113,5 @@ export function initialPhase(groups: PhaseGroup[]): ProjectPhase {
  */
 export function pickLeadImage(images: PhaseInput[] | null | undefined): string | null {
   const groups = toPhaseGroups(images)
-  const url = groups[groups.length - 1].images[0]
-  return url === FALLBACK_PROJECT_IMAGE ? null : url
+  return groups[groups.length - 1]?.images[0] ?? null
 }

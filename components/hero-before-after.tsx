@@ -115,7 +115,7 @@ export function HeroBeforeAfter({
             Before / After
           </p>
           {projectName && (
-            <p className="font-display font-bold text-[1.45rem] text-white tracking-[-0.03em] leading-tight truncate">
+            <p className="font-display font-semibold text-[1.45rem] text-white tracking-[-0.03em] leading-tight truncate">
               {projectName}
             </p>
           )}
@@ -150,7 +150,7 @@ export function HeroBeforeAfter({
             sizes="(max-width: 1024px) 100vw, 30rem"
             className="object-cover pointer-events-none"
           />
-          <span className="absolute top-3 right-3 z-10 rounded-full bg-canvas-dark/70 backdrop-blur-sm border border-white/15 text-white text-[0.55rem] font-bold uppercase tracking-[0.18em] px-2.5 py-1">
+          <span className="absolute top-3 right-3 z-10 bg-canvas-dark/70 border border-white/15 text-white text-[0.55rem] font-bold uppercase tracking-[0.18em] px-2.5 py-1">
             After
           </span>
 
@@ -164,7 +164,7 @@ export function HeroBeforeAfter({
               sizes="(max-width: 1024px) 100vw, 30rem"
               className="object-cover pointer-events-none"
             />
-            <span className="absolute top-3 left-3 z-10 rounded-full bg-canvas-dark/70 backdrop-blur-sm border border-white/15 text-white text-[0.55rem] font-bold uppercase tracking-[0.18em] px-2.5 py-1">
+            <span className="absolute top-3 left-3 z-10 bg-canvas-dark/70 border border-white/15 text-white text-[0.55rem] font-bold uppercase tracking-[0.18em] px-2.5 py-1">
               Before
             </span>
           </div>
@@ -183,7 +183,7 @@ export function HeroBeforeAfter({
             style={{ left: `${clamped}%` }}
           >
             <span className="absolute inset-y-0 left-1/2 w-px -translate-x-1/2 bg-white/70" />
-            <span className="w-9 h-9 rounded-full bg-white shadow-lg flex items-center justify-center">
+            <span className="w-9 h-9 bg-white flex items-center justify-center">
               <svg className="w-4 h-4 text-canvas-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7l-5 5 5 5M16 7l5 5-5 5" />
               </svg>
@@ -195,7 +195,7 @@ export function HeroBeforeAfter({
 
         <Link
           href="/projects"
-          className="absolute bottom-4 right-5 z-20 inline-flex items-center gap-1.5 rounded-full bg-canvas-dark/70 backdrop-blur-sm border border-white/15 text-white text-[0.6rem] font-semibold uppercase tracking-[0.18em] px-3.5 py-2 hover:border-accent-light/60 transition-colors press"
+          className="absolute bottom-4 right-5 z-20 inline-flex items-center gap-1.5 bg-canvas-dark/70 border border-white/15 text-white text-[0.6rem] font-semibold uppercase tracking-[0.18em] px-3.5 py-2 hover:border-accent-light/60 transition-colors press"
         >
           View Projects <span aria-hidden="true">&#8594;</span>
         </Link>

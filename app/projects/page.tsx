@@ -1,13 +1,10 @@
 import type { Metadata } from 'next'
-import Image from 'next/image'
-import { Reveal, HeroParallax } from '@/components/motion'
+import { Reveal } from '@/components/motion'
 import { siteConfig } from '@/lib/data'
 import { createClient } from '@/lib/supabase/server'
 import { getSeoRow } from '@/lib/seo'
 import { ProjectsGallery, type GalleryProject } from '@/components/projects-gallery'
-import { COMPARE } from '@/lib/compare-slots'
-import { ScannerCardStream } from '@/components/ui/scanner-card-stream'
-import { SplitHeading } from '@/components/anim/split-heading'
+import { getShareImage } from '@/lib/projects'
 import { toPhaseGroups } from '@/lib/project-phases'
 import type { Project } from '@/lib/types'
 
@@ -26,7 +23,7 @@ export async function generateMetadata(): Promise<Metadata> {
       title: seo?.og_title || title,
       description: seo?.og_description || description,
       url: '/projects',
-      images: ['/images/scenario-realestate.jpg'],
+      images: await getShareImage(),
     },
   }
 }
@@ -64,22 +61,8 @@ export default async function ProjectsPage() {
 
   return (
     <>
-      <section id="proj-hero" className="on-dark relative bg-canvas-dark overflow-hidden">
-        <div className="absolute inset-0">
-          <Image
-            src="/images/scenario-realestate.jpg"
-            alt=""
-            aria-hidden="true"
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover opacity-35 scale-110"
-            style={{ translate: '0 var(--par, 0%)' }}
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-canvas-dark via-canvas-dark/85 to-canvas-dark/40" />
-          <div className="absolute inset-0 bg-gradient-to-t from-canvas-dark via-transparent to-canvas-dark/60" />
-        </div>
-        <div className="wrap relative z-10 py-[clamp(3.5rem,7vw,6rem)]">
+      <section className="on-dark bg-canvas-dark">
+        <div className="wrap py-[clamp(3.5rem,7vw,6rem)]">
           <Reveal>
             <p className="eye">Projects</p>
           </Reveal>
@@ -94,34 +77,6 @@ export default async function ProjectsPage() {
           </Reveal>
         </div>
       </section>
-      <HeroParallax targetId="proj-hero" amount={8} />
-
-      {/* Hybrid: v3's transformations stream. One before/after card per
-          sector slides through the scanner line, on a navy band that carries
-          on from the hero. The three.js particle layer is off (particles={false}). */}
-      <section className="dark-band on-dark pt-[clamp(1rem,3vw,2.5rem)] pb-[clamp(3rem,6vw,5rem)] overflow-hidden">
-        <div className="wrap">
-          <p className="eye">Transformations</p>
-          <SplitHeading className="t-h1 text-white mt-6 max-w-[16ch] mb-[clamp(2rem,4vw,3.5rem)]">
-            {COMPARE.projects.heading.lead} <em>{COMPARE.projects.heading.em}</em>
-          </SplitHeading>
-        </div>
-        <ScannerCardStream
-          interactive={false}
-          particles={false}
-          tone="dark"
-          ariaLabel="Before and after, one project per sector"
-          cardImages={COMPARE.projects.cards.map((card) => ({
-            before: card.before.src,
-            after: card.after.src,
-            beforeAlt: card.before.alt,
-            afterAlt: card.after.alt,
-            meta: `${card.sector} / ${card.location}`,
-            title: card.title,
-          }))}
-        />
-      </section>
-
       <ProjectsGallery projects={projects} categories={categories} />
     </>
   )

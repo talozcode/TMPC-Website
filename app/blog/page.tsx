@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Reveal, HeroParallax } from '@/components/motion'
+import { Reveal } from '@/components/motion'
 import { createClient } from '@/lib/supabase/server'
 import type { BlogPost } from '@/lib/types'
 
@@ -29,9 +29,8 @@ export default async function BlogIndexPage() {
 
   return (
     <>
-      <section id="blog-hero" className="on-dark relative bg-canvas-dark overflow-hidden">
-        <div className="absolute inset-0 bg-grid-dots opacity-30 pointer-events-none" />
-        <div className="wrap relative z-10 py-[clamp(3.5rem,7vw,6rem)]">
+      <section className="on-dark bg-canvas-dark">
+        <div className="wrap py-[clamp(3.5rem,7vw,6rem)]">
           <Reveal>
             <p className="eye">Insights</p>
           </Reveal>
@@ -46,7 +45,6 @@ export default async function BlogIndexPage() {
           </Reveal>
         </div>
       </section>
-      <HeroParallax targetId="blog-hero" amount={8} />
 
       <section className="bg-canvas sec">
         <div className="wrap">
@@ -66,7 +64,7 @@ export default async function BlogIndexPage() {
                 <Reveal key={post.id} delay={(i % 3) * 80} className="flex">
                   <Link
                     href={`/blog/${post.slug}`}
-                    className="card card-hover press-sm group flex flex-col flex-1 overflow-hidden"
+                    className="card group flex flex-col flex-1 overflow-hidden"
                   >
                     {post.cover_image_url && (
                       <div className="relative aspect-[3/2]">

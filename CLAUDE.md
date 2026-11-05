@@ -59,10 +59,10 @@ On top of them:
 - **Type scale:** `.t-display`, `.t-h1`..`.t-h4`, `.t-lead`, `.t-body`, `.t-micro`. Tracking is a
   function of size (large text gets negative tracking, small uppercase gets positive) and leading
   moves inversely. Do not reach for `tracking-tight` on a heading; use the scale class.
-- **Surfaces:** `.card` (+ `.card-hover`) and `.panel`. Separation comes from *depth*, not a 1px
-  rule on everything. Bigger surface, deeper shadow.
-- **Chrome:** `.hdr` is a translucent `backdrop-filter` layer the page scrolls under, with a scroll
-  edge effect (`[data-scrolled]`) rather than a permanent border.
+- **Surfaces:** `.card` (+ `.card-hover`) and `.panel`. Since 05/11/2026 separation is a 1px
+  rule in the `line` colour, square, no shadow (see Professional pass below).
+- **Chrome:** `.hdr` is a translucent `backdrop-filter` layer the page scrolls under, with a thin
+  bottom rule (the scroll shadow was removed 05/11/2026).
 - Also `.btn`/`.btn-2`/`.btn-sm`, `.lnk`, `.eye` (eyebrow with a rule), `.wrap`, `.sec`/`.sec-tight`.
 - `.on-dark` on a navy section restyles eyebrows, secondary buttons, and focus rings for it.
 - `prefers-reduced-motion`, `prefers-reduced-transparency` and `prefers-contrast` are each answered
@@ -76,23 +76,40 @@ interruptible and carry velocity through a re-target. `project()` gives a flick'
 `components/layout/mobile-nav.tsx` (drag-to-dismiss bottom sheet) and
 `components/hero-before-after.tsx` (the homepage hero's drag handle, plus its one-time mount hint).
 `components/motion.tsx` exports `Reveal` (scroll reveal, `rise` and `image` variants, `delay` for
-stagger) and `HeroParallax`. `components/fade-in.tsx` is a thin wrapper kept for existing callers.
+stagger). `components/fade-in.tsx` is a thin wrapper kept for existing callers.
 
-**Hybrid sections (branch `feat/hybrid`, 05/11/2026).** A few sections were ported from the v3
-redesign (`feat/v3`) into this design, re-coloured to this palette. Their CSS is the
-"Hybrid: v3 sections" block at the foot of `app/globals.css`, which also maps v3's tokens onto
-this palette (`signal` is the teal accent, lifted to `#57BACE` inside `.dark-band`; `ink-deep` is
-the navy; `fog` is paper; `rule` is the sand line) and adds `.t-meta`, `.dark-band` and `--hdr-h`.
-- `components/compare/*` + `lib/compare-slots.ts` (photos in `public/images/compare/`): one
-  before/after stage, several variants. Placed: About, `CompareScrub` (pinned, scroll-scrubbed,
-  between Who We Are and Our Approach) and `CompareLens` (Our Approach); Services, `CompareDrag`
-  on the Development Management and Execution Oversight articles. Swap a photo in the slots file.
-- `components/ui/scanner-card-stream.tsx` on Projects (after the hero). Its three.js particle
-  field has been cut out (three is not a dependency); always pass `particles={false}`.
-- `components/sections/process-timeline.tsx` (steps in `lib/service-meta.ts`, photos in
-  `public/images/process/`) on Home (after What We Do) and Services; `service-index.tsx` is the
-  Services rail. They use GSAP (`components/anim/gsap.ts`, ScrollTrigger, SplitText) and anime.js
-  (`components/anim/anime.ts`); `components/anim/split-heading.tsx` is the line-rise heading.
+**Professional pass (branch `feat/professional`, 05/11/2026).** The site should read like a
+serious professional-services firm: restraint and proof, not effects.
+- **No stock photography.** Every image on a public page is a real TMPC project photograph from
+  `projects`/`project_images`, captioned with the project (`components/project-photo.tsx`, data
+  via `lib/projects.ts`: `getPublishedProjects()` + `projectPhoto(projects, slug, phase?)`), or
+  there is no image. Placed: Home "We save you money" = Aura Wellness Phuket (lead); About "Our
+  Approach" and Services "Development Management" = Bright Phuket (lead); Services "Execution
+  Oversight" = Aura Wellness Phuket (first in-progress photo). Page heroes are plain navy bands.
+  OG images use the Aura Wellness Phuket lead (`getShareImage()`).
+- Several seeded `project_images` rows still point at stock files (`/images/scenario-*.jpg`).
+  `isRealProjectImage()` in `lib/project-phases.ts` drops any non-http URL, so `toPhaseGroups()`
+  can now return `[]`; the gallery and detail page then lay that project out as text only.
+  The rows themselves are untouched. The files in `public/images/` stay on disk, unreferenced.
+- **The home hero `hero_before_after` row also points at stock** (`scenario-warehouse.jpg` /
+  `scenario-commercial.jpg`); it was deliberately left as is. Replace it at `/admin/hero` with a
+  real before/after (only Aura Wellness Phuket has rendering/in-progress/completed photos).
+- **One before/after interaction only:** the home hero slider. The compare components, the
+  projects card stream, GSAP, SplitText and anime.js are gone (gsap, @gsap/react, animejs removed
+  from package.json). `components/sections/process-timeline.tsx` is a static ruled, numbered list
+  (no photos); `service-index.tsx` is a plain sticky list. `HeroParallax` was removed; `Reveal` is
+  the only scroll motion (10px rise, 0.5s; the image variant is a plain fade).
+- **UI:** square corners (radius tokens are 0), no card shadows (1px `line` rule instead), thin
+  rules between consecutive light sections, the teal kept for links, eyebrow rules and focus.
+  `.btn` is solid navy (paper on navy bands), `.btn-2` is text plus a thin border; the header CTA
+  is `.btn-2`. Project category chips became plain small-caps labels.
+- **Heading typeface review switch (REVIEW AID, remove once a face is chosen).** Both candidates
+  load in `app/layout.tsx`: A = IBM Plex Sans (`--font-heading-a`, the default), B = Source Serif 4
+  (`--font-heading-b`). Headings use `var(--font-heading)` (`--font-display` points at it);
+  `html[data-type="serif"]` switches it to B and halves the negative tracking (`--hd-track`).
+  `components/type-switch.tsx` reads `?type=serif` (or `?type=sans` to clear) on mount and keeps
+  it in localStorage `tmpc-type`, client only, so no page turns dynamic. When a face is chosen:
+  drop the other font, the switch component, its `<TypeSwitch />` and the `data-type` CSS.
 
 **Three Supabase clients, pick by context:**
 - `lib/supabase/client.ts`: browser, anon key (client components).

@@ -111,7 +111,7 @@ export function ProjectImageStage({ title, phases, category, number, variant = '
     >
       <div
         className={`relative overflow-hidden group bg-canvas-dark ${
-          isDetail ? 'aspect-[16/10] rounded-[var(--radius-panel)]' : 'flex-1 min-h-[320px]'
+          isDetail ? 'aspect-[16/10]' : 'flex-1 min-h-[320px]'
         }`}
       >
         {group.images.map((src, i) =>
@@ -138,14 +138,14 @@ export function ProjectImageStage({ title, phases, category, number, variant = '
         />
 
         {showPhases && (
-          <div className="absolute top-5 left-5 z-20 inline-flex gap-0.5 rounded-full bg-canvas-dark/70 backdrop-blur-sm border border-white/15 p-[3px]">
+          <div className="absolute top-5 left-5 z-20 inline-flex gap-0.5 bg-canvas-dark/70 border border-white/15 p-[3px]">
             {phases.map((g) => (
               <button
                 key={g.phase}
                 type="button"
                 onClick={() => selectPhase(g.phase)}
                 aria-pressed={g.phase === group.phase}
-                className={`rounded-full px-3 py-1.5 text-[0.56rem] font-bold uppercase tracking-[0.16em] transition-colors duration-200 ${
+                className={`px-3 py-1.5 text-[0.56rem] font-bold uppercase tracking-[0.16em] transition-colors duration-200 ${
                   g.phase === group.phase
                     ? 'bg-accent-light text-canvas-dark'
                     : 'text-white/65 hover:text-white'
@@ -158,20 +158,20 @@ export function ProjectImageStage({ title, phases, category, number, variant = '
         )}
 
         {number && !isDetail && (
-          <span className="absolute top-6 right-7 z-20 font-display font-bold text-[5rem] text-white/10 leading-none tracking-[-0.05em] select-none pointer-events-none">
+          <span className="absolute top-6 right-7 z-20 font-display font-semibold text-[5rem] text-white/10 leading-none tracking-[-0.05em] select-none pointer-events-none">
             {number}
           </span>
         )}
 
         {category && (
-          <span className="absolute bottom-5 left-6 z-20 rounded-full text-[0.58rem] font-bold text-accent-light uppercase tracking-[0.22em] border border-accent-light/40 bg-canvas-dark/70 backdrop-blur-sm px-3.5 py-2 pointer-events-none">
+          <span className="absolute bottom-5 left-6 z-20 text-[0.58rem] font-bold text-accent-light uppercase tracking-[0.22em] border border-accent-light/40 bg-canvas-dark/70 px-3.5 py-2 pointer-events-none">
             {category}
           </span>
         )}
 
         {showNav && (
           <div className="absolute bottom-5 right-5 z-20 flex items-center gap-2">
-            <span className="rounded-full bg-canvas-dark/70 backdrop-blur-sm border border-white/15 px-3 py-1.5 text-[0.58rem] font-semibold text-white/75 tabular-nums tracking-[0.14em] select-none">
+            <span className="bg-canvas-dark/70 border border-white/15 px-3 py-1.5 text-[0.58rem] font-semibold text-white/75 tabular-nums tracking-[0.14em] select-none">
               {String(index + 1).padStart(2, '0')} / {String(group.images.length).padStart(2, '0')}
             </span>
             {[
@@ -183,7 +183,7 @@ export function ProjectImageStage({ title, phases, category, number, variant = '
                 type="button"
                 onClick={() => setIndex(index + b.delta)}
                 aria-label={b.label}
-                className="press w-9 h-9 rounded-full flex items-center justify-center bg-canvas-dark/70 backdrop-blur-sm border border-white/15 text-white/75 hover:text-white hover:border-accent-light/60 transition-colors"
+                className="press w-9 h-9 flex items-center justify-center bg-canvas-dark/70 border border-white/15 text-white/75 hover:text-white hover:border-accent-light/60 transition-colors"
               >
                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={b.d} />
@@ -203,7 +203,7 @@ export function ProjectImageStage({ title, phases, category, number, variant = '
               onClick={() => setIndex(i)}
               aria-label={`Show ${showPhases ? group.labelLong + ' ' : ''}photograph ${i + 1} of ${title}`}
               aria-current={i === index}
-              className={`press relative flex-shrink-0 w-20 h-14 overflow-hidden rounded-[10px] border-2 transition-all duration-200 ${
+              className={`press relative flex-shrink-0 w-20 h-14 overflow-hidden border-2 transition-all duration-200 ${
                 i === index
                   ? 'border-accent-light'
                   : 'border-white/10 hover:border-white/40 opacity-60 hover:opacity-100'

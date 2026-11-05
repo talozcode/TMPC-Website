@@ -35,19 +35,19 @@ export function ProjectsGallery({ projects, categories }: Props) {
 
   return (
     <>
-      {/* Filter bar: translucent chrome of its own, sitting under the header. */}
-      <div className="sticky top-[4.4rem] z-20 bg-canvas/72 backdrop-blur-xl backdrop-saturate-150 border-b border-line-subtle">
-        <div className="wrap py-3.5">
-          <div className="flex flex-wrap items-center gap-2">
+      {/* Filter bar: plain text filters on a ruled strip under the header. */}
+      <div className="sticky top-[4.4rem] z-20 bg-canvas border-b border-line">
+        <div className="wrap py-3">
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-1">
             {allCategories.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
                 aria-pressed={activeCategory === cat}
-                className={`press rounded-full text-[0.66rem] font-bold uppercase tracking-[0.16em] px-4 py-2.5 border transition-colors duration-200 ${
+                className={`t-micro py-2 border-b transition-colors duration-200 ${
                   activeCategory === cat
-                    ? 'bg-accent text-white border-accent shadow-[0_4px_14px_rgba(13,113,134,0.28)]'
-                    : 'text-ink-muted border-line hover:border-accent/50 hover:text-ink'
+                    ? 'text-ink border-accent'
+                    : 'text-ink-muted border-transparent hover:text-ink'
                 }`}
               >
                 {cat}
@@ -57,43 +57,43 @@ export function ProjectsGallery({ projects, categories }: Props) {
         </div>
       </div>
 
-      <section className="bg-canvas-subtle sec">
+      <section className="bg-canvas sec">
         <div className="wrap">
           {filtered.length === 0 ? (
             <div className="py-28 text-center">
               <p className="t-micro text-ink-muted">No projects to show in this category yet.</p>
             </div>
           ) : (
-            <div className="flex flex-col gap-6 lg:gap-8">
+            <div className="flex flex-col gap-[clamp(3rem,6vw,5rem)]">
               {filtered.map((project, i) => {
                 const facts = [
                   { label: 'Location', value: project.location },
                   { label: 'Scope', value: project.scope },
                   { label: 'Role', value: project.role },
                 ].filter((f) => f.value)
+                // Projects without a real photograph (stock stand-ins are
+                // filtered out) are laid out as text, full width.
+                const pictured = project.phases.length > 0
                 return (
                   <Reveal key={`${activeCategory}-${project.id}`} delay={Math.min(i, 3) * 70}>
-                    <article className="panel bg-canvas">
-                      <div className="grid lg:grid-cols-2">
+                    <article className="border-t border-line pt-8 lg:pt-10">
+                      <div className={`grid grid-cols-[minmax(0,1fr)] gap-8 lg:gap-14 ${pictured ? 'lg:grid-cols-2' : ''}`}>
 
                         {/* Image column */}
-                        <div className={`flex flex-col ${i % 2 === 1 ? 'lg:order-2' : ''}`}>
-                          <ProjectImageStage
-                            title={project.title}
-                            phases={project.phases}
-                            category={project.category}
-                            number={project.number}
-                          />
+                        <div className={`flex flex-col min-w-0 ${i % 2 === 1 ? 'lg:order-2' : ''} ${pictured ? '' : 'hidden'}`}>
+                          {pictured && (
+                            <ProjectImageStage title={project.title} phases={project.phases} />
+                          )}
 
-                          {project.deliverables.length > 0 && (
-                            <div className="px-7 py-6 lg:px-9 border-t border-line-subtle bg-canvas">
+                          {pictured && project.deliverables.length > 0 && (
+                            <div className="pt-6 mt-6 border-t border-line">
                               <p className="text-[0.6rem] font-bold text-accent uppercase tracking-[0.2em] mb-3.5">
                                 TMPC Scope
                               </p>
                               <ul className="grid sm:grid-cols-2 gap-x-6 gap-y-2">
                                 {project.deliverables.map((d) => (
                                   <li key={d} className="flex items-start gap-2.5 text-[0.9rem] text-ink-muted leading-snug">
-                                    <span className="w-1 h-1 rounded-full bg-accent mt-2 flex-shrink-0" />
+                                    <span className="w-1 h-1 bg-ink-muted mt-2 flex-shrink-0" />
                                     {d}
                                   </li>
                                 ))}
@@ -104,18 +104,13 @@ export function ProjectsGallery({ projects, categories }: Props) {
 
                         {/* Text column */}
                         <div
-                          className={`flex flex-col justify-center px-8 py-10 lg:px-12 lg:py-14 ${
+                          className={`flex flex-col ${pictured ? 'justify-center' : 'max-w-3xl'} ${
                             i % 2 === 1 ? 'lg:order-1' : ''
                           }`}
                         >
                           <div className="flex items-center gap-3.5 mb-6">
-                            <span className="text-[0.6rem] font-bold text-accent uppercase tracking-[0.2em]">
-                              {project.number}
-                            </span>
-                            <div className="flex-1 h-px bg-line" />
-                            <span className="text-[0.6rem] text-ink-muted uppercase tracking-[0.14em]">
-                              {project.category}
-                            </span>
+                            <span className="t-micro text-ink-muted tabular-nums">{project.number}</span>
+                            <span className="t-micro text-ink-muted">{project.category}</span>
                           </div>
 
                           <h2 className="t-h2 !text-[1.6rem] lg:!text-[2rem] text-ink mb-2.5">
@@ -134,8 +129,24 @@ export function ProjectsGallery({ projects, categories }: Props) {
                             <p className="t-body text-ink-secondary mb-8">{project.brief}</p>
                           )}
 
+                          {!pictured && project.deliverables.length > 0 && (
+                            <div className="border-t border-line pt-6 mb-8">
+                              <p className="text-[0.6rem] font-bold text-accent uppercase tracking-[0.2em] mb-3.5">
+                                TMPC Scope
+                              </p>
+                              <ul className="grid sm:grid-cols-2 gap-x-6 gap-y-2">
+                                {project.deliverables.map((d) => (
+                                  <li key={d} className="flex items-start gap-2.5 text-[0.9rem] text-ink-muted leading-snug">
+                                    <span className="w-1 h-1 bg-ink-muted mt-2 flex-shrink-0" />
+                                    {d}
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
+
                           {facts.length > 0 && (
-                            <div className="border-t border-line-subtle pt-6 mt-auto">
+                            <div className="border-t border-line pt-6">
                               <p className="text-[0.6rem] font-bold text-accent uppercase tracking-[0.2em] mb-4">
                                 Fact Sheet
                               </p>

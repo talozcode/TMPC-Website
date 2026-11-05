@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import Image from 'next/image'
 import { Reveal } from '@/components/motion'
 import { siteConfig } from '@/lib/data'
 import { createClient } from '@/lib/supabase/server'
@@ -9,7 +8,8 @@ import { HeroBeforeAfter } from '@/components/hero-before-after'
 import { Testimonials } from '@/components/testimonials'
 import { CoordinationFlow } from '@/components/coordination-flow'
 import { ProcessTimeline } from '@/components/sections/process-timeline'
-import { SplitHeading } from '@/components/anim/split-heading'
+import { ProjectPhoto } from '@/components/project-photo'
+import { getPublishedProjects, getShareImage, projectPhoto } from '@/lib/projects'
 import { PROCESS } from '@/lib/service-meta'
 import type { HeroBeforeAfter as HeroBeforeAfterRow, Testimonial } from '@/lib/types'
 
@@ -27,7 +27,7 @@ export async function generateMetadata(): Promise<Metadata> {
       title: seo?.og_title || title,
       description: seo?.og_description || description,
       url: '/',
-      images: ['/images/hero-home.jpg'],
+      images: await getShareImage(),
     },
   }
 }
@@ -42,14 +42,17 @@ const services = [
 
 export default async function HomePage() {
   const supabase = await createClient()
-  const [{ data: hero }, { data: testimonialRows }] = await Promise.all([
+  const [{ data: hero }, { data: testimonialRows }, projects] = await Promise.all([
     supabase.from('hero_before_after').select('*').limit(1).maybeSingle<HeroBeforeAfterRow>(),
     supabase
       .from('testimonials')
       .select('*')
       .eq('active', true)
       .order('display_order', { ascending: true }),
+    getPublishedProjects(),
   ])
+  // The one photograph in this section is a real TMPC project, captioned.
+  const costPhoto = projectPhoto(projects, 'aura-wellness-phuket')
   const testimonials = (testimonialRows as Testimonial[]) ?? []
 
   return (
@@ -152,21 +155,11 @@ export default async function HomePage() {
               </div>
             </Reveal>
 
-            {/* Placeholder: the client wants an image combining construction and
-                budget/finance here. No such photo exists in public/images yet;
-                swap this for a real one once available. */}
-            <Reveal variant="image" delay={120}>
-              <div className="panel relative aspect-[4/3]">
-                <Image
-                  src="/images/scenario-office.jpg"
-                  alt="An office workspace"
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-canvas-dark/45 via-transparent to-transparent" />
-              </div>
-            </Reveal>
+            {costPhoto && (
+              <Reveal delay={120}>
+                <ProjectPhoto photo={costPhoto} />
+              </Reveal>
+            )}
           </div>
 
           {/* Coordination flow: replaces the old one-sentence statement band.
@@ -198,11 +191,10 @@ export default async function HomePage() {
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {services.slice(0, 3).map((s, i) => (
               <Reveal key={s.title} delay={i * 80} className="flex">
-                <div className="card card-hover press-sm group flex flex-col flex-1 p-8 lg:p-9">
+                <div className="card flex flex-col flex-1 p-8 lg:p-9">
                   <p className="text-[0.68rem] font-bold text-accent tracking-[0.2em] mb-6">{s.number}</p>
                   <h3 className="t-h3 text-ink mb-3.5">{s.title}</h3>
                   <p className="text-[0.95rem] text-ink-muted leading-relaxed flex-1">{s.description}</p>
-                  <div className="mt-7 w-9 h-0.5 rounded-full bg-accent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
                 </div>
               </Reveal>
             ))}
@@ -210,11 +202,10 @@ export default async function HomePage() {
           <div className="grid gap-5 sm:grid-cols-2 lg:max-w-[calc(2/3*100%+1.25rem)] mt-5 lg:mx-auto">
             {services.slice(3).map((s, i) => (
               <Reveal key={s.title} delay={(i + 3) * 80} className="flex">
-                <div className="card card-hover press-sm group flex flex-col flex-1 p-8 lg:p-9">
+                <div className="card flex flex-col flex-1 p-8 lg:p-9">
                   <p className="text-[0.68rem] font-bold text-accent tracking-[0.2em] mb-6">{s.number}</p>
                   <h3 className="t-h3 text-ink mb-3.5">{s.title}</h3>
                   <p className="text-[0.95rem] text-ink-muted leading-relaxed flex-1">{s.description}</p>
-                  <div className="mt-7 w-9 h-0.5 rounded-full bg-accent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
                 </div>
               </Reveal>
             ))}
@@ -231,9 +222,9 @@ export default async function HomePage() {
               <>
                 <div>
                   <p className="eye">How It Works</p>
-                  <SplitHeading className="t-h1 text-white mt-6 max-w-[16ch]">
+                  <h2 className="t-h1 text-white mt-6 max-w-[16ch]">
                     One team, from first conversation <em>to opening day.</em>
-                  </SplitHeading>
+                  </h2>
                 </div>
                 <Reveal delay={120}>
                   <p className="t-lead">
@@ -250,13 +241,8 @@ export default async function HomePage() {
       <Testimonials testimonials={testimonials} />
 
       {/* ── CTA ── */}
-      <section className="on-dark relative bg-canvas-dark overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none">
-          <Image src="/images/scenario-commercial.jpg" alt="" aria-hidden="true" fill className="object-cover opacity-[0.09]" />
-        </div>
-        <div className="absolute inset-0 bg-grid-dots pointer-events-none opacity-50" />
-        <div className="absolute inset-0 bg-gradient-to-t from-canvas-dark via-transparent to-canvas-dark pointer-events-none" />
-        <div className="wrap relative z-10 sec">
+      <section className="on-dark bg-canvas-dark">
+        <div className="wrap sec">
           <Reveal className="max-w-2xl mx-auto text-center">
             <p className="eye">Work With TMPC</p>
             <h2 className="t-h1 text-white mt-6">Most project problems are preventable.</h2>
