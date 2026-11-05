@@ -2,36 +2,41 @@ import { Reveal } from '@/components/motion'
 import type { Testimonial } from '@/lib/types'
 
 /**
- * Renders nothing until there is real content (the testimonials table is
- * empty today). One quote is set large across the page; several sit in two
- * columns.
+ * Renders nothing until there is real content: the testimonials table and its
+ * /admin/testimonials editor already existed, but no public page read from it,
+ * so a service that is inherently hard to verify from overseas had zero
+ * third-party proof anywhere on the site. This is the missing display half.
  */
 export function Testimonials({ testimonials }: { testimonials: Testimonial[] }) {
   if (testimonials.length === 0) return null
-  const single = testimonials.length === 1
 
   return (
-    <section className="sec-sm bg-paper" aria-label="Client feedback">
-      <div className={`wrap ${single ? '' : 'grid gap-x-10 gap-y-14 md:grid-cols-2'}`}>
-        {testimonials.map((t, i) => (
-          <Reveal key={t.id} delay={(i % 2) * 100}>
-            <figure className={`rule-t pt-8 ${single ? 'max-w-[56rem]' : ''}`}>
-              <blockquote
-                className={`text-ink tracking-[-0.018em] [font-variation-settings:'wdth'_108] font-[420] ${
-                  single ? 'text-[clamp(1.5rem,1.1rem+1.6vw,2.4rem)] leading-[1.22]' : 'text-[1.35rem] leading-[1.32]'
-                }`}
-              >
-                &ldquo;{t.quote}&rdquo;
-              </blockquote>
-              <figcaption className="mt-7 flex items-baseline gap-3 flex-wrap">
-                <span className="font-semibold">{t.client_name}</span>
-                {(t.client_title || t.client_company) && (
-                  <span className="t-meta text-ink-muted">{[t.client_title, t.client_company].filter(Boolean).join(', ')}</span>
-                )}
-              </figcaption>
-            </figure>
-          </Reveal>
-        ))}
+    <section className="bg-canvas sec">
+      <div className="wrap">
+        <Reveal className="mb-[clamp(2.5rem,4vw,3.5rem)] text-center">
+          <p className="eye justify-center">Client Feedback</p>
+          <h2 className="t-h1 text-ink mt-6">What Clients Say</h2>
+        </Reveal>
+
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {testimonials.map((t, i) => (
+            <Reveal key={t.id} delay={(i % 3) * 80} className="flex">
+              <figure className="card flex-1 p-8 lg:p-9 flex flex-col">
+                <blockquote className="t-body text-ink-secondary leading-relaxed flex-1">
+                  &ldquo;{t.quote}&rdquo;
+                </blockquote>
+                <figcaption className="mt-7 pt-6 border-t border-line">
+                  <p className="font-display font-semibold text-ink">{t.client_name}</p>
+                  {(t.client_title || t.client_company) && (
+                    <p className="text-[0.85rem] text-ink-muted mt-1">
+                      {[t.client_title, t.client_company].filter(Boolean).join(', ')}
+                    </p>
+                  )}
+                </figcaption>
+              </figure>
+            </Reveal>
+          ))}
+        </div>
       </div>
     </section>
   )

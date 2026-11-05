@@ -1,14 +1,9 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Reveal } from '@/components/motion'
-import { getPosts } from '@/lib/content'
-import { PageHero } from '@/components/sections/page-hero'
-import { CtaBand } from '@/components/sections/cta-band'
-import { Arrow, ButtonLink } from '@/components/ui/arrow-link'
-
-// Cached and refreshed at most once a minute; admin edits call revalidatePath so they show sooner.
-export const revalidate = 60
+import { Reveal, HeroParallax } from '@/components/motion'
+import { createClient } from '@/lib/supabase/server'
+import type { BlogPost } from '@/lib/types'
 
 export const metadata: Metadata = {
   title: 'Insights: Project Delivery in Thailand',
@@ -23,68 +18,88 @@ function formatDate(iso: string | null) {
 }
 
 export default async function BlogIndexPage() {
-  const posts = await getPosts()
+  const supabase = await createClient()
+  const { data: rows } = await supabase
+    .from('blog_posts')
+    .select('*')
+    .eq('published', true)
+    .order('published_at', { ascending: false })
+
+  const posts = (rows as BlogPost[]) ?? []
 
   return (
     <>
-      <PageHero
-        label="Insights"
-        title={
-          <>
-            Notes on delivering <em>in Thailand</em>
-          </>
-        }
-        lead="What we have learned coordinating contractors, consultants, and approvals for international owners building in Thailand."
-      />
+      <section id="blog-hero" className="on-dark relative bg-canvas-dark overflow-hidden">
+        <div className="absolute inset-0 bg-grid-dots opacity-30 pointer-events-none" />
+        <div className="wrap relative z-10 py-[clamp(3.5rem,7vw,6rem)]">
+          <Reveal>
+            <p className="eye">Insights</p>
+          </Reveal>
+          <Reveal delay={90}>
+            <h1 className="t-display text-white mt-6">Notes on delivering in Thailand</h1>
+          </Reveal>
+          <Reveal delay={180}>
+            <p className="t-lead !text-white/60 mt-7 max-w-[60ch]">
+              What we have learned coordinating contractors, consultants, and approvals for
+              international owners building in Thailand.
+            </p>
+          </Reveal>
+        </div>
+      </section>
+      <HeroParallax targetId="blog-hero" amount={8} />
 
-      <section className="sec bg-paper">
+      <section className="bg-canvas sec">
         <div className="wrap">
           {posts.length === 0 ? (
-            <Reveal className="grid lg:grid-cols-12 gap-x-10 gap-y-8">
-              <p className="t-meta text-ink-muted lg:col-span-3 lg:pt-3">No notes yet</p>
-              <div className="lg:col-span-8">
-                <p className="t-h2 max-w-[24ch]">The first notes are on their way.</p>
-                <p className="t-body mt-5">
-                  No posts published yet. Check back soon, or get in touch if you have a question about a project in Thailand.
-                </p>
-                <div className="mt-9 flex flex-wrap gap-3">
-                  <ButtonLink href="/contact">Discuss Your Project</ButtonLink>
-                  <ButtonLink href="/projects" variant="ghost">See our projects</ButtonLink>
-                </div>
-              </div>
+            <Reveal>
+              <p className="t-body text-ink-muted max-w-[50ch]">
+                No posts published yet. Check back soon, or{' '}
+                <Link href="/contact" className="lnk">
+                  get in touch
+                </Link>{' '}
+                if you have a question about a project in Thailand.
+              </p>
             </Reveal>
           ) : (
-            <ol className="border-b border-rule">
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {posts.map((post, i) => (
-                <li key={post.id}>
-                  <Reveal delay={Math.min(i, 3) * 70}>
-                    <Link
-                      href={`/blog/${post.slug}`}
-                      className="svc-row group !grid-cols-1 md:!grid-cols-[10rem_minmax(0,1fr)_14rem_2.5rem] md:items-start"
-                    >
-                      <span className="t-meta text-ink-muted md:pt-2">{formatDate(post.published_at)}</span>
-                      <span>
-                        <span className="t-h2 block">{post.title}</span>
-                        {post.excerpt && <span className="t-body block mt-3 !max-w-[58ch]">{post.excerpt}</span>}
-                      </span>
-                      {post.cover_image_url ? (
-                        <span className="frame aspect-[4/3] hidden md:block">
-                          <Image src={post.cover_image_url} alt="" fill sizes="14rem" className="object-cover photo" />
-                        </span>
-                      ) : (
-                        <span className="hidden md:block" />
+                <Reveal key={post.id} delay={(i % 3) * 80} className="flex">
+                  <Link
+                    href={`/blog/${post.slug}`}
+                    className="card card-hover press-sm group flex flex-col flex-1 overflow-hidden"
+                  >
+                    {post.cover_image_url && (
+                      <div className="relative aspect-[3/2]">
+                        <Image
+                          src={post.cover_image_url}
+                          alt={post.title}
+                          fill
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                          className="object-cover"
+                        />
+                      </div>
+                    )}
+                    <div className="p-7 lg:p-8 flex flex-col flex-1">
+                      {post.published_at && (
+                        <p className="text-[0.68rem] font-bold text-accent uppercase tracking-[0.18em] mb-3">
+                          {formatDate(post.published_at)}
+                        </p>
                       )}
-                      <Arrow className="svc-arrow w-5 h-5 md:mt-2 text-ink" />
-                    </Link>
-                  </Reveal>
-                </li>
+                      <h2 className="t-h4 text-ink mb-3">{post.title}</h2>
+                      {post.excerpt && (
+                        <p className="text-[0.92rem] text-ink-muted leading-relaxed flex-1">{post.excerpt}</p>
+                      )}
+                      <span className="lnk mt-6 inline-flex w-fit">
+                        Read more <span aria-hidden="true">&#8594;</span>
+                      </span>
+                    </div>
+                  </Link>
+                </Reveal>
               ))}
-            </ol>
+            </div>
           )}
         </div>
       </section>
-
-      <CtaBand />
     </>
   )
 }

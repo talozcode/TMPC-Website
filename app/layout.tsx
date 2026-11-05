@@ -1,38 +1,20 @@
 import type { Metadata } from 'next'
-import localFont from 'next/font/local'
+import { Inter, Outfit } from 'next/font/google'
 import { SiteShell } from '@/components/layout/site-shell'
 import { siteConfig } from '@/lib/data'
 import './globals.css'
 
-// Self-hosted variable fonts (latin subset, from Fontsource, OFL), so nothing
-// is fetched from Google at build or dev time. Archivo carries both a weight
-// and a width axis: the display type is the same family set wide.
-const archivo = localFont({
-  src: './fonts/archivo-latin-wdth-normal.woff2',
-  variable: '--font-archivo',
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
   display: 'swap',
-  weight: '100 900',
-  // The display face is set wide, so the stock fallback (Arial sized for
-  // normal width) made headlines rewrap when Archivo arrived. Width-matched
-  // fallbacks live in globals.css ("Archivo Fallback" faces).
-  adjustFontFallback: false,
 })
 
-// Reading face: IBM Plex Sans, a grotesque drawn for engineering documents,
-// paired with the wide Archivo display. Latin subset from Fontsource, OFL.
-const plexSans = localFont({
-  src: './fonts/ibm-plex-sans-latin-wght-normal.woff2',
-  variable: '--font-plex',
+const outfit = Outfit({
+  subsets: ['latin'],
+  variable: '--font-outfit',
   display: 'swap',
-  weight: '100 700',
-})
-
-const geistMono = localFont({
-  src: './fonts/geist-mono-latin-wght-normal.woff2',
-  variable: '--font-geist-mono',
-  display: 'swap',
-  weight: '100 900',
-  preload: false,
+  weight: ['500', '600', '700', '800'],
 })
 
 // tmpc.co.th does not currently resolve; every canonical/OG url on the site
@@ -51,10 +33,7 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     siteName: siteConfig.name,
-    // Default share image; pages with their own photo override it.
-    images: ['/images/hero-home.jpg'],
   },
-  twitter: { card: 'summary_large_image' },
   robots: {
     index: true,
     follow: true,
@@ -98,7 +77,7 @@ export default function RootLayout({
   return (
     // suppressHydrationWarning: the inline script below adds a class to <html>
     // before React hydrates, which React would otherwise flag as a mismatch.
-    <html lang="en" className={`${archivo.variable} ${plexSans.variable} ${geistMono.variable} h-full`} suppressHydrationWarning>
+    <html lang="en" className={`${inter.variable} ${outfit.variable} h-full`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: JS_FLAG }} />
         <script
@@ -106,7 +85,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(ORG_JSON_LD) }}
         />
       </head>
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col font-sans antialiased">
         <SiteShell>{children}</SiteShell>
       </body>
     </html>

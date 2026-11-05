@@ -1,17 +1,12 @@
 import type { Metadata } from 'next'
+import Image from 'next/image'
+import { Reveal, HeroParallax } from '@/components/motion'
 import { siteConfig } from '@/lib/data'
+import { createClient } from '@/lib/supabase/server'
 import { getSeoRow } from '@/lib/seo'
-import { getCategoryNames, getProjects } from '@/lib/content'
 import { ProjectsGallery, type GalleryProject } from '@/components/projects-gallery'
-import { PageHero } from '@/components/sections/page-hero'
-import { CtaBand } from '@/components/sections/cta-band'
 import { toPhaseGroups } from '@/lib/project-phases'
-import { COMPARE } from '@/lib/compare-slots'
-import { ScannerCardStream } from '@/components/ui/scanner-card-stream'
-import { SplitHeading } from '@/components/anim/split-heading'
-
-// Cached and refreshed at most once a minute; admin edits call revalidatePath so they show sooner.
-export const revalidate = 60
+import type { Project } from '@/lib/types'
 
 const FALLBACK_TITLE = 'TMPC Projects: Completed Work Across Thailand'
 const FALLBACK_DESCRIPTION = `Selected project work by ${siteConfig.name} across residential, hospitality, commercial, industrial, and community projects in Thailand.`
@@ -34,9 +29,19 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function ProjectsPage() {
-  const [rows, allCategories] = await Promise.all([getProjects(), getCategoryNames()])
+  const supabase = await createClient()
 
-  const projects: GalleryProject[] = rows.map((p, i) => ({
+  const [{ data: projectRows }, { data: categoryRows }] = await Promise.all([
+    supabase
+      .from('projects')
+      .select('*, category:categories(name), project_images(url, display_order, phase)')
+      .eq('published', true)
+      .order('display_order', { ascending: true })
+      .order('created_at', { ascending: false }),
+    supabase.from('categories').select('name').order('display_order'),
+  ])
+
+  const projects: GalleryProject[] = ((projectRows as Project[]) ?? []).map((p, i) => ({
     id: p.id,
     // Falls back to the uuid so a project created without a slug is still reachable.
     slug: p.slug ?? p.id,
@@ -52,49 +57,43 @@ export default async function ProjectsPage() {
     phases: toPhaseGroups(p.project_images),
   }))
 
-  // Only offer filters that would show something.
-  const categories = allCategories.filter((c) => projects.some((p) => p.category === c))
+  const categories = (categoryRows ?? []).map((c) => c.name as string)
 
   return (
     <>
-      <PageHero
-        label="Projects"
-        title={
-          <>
-            Some of our <em>projects</em>
-          </>
-        }
-        lead="Selected work across residential, hospitality, commercial, industrial, and community projects, each one coordinated end to end by TMPC."
-      />
-      {/* Transformations: before and after, one card per sector */}
-      <section className="dark-band pt-[clamp(1rem,3vw,2.5rem)] pb-[clamp(3rem,6vw,5rem)]" data-tone="dark" data-first="">
-        <div className="wrap">
-          <SplitHeading className="t-h1 max-w-[16ch] mb-[clamp(2.5rem,5vw,4rem)]">
-            {COMPARE.projects.heading.lead} <em>{COMPARE.projects.heading.em}</em>
-          </SplitHeading>
+      <section id="proj-hero" className="on-dark relative bg-canvas-dark overflow-hidden">
+        <div className="absolute inset-0">
+          <Image
+            src="/images/scenario-realestate.jpg"
+            alt=""
+            aria-hidden="true"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover opacity-35 scale-110"
+            style={{ translate: '0 var(--par, 0%)' }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-canvas-dark via-canvas-dark/85 to-canvas-dark/40" />
+          <div className="absolute inset-0 bg-gradient-to-t from-canvas-dark via-transparent to-canvas-dark/60" />
         </div>
-        <ScannerCardStream
-          interactive={false}
-          ariaLabel="Before and after, one project per sector"
-          cardImages={COMPARE.projects.cards.map((card) => ({
-            before: card.before.src,
-            after: card.after.src,
-            beforeAlt: card.before.alt,
-            afterAlt: card.after.alt,
-            meta: `${card.sector} / ${card.location}`,
-            title: card.title,
-          }))}
-        />
+        <div className="wrap relative z-10 py-[clamp(3.5rem,7vw,6rem)]">
+          <Reveal>
+            <p className="eye">Projects</p>
+          </Reveal>
+          <Reveal delay={90}>
+            <h1 className="t-display text-white mt-6">Some of Our Projects</h1>
+          </Reveal>
+          <Reveal delay={180}>
+            <p className="t-lead !text-white/60 mt-7">
+              Selected work across residential, hospitality, commercial, industrial, and community
+              projects, each one coordinated end to end by TMPC.
+            </p>
+          </Reveal>
+        </div>
       </section>
+      <HeroParallax targetId="proj-hero" amount={8} />
+
       <ProjectsGallery projects={projects} categories={categories} />
-      <CtaBand
-        title={
-          <>
-            Discuss your <em>project</em>
-          </>
-        }
-        lead="Tell us what you are planning. We will give you an honest picture of what it takes to deliver it in Thailand."
-      />
     </>
   )
 }

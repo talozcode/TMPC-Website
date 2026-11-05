@@ -76,21 +76,7 @@ interruptible and carry velocity through a re-target. `project()` gives a flick'
 `components/layout/mobile-nav.tsx` (drag-to-dismiss bottom sheet) and
 `components/hero-before-after.tsx` (the homepage hero's drag handle, plus its one-time mount hint).
 `components/motion.tsx` exports `Reveal` (scroll reveal, `rise` and `image` variants, `delay` for
-stagger) and `HeroParallax`.
-
-**v3 redesign (adopted 05/11/2026, branch `feat/v3`).** Tal built a heavier redesign in a copy of
-the repo (`tmpc-website-v3/`, untracked, kept as the reference) and it was copied over the app
-wholesale. On top of the spring layer it adds GSAP (`components/anim/gsap.ts`, `split-heading`,
-`word-scrub`, `parallax`), anime.js (`components/anim/anime.ts`), Lenis smooth scroll
-(`components/anim/smooth-scroll.tsx`), framer-motion and three. Self-hosted fonts live in
-`app/fonts/` (Archivo, IBM Plex Sans, Geist Mono). Page sections are grouped by page:
-`components/home/*` (hero, fx strip, owner table, core services, phone motion),
-`components/about/*`, `components/contact/*` (hero, steps, ways, office map, Bangkok time),
-`components/sections/*` (shared page hero, process timeline, service index, featured projects,
-CTA band), `components/compare/*` (the before/after compare family, slots in
-`lib/compare-slots.ts`) and `components/transform/*` (the floors/grid geometry piece). There is a
-proper `app/not-found.tsx`. The internal `/hero` and `/theme-lab` design pages and the
-`coordination-flow` and `fade-in` components were removed with it.
+stagger) and `HeroParallax`. `components/fade-in.tsx` is a thin wrapper kept for existing callers.
 
 **Three Supabase clients, pick by context:**
 - `lib/supabase/client.ts`: browser, anon key (client components).
@@ -102,15 +88,8 @@ on login goes to `/admin/projects`). RLS (see `supabase/migrations/001_initial_c
 allows public read of *published/active* rows; the admin escapes RLS via the service-role client.
 
 **Data flow:** admin (`app/admin/*`, service-role client + server actions) mutates Postgres, then
-public pages (`app/`) read it through `lib/content.ts` and `lib/seo.ts`, which use the
-cookie-free anon client in `lib/supabase/public.ts`. **Public pages are cached (ISR), not
-dynamic**, since 05/11/2026: each carries `export const revalidate = 60`, the two detail routes
-also `generateStaticParams()`, and the admin's server actions call `revalidatePath` after every
-write, so edits still show within seconds. Before this every public hit waited on 2 to 4 Supabase
-round trips to Tokyo (150 to 300 ms TTFB); now the cached HTML is served in a few ms. Do not
-import `lib/supabase/server.ts` (it reads cookies, which forces per-request rendering) from a
-public page, and do not read `searchParams` in one: `/contact` reads `?mode=call` client-side in
-`components/contact-form.tsx` for exactly this reason. Admin pages stay dynamic.
+public pages (`app/`, anon server client) read it. Public/admin data pages are dynamic
+(`export const dynamic = 'force-dynamic'` or cookie use) so edits appear without a redeploy.
 Content tables: `projects` + `project_images`, `categories`, `services`, `team_members`,
 `testimonials`, `blog_posts`, `site_settings`, `seo_metadata`, `media_files`, `contact_inquiries`.
 
@@ -133,14 +112,6 @@ cycles within the active phase only, and runs **only while the card is on screen
 pointer is elsewhere (seven cards cycling at once is unreadable). The lightbox is scoped to the
 active phase, because `finite: false` would otherwise wrap from the last completed photograph
 into an unlabelled rendering.
-
-**Image budget notes (05/11/2026).** `next.config.ts` allows `qualities: [60, 75]`; the
-before/after card streams (`components/ui/scanner-card-stream.tsx`) use 60 because AVIF at 75
-came out heavier than WebP on those busy site photographs. In that stream only the centre cards
-are fetched at normal priority, the rest carry `fetchPriority="low"`, otherwise all eighteen
-photographs download at once on a phone and the card being read paints last. On the homepage hero
-only the base photograph is `priority`; the two light-layer PNGs are `loading="eager"` without
-preload so they no longer compete with the LCP image.
 
 **Homepage hero** (`components/hero-before-after.tsx`) is a drag-to-reveal before/after
 comparison, backed by the single-row `hero_before_after` table (`supabase/migrations/
@@ -201,8 +172,8 @@ so a hidden WhatsApp card never leaves an empty third column.
 
 **The "10+ parties" stat was retired** (22/09/2026), replaced by client-outcome framing ("We
 Represent You" / "One Point of Contact" / "Concept to Completion" in the hero, and
-the coordination-flow line "Multiple Teams, 2 Languages, 1 Point of Contact"
-replacing the old numeric statement band; that component itself was retired by v3). It used to be repeated three places and had drifted out
+`components/coordination-flow.tsx`'s "Multiple Teams, 2 Languages, 1 Point of Contact" line
+replacing the old numeric statement band). It used to be repeated three places and had drifted out
 of sync (10+/8+/five); the Project Coordination service description (`services` table, number
 `03`, CMS content) was updated to "multiple parties" in the same pass so nothing on the site still
 carries the old figure.
@@ -220,8 +191,8 @@ responsive branching, built specifically to not repeat that failure).
 **Two `public/images` files are 29-byte HTML stubs, not JPEGs**: `bangkok-bg.jpg` and
 `scenario-industrial.jpg`. `next/image` returns 400 for them. Neither is referenced by a
 `project_images` row anymore (the Khon Kaen Community Hub row pointing at the second one was
-removed after it rendered as an empty box in production); The `/hero` page that used
-`scenario-industrial.jpg` is gone since v3, so both stubs are now unreferenced.
+removed after it rendered as an empty box in production); `scenario-industrial.jpg` is still used
+by the internal `/hero` design-reference page, so don't delete it without checking there first.
 Check `file -b --mime-type` before using anything from `public/images`.
 
 **The `.js` class on `<html>`** is set by an inline pre-paint script in `app/layout.tsx`. Every
