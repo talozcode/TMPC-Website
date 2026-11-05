@@ -1,11 +1,15 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
-import Image from 'next/image'
-import { Reveal, HeroParallax } from '@/components/motion'
+import { Reveal } from '@/components/motion'
 import { siteConfig } from '@/lib/data'
-import { createClient } from '@/lib/supabase/server'
 import { getSeoRow } from '@/lib/seo'
-import type { TeamMember } from '@/lib/types'
+import { getTeam } from '@/lib/content'
+import { PageHero } from '@/components/sections/page-hero'
+import { CtaBand } from '@/components/sections/cta-band'
+import { SplitHeading } from '@/components/anim/split-heading'
+import { WordScrub } from '@/components/anim/word-scrub'
+import { TransformGrid } from '@/components/transform/transform-grid'
+import { COMPARE } from '@/lib/compare-slots'
+import { ScopeBand } from '@/components/about/scope-band'
 
 const FALLBACK_TITLE = 'About TMPC | Project Consultants & Development Managers in Thailand'
 const FALLBACK_DESCRIPTION = `${siteConfig.name} is a Thailand-based project consulting and development management company supporting clients across commercial, industrial, hospitality, wellness, and real estate projects.`
@@ -22,147 +26,184 @@ export async function generateMetadata(): Promise<Metadata> {
       title: seo?.og_title || title,
       description: seo?.og_description || description,
       url: '/about',
-      images: ['/images/hero-about.jpg'],
+      images: ['/images/scenario-realestate.jpg'],
     },
   }
 }
 
-export default async function AboutPage() {
-  const supabase = await createClient()
-  const { data: teamRows } = await supabase
-    .from('team_members')
-    .select('*')
-    .eq('active', true)
-    .order('display_order', { ascending: true })
+const DO = [
+  { title: 'Plan', body: 'Scope, budget, and the coordination structure, confirmed before anything is committed.' },
+  { title: 'Coordinate', body: 'Contractor selection, consultant management, and authority submissions, run by one team.' },
+  { title: 'Oversee', body: 'Milestone tracking, budget oversight, and on-site supervision, reported clearly to you.' },
+]
 
-  const leadership = ((teamRows as TeamMember[]) ?? []).map((m) => ({
-    name: m.name,
-    title: m.role_title ?? '',
-    description: m.description ?? '',
-  }))
+// Each line is what TMPC does not do, then why. On a phone the first part is
+// set large and struck through as it is read.
+const DONT = [
+  { no: 'Build.', why: 'We are not a construction contractor.' },
+  { no: 'Take a side against you.', why: 'We represent the owner, and only the owner.' },
+  { no: 'Leave you guessing.', why: 'You get one point of contact and plain reporting.' },
+]
+
+function initials(name: string) {
+  return name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((w) => w[0]?.toUpperCase())
+    .join('')
+}
+
+export default async function AboutPage() {
+  const team = await getTeam()
 
   return (
     <>
-      {/* 1. Hero, passing under the floating chrome */}
-      <section id="about-hero" className="on-dark relative bg-canvas-dark overflow-hidden">
-        <div className="absolute inset-0">
-          <Image
-            src="/images/hero-about.jpg"
-            alt=""
-            aria-hidden="true"
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover opacity-40 scale-110"
-            style={{ translate: '0 var(--par, 0%)' }}
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-canvas-dark via-canvas-dark/85 to-canvas-dark/40" />
-          <div className="absolute inset-0 bg-gradient-to-t from-canvas-dark via-transparent to-canvas-dark/60" />
-        </div>
-        <div className="wrap relative z-10 py-[clamp(4.5rem,9vw,8rem)]">
-          <Reveal>
-            <p className="eye">About TMPC</p>
-          </Reveal>
-          <Reveal delay={90}>
-            <h1 className="t-display text-white mt-6 max-w-[18ch]">
-              Managing projects in Thailand for international owners.
-            </h1>
-          </Reveal>
-          <Reveal delay={180}>
-            <p className="t-lead !text-white/60 mt-7">
-              We partner with owners, investors, and operators who need one accountable management
-              presence on the ground in Thailand.
-            </p>
-          </Reveal>
-        </div>
-      </section>
-      <HeroParallax targetId="about-hero" amount={8} />
+      <PageHero
+        label="About TMPC"
+        title={
+          <>
+            Managing projects in Thailand for <em>international owners.</em>
+          </>
+        }
+        lead="We partner with owners, investors, and operators who need one accountable management presence on the ground in Thailand."
+        image="/images/scenario-realestate.jpg"
+        imageAlt="Completed residential towers against the sky"
+      />
 
-      {/* 2. Who We Are */}
-      <section className="bg-canvas sec">
-        <div className="wrap grid lg:grid-cols-[minmax(0,17rem)_1fr] gap-10 lg:gap-20">
-          <Reveal>
-            <p className="eye">The Company</p>
-            <h2 className="t-h2 text-ink mt-6">Who We Are</h2>
-          </Reveal>
-          <Reveal delay={100} className="space-y-6">
-            <p className="t-lead !text-ink">
-              TMPC was established to give international project owners a reliable management
-              presence in Thailand. Getting the right contractors, managing consultants, navigating
-              approvals, and keeping a project on track requires local knowledge, constant
-              attention, and clear accountability. Most owners operating from abroad do not have all
-              of that.
-            </p>
-            <p className="t-body text-ink-muted max-w-[62ch]">
-              We carry the full coordination load on your behalf: contractor selection, consultant
-              management, authority submissions, milestone tracking, budget oversight, and on-site
-              supervision. Everything is handled by TMPC and reported clearly to you.
-            </p>
-            <p className="t-body text-ink-muted max-w-[62ch]">
-              TMPC is a project management partner, not a construction contractor. We do not build.
-              We plan, coordinate, and oversee so that the right parties deliver to plan.
-            </p>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* 3. Our Approach */}
-      <section className="bg-canvas-subtle sec">
-        <div className="wrap grid lg:grid-cols-2 gap-14 lg:gap-20 items-center">
-          <Reveal>
-            <p className="eye">Methodology</p>
-            <h2 className="t-h1 text-ink mt-6">Our Approach</h2>
-            <p className="t-lead mt-7">
-              Every project is different. The parties, timelines, and challenges vary. What does not
-              vary is the need for a structured coordination layer with a single point of
-              accountability.
-            </p>
-            <p className="t-body text-ink-muted mt-5 max-w-[56ch]">
-              TMPC builds the coordination structures, manages the communication flows, and
-              maintains oversight so that projects move with clarity regardless of how many parties
-              are involved or how far the owner is from the ground.
-            </p>
-          </Reveal>
-          <Reveal variant="image" delay={120}>
-            <div className="panel relative aspect-[4/3]">
-              <Image
-                src="/images/scenario-commercial.jpg"
-                alt="A completed commercial interior in Thailand"
-                fill
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                className="object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-canvas-dark/40 via-transparent to-transparent" />
+      {/* Who we are */}
+      <section className="sec bg-paper">
+        <div className="wrap grid lg:grid-cols-12 gap-x-10 gap-y-10">
+          <div className="lg:col-span-3">
+            <h2 className="t-meta text-ink-muted lg:pt-3">Who we are</h2>
+          </div>
+          <div className="lg:col-span-9">
+            <WordScrub
+              className="t-h2 !font-[400] [font-variation-settings:'wdth'_104] max-w-[30ch]"
+              text="TMPC was established to give international project owners a reliable management presence in Thailand. Local knowledge, constant attention, and *clear accountability.*"
+            />
+            <div className="grid md:grid-cols-2 gap-8 mt-[clamp(2.5rem,5vw,4rem)]">
+              <Reveal>
+                <p className="t-body">
+                  Getting the right contractors, managing consultants, navigating approvals, and keeping a project on track requires local knowledge, constant attention, and clear accountability. Most owners operating from abroad do not have all of that.
+                </p>
+              </Reveal>
+              <Reveal delay={100}>
+                <p className="t-body">
+                  We carry the full coordination load on your behalf: contractor selection, consultant management, authority submissions, milestone tracking, budget oversight, and on-site supervision. Everything is handled by TMPC and reported clearly to you.
+                </p>
+              </Reveal>
             </div>
-          </Reveal>
+          </div>
         </div>
       </section>
 
-      {/* 4. Leadership */}
-      {leadership.length > 0 && (
-        <section className="bg-canvas sec">
-          <div className="wrap">
-            <Reveal className="mb-[clamp(2.5rem,4vw,3.5rem)]">
-              <p className="eye">Team</p>
-              <h2 className="t-h1 text-ink mt-6">Leadership</h2>
-              <p className="t-lead mt-6">
-                TMPC combines project development, operational coordination, and technology-driven
-                management support through a multidisciplinary leadership structure.
+      {/* What we do, and what we do not */}
+      <section className="dark-band sec" data-tone="dark">
+        <ScopeBand className="wrap">
+          <SplitHeading className="t-display text-fog max-w-[14ch] ab-title">
+            We do not <span className="ab-strike" data-strike="">build.</span>{' '}
+            <em>
+              <span className="ab-verb">We plan,</span> <span className="ab-verb">coordinate,</span>{' '}
+              <span className="ab-verb">and oversee.</span>
+            </em>
+          </SplitHeading>
+          <Reveal delay={120}>
+            <p className="t-lead mt-8">
+              TMPC is a project management partner, not a construction contractor. We make sure the right parties deliver to plan.
+            </p>
+          </Reveal>
+          <div className="grid lg:grid-cols-12 gap-x-10 gap-y-14 mt-[clamp(3.5rem,7vw,6rem)]">
+            <ol data-spine="" className="ab-do lg:col-span-7 grid sm:grid-cols-3 gap-x-8 gap-y-10">
+              {DO.map((v, i) => (
+                <li key={v.title} data-stage="" className="ab-stage rule-t pt-6">
+                  <span className="ab-node" aria-hidden="true" />
+                  <Reveal delay={i * 100}>
+                    <p className="ab-num t-meta text-fog-muted">{String(i + 1).padStart(2, '0')}</p>
+                    <h3 className="ab-stage-title t-h3 text-fog mt-4 [overflow-wrap:anywhere]">{v.title}</h3>
+                    <p className="t-body mt-4">{v.body}</p>
+                  </Reveal>
+                </li>
+              ))}
+            </ol>
+            <div className="lg:col-span-4 lg:col-start-9">
+              <Reveal delay={200}>
+                <div className="ab-dont border border-fog/15 p-7">
+                  <h3 className="t-meta text-fog-muted">What we do not do</h3>
+                  <ul className="mt-5 grid gap-4">
+                    {DONT.map((d) => (
+                      <li key={d.no} className="flex gap-3 text-fog/90">
+                        <span className="ab-dash mt-[0.62em] w-2.5 h-[2px] bg-signal shrink-0" aria-hidden="true" />
+                        <span>
+                          <span className="ab-no">
+                            <span className="ab-strike" data-strike="">{d.no}</span>
+                          </span>{' '}
+                          <span className="ab-why">{d.why}</span>
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </Reveal>
+            </div>
+          </div>
+        </ScopeBand>
+      </section>
+
+      {/* Approach */}
+      <section className="sec bg-concrete">
+        <div className="wrap grid lg:grid-cols-12 gap-x-10 gap-y-12 items-center">
+          <div className="lg:col-span-6 order-2 lg:order-1">
+            <TransformGrid
+              before={COMPARE['about-lens'].before}
+              after={COMPARE['about-lens'].after}
+              labels={COMPARE['about-lens'].labels}
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              className="aspect-[4/5] max-h-[40rem]"
+            />
+          </div>
+          <div className="lg:col-span-5 lg:col-start-8 order-1 lg:order-2">
+            <SplitHeading className="t-h1">Our approach</SplitHeading>
+            <Reveal delay={100}>
+              <p className="t-lead mt-7">
+                Every project is different. The parties, timelines, and challenges vary. What does not vary is the need for a structured coordination layer with a single point of accountability.
+              </p>
+              <p className="t-body mt-5">
+                TMPC builds the coordination structures, manages the communication flows, and maintains oversight so that projects move with clarity regardless of how many parties are involved or how far the owner is from the ground.
               </p>
             </Reveal>
-            <div className="grid gap-5 md:grid-cols-2 max-w-4xl">
-              {leadership.map((person, i) => (
-                <Reveal key={person.name} delay={(i % 2) * 90} className="flex">
-                  <div className="card card-hover flex-1 p-9 lg:p-10">
-                    <div className="w-9 h-0.5 rounded-full bg-accent mb-7" />
-                    <p className="t-h3 text-ink !text-[1.5rem] mb-2">{person.name}</p>
-                    <p className="text-[0.68rem] font-bold text-accent uppercase tracking-[0.18em] mb-6">
-                      {person.title}
-                    </p>
-                    <p className="text-[0.95rem] text-ink-muted leading-relaxed">
-                      {person.description}
-                    </p>
-                  </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Leadership */}
+      {team.length > 0 && (
+        <section className="sec bg-paper">
+          <div className="wrap">
+            <SplitHeading className="t-h1">Leadership</SplitHeading>
+            <Reveal delay={100}>
+              <p className="t-lead mt-7 mb-[clamp(2.5rem,5vw,4rem)]">
+                TMPC combines project development, operational coordination, and technology-driven management support through a multidisciplinary leadership structure.
+              </p>
+            </Reveal>
+            <div className="grid md:grid-cols-2 gap-x-10 gap-y-12">
+              {team.map((person, i) => (
+                <Reveal key={person.id} delay={(i % 2) * 100}>
+                  {/* On a phone the monogram sits beside the name only, and
+                      the description takes the full width below both. */}
+                  <article className="rule-t pt-8 grid grid-cols-[3.5rem_1fr] sm:grid-cols-[4.5rem_1fr] gap-x-5 sm:gap-x-6">
+                    <span
+                      aria-hidden="true"
+                      className="w-14 h-14 sm:w-[4.5rem] sm:h-[4.5rem] sm:row-span-2 bg-ink text-fog grid place-items-center text-[1.15rem] sm:text-[1.4rem] font-[560] [font-variation-settings:'wdth'_118] tracking-[-0.02em]"
+                    >
+                      {initials(person.name)}
+                    </span>
+                    <div className="self-center sm:self-start">
+                      <h3 className="t-h2">{person.name}</h3>
+                      {person.role_title && <p className="t-meta text-ink-muted mt-2">{person.role_title}</p>}
+                    </div>
+                    {person.description && <p className="t-body mt-5 col-span-2 sm:col-span-1 sm:col-start-2">{person.description}</p>}
+                  </article>
                 </Reveal>
               ))}
             </div>
@@ -170,24 +211,14 @@ export default async function AboutPage() {
         </section>
       )}
 
-      {/* 5. CTA */}
-      <section className="on-dark bg-canvas-dark">
-        <div className="wrap sec">
-          <Reveal className="max-w-2xl mx-auto text-center">
-            <p className="eye">Work With Us</p>
-            <h2 className="t-h1 text-white mt-6">Tell us what you are planning.</h2>
-            <p className="t-lead !text-white/55 mt-6 mx-auto">
-              We will give you a straight assessment of what it takes to deliver it in Thailand.
-            </p>
-            <div className="flex flex-wrap justify-center gap-3 mt-10">
-              <Link href="/contact" className="btn">Discuss Your Project</Link>
-              <Link href="/services" className="btn-2">
-                What we handle <span aria-hidden="true">&#8594;</span>
-              </Link>
-            </div>
-          </Reveal>
-        </div>
-      </section>
+      <CtaBand
+        title={
+          <>
+            Tell us what you are <em>planning.</em>
+          </>
+        }
+        lead="We will give you a straight assessment of what it takes to deliver it in Thailand."
+      />
     </>
   )
 }

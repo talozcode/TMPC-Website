@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
+import { supabaseConfigured } from '@/lib/content'
 
 /**
  * Reads one page's row from the seo_metadata CMS table. Every public page's
@@ -7,6 +8,7 @@ import { createClient } from '@/lib/supabase/server'
  * actually change what ships, instead of writing to a table nothing read.
  */
 export async function getSeoRow(page: string) {
+  if (!supabaseConfigured()) return null
   const supabase = await createClient()
   const { data } = await supabase
     .from('seo_metadata')
