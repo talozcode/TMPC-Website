@@ -78,6 +78,22 @@ interruptible and carry velocity through a re-target. `project()` gives a flick'
 `components/motion.tsx` exports `Reveal` (scroll reveal, `rise` and `image` variants, `delay` for
 stagger) and `HeroParallax`. `components/fade-in.tsx` is a thin wrapper kept for existing callers.
 
+**Hybrid sections (branch `feat/hybrid`, 05/11/2026).** A few sections were ported from the v3
+redesign (`feat/v3`) into this design, re-coloured to this palette. Their CSS is the
+"Hybrid: v3 sections" block at the foot of `app/globals.css`, which also maps v3's tokens onto
+this palette (`signal` is the teal accent, lifted to `#57BACE` inside `.dark-band`; `ink-deep` is
+the navy; `fog` is paper; `rule` is the sand line) and adds `.t-meta`, `.dark-band` and `--hdr-h`.
+- `components/compare/*` + `lib/compare-slots.ts` (photos in `public/images/compare/`): one
+  before/after stage, several variants. Placed: About, `CompareScrub` (pinned, scroll-scrubbed,
+  between Who We Are and Our Approach) and `CompareLens` (Our Approach); Services, `CompareDrag`
+  on the Development Management and Execution Oversight articles. Swap a photo in the slots file.
+- `components/ui/scanner-card-stream.tsx` on Projects (after the hero). Its three.js particle
+  field has been cut out (three is not a dependency); always pass `particles={false}`.
+- `components/sections/process-timeline.tsx` (steps in `lib/service-meta.ts`, photos in
+  `public/images/process/`) on Home (after What We Do) and Services; `service-index.tsx` is the
+  Services rail. They use GSAP (`components/anim/gsap.ts`, ScrollTrigger, SplitText) and anime.js
+  (`components/anim/anime.ts`); `components/anim/split-heading.tsx` is the line-rise heading.
+
 **Three Supabase clients, pick by context:**
 - `lib/supabase/client.ts`: browser, anon key (client components).
 - `lib/supabase/server.ts`: server component, anon key, reads cookies (respects RLS).

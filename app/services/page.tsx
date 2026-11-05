@@ -6,6 +6,19 @@ import { siteConfig } from '@/lib/data'
 import { createClient } from '@/lib/supabase/server'
 import { getSeoRow } from '@/lib/seo'
 import type { Service } from '@/lib/types'
+import { COMPARE } from '@/lib/compare-slots'
+import { isCore, PROCESS, serviceImage, serviceSlug } from '@/lib/service-meta'
+import { ServiceIndex } from '@/components/sections/service-index'
+import { ProcessTimeline } from '@/components/sections/process-timeline'
+import { CompareDrag } from '@/components/compare/compare-drag'
+import { SplitHeading } from '@/components/anim/split-heading'
+
+// Hybrid: the two core services show their before/after pair (drag to
+// compare) from lib/compare-slots.ts; the others keep a single photograph.
+const CORE_COMPARE: Record<string, (typeof COMPARE)['services-dm' | 'services-eo']> = {
+  'development-management': COMPARE['services-dm'],
+  'execution-oversight': COMPARE['services-eo'],
+}
 
 const FALLBACK_TITLE = 'TMPC Services: Consulting, Coordination & Execution Oversight'
 const FALLBACK_DESCRIPTION = `${siteConfig.name} provides project consulting, development management, project coordination, and execution oversight across commercial, industrial, hospitality, wellness, and real estate projects in Thailand.`
@@ -27,29 +40,6 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
-const processSteps = [
-  {
-    number: '01',
-    title: 'Project Review',
-    description: 'Understanding what is being built, what can go wrong, and what the coordination structure needs to look like.',
-  },
-  {
-    number: '02',
-    title: 'Planning and Structuring',
-    description: 'Setting the right structure before work starts. Consultants, timelines, budgets, and the coordination approach all confirmed before commitment.',
-  },
-  {
-    number: '03',
-    title: 'Coordination and Oversight',
-    description: 'Managing all party communication, tracking progress against plan, and keeping the owner informed throughout delivery.',
-  },
-  {
-    number: '04',
-    title: 'Operational Support',
-    description: 'Managing the final steps so the project transitions cleanly from construction into operation.',
-  },
-]
-
 export default async function ServicesPage() {
   const supabase = await createClient()
   const { data: serviceRows } = await supabase
@@ -59,11 +49,14 @@ export default async function ServicesPage() {
     .order('display_order', { ascending: true })
 
   const coreServices = ((serviceRows as Service[]) ?? []).map((s, i) => ({
+    slug: serviceSlug(s.title),
     number: s.number ?? String(i + 1).padStart(2, '0'),
     title: s.title,
     description: s.description ?? '',
     scope: s.scope_items ?? [],
+    core: isCore(s),
   }))
+  const indexItems = coreServices.map((s) => ({ slug: s.slug, number: s.number, title: s.title }))
 
   return (
     <>
@@ -101,7 +94,8 @@ export default async function ServicesPage() {
       </section>
       <HeroParallax targetId="svc-hero" amount={8} />
 
-      {/* 2. Core Services, a stacking deck */}
+      {/* 2. Core Services. Hybrid: v3's services rail beside one article per
+          service, so the reader always sees where they are in the list. */}
       <section className="bg-canvas-subtle sec">
         <div className="wrap">
           <Reveal className="mb-[clamp(2.5rem,4vw,3.5rem)]">
@@ -109,67 +103,124 @@ export default async function ServicesPage() {
             <h2 className="t-h1 text-ink mt-6">What We Provide</h2>
           </Reveal>
 
-          {/* Each card parks under the floating chrome as the next one arrives,
-              so the set reads as one deck rather than a list that scrolls past. */}
-          <div className="relative">
-            {coreServices.map((service, index) => (
-              <div
-                key={service.title}
-                className="card sticky"
-                style={{ top: `${5.5 + index * 1.1}rem`, zIndex: index + 1, marginTop: index ? '-1px' : 0 }}
-              >
-                <div className="grid lg:grid-cols-[4.5rem_1fr_1fr] gap-8 lg:gap-12 px-7 py-10 lg:px-12 lg:py-14">
-                  <p className="font-display font-bold text-[2.6rem] text-accent/25 leading-none tabular-nums tracking-[-0.04em]">
-                    {service.number}
-                  </p>
+          <div className="grid lg:grid-cols-12 gap-x-10">
+            <aside className="hidden lg:block lg:col-span-3">
+              <ServiceIndex items={indexItems} />
+            </aside>
 
-                  <div>
-                    <h3 className="t-h2 !text-[1.6rem] lg:!text-[2rem] text-ink mb-5">{service.title}</h3>
-                    <p className="t-body text-ink-muted max-w-[46ch]">{service.description}</p>
-                  </div>
+            <div className="lg:col-span-9 grid gap-[clamp(4rem,8vw,6.5rem)]">
+              {/* Below 1024px the rail has no room beside the text, so the same
+                  index opens the section: every service, numbered, one tap away. */}
+              <nav aria-label="Services on this page" className="lg:hidden -mb-[clamp(1rem,3vw,2rem)]">
+                <ol className="card grid sm:grid-cols-2 sm:gap-x-8 px-6 py-2">
+                  {indexItems.map((i) => (
+                    <li key={i.slug}>
+                      <a
+                        href={`#${i.slug}`}
+                        className="grid grid-cols-[2.5rem_1fr_auto] items-baseline gap-x-2 min-h-[3.25rem] py-3.5 border-b border-line-subtle"
+                      >
+                        <span className="t-meta text-accent">{i.number}</span>
+                        <span className="font-display font-semibold text-ink">{i.title}</span>
+                        <span aria-hidden="true" className="text-ink-muted">&#8595;</span>
+                      </a>
+                    </li>
+                  ))}
+                </ol>
+              </nav>
 
-                  {service.scope.length > 0 && (
-                    <div className="lg:pt-1.5">
-                      <p className="text-[0.62rem] font-bold text-accent uppercase tracking-[0.2em] mb-4">
-                        Fact Sheet
+              {coreServices.map((service, i) => {
+                const compare = service.core ? CORE_COMPARE[service.slug] : undefined
+                const img = serviceImage(service.title)
+                return (
+                  <article key={service.title} id={service.slug} className="scroll-mt-[calc(var(--hdr-h)+2rem)]">
+                    <Reveal>
+                      <p className="t-meta text-accent flex items-center gap-3">
+                        <span>{service.number}</span>
+                        {service.core && (
+                          <>
+                            <span className="inline-block w-1.5 h-1.5 rounded-full bg-accent" aria-hidden="true" />
+                            <span className="text-ink">Core service</span>
+                          </>
+                        )}
                       </p>
-                      <ul className="space-y-2.5">
-                        {service.scope.map((item) => (
-                          <li key={item} className="flex items-start gap-2.5 text-[0.92rem] text-ink-muted leading-snug">
-                            <span className="w-1 h-1 rounded-full bg-accent/45 mt-2.5 flex-shrink-0" />
-                            {item}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                </div>
-              </div>
-            ))}
+                    </Reveal>
+                    <SplitHeading className="t-h2 text-ink mt-4">{service.title}</SplitHeading>
+                    {service.description && (
+                      <Reveal delay={80}>
+                        <p className="t-lead mt-5">{service.description}</p>
+                      </Reveal>
+                    )}
+                    {compare ? (
+                      <Reveal delay={120} className="mt-9">
+                        <CompareDrag
+                          before={compare.before}
+                          after={compare.after}
+                          labels={compare.labels}
+                          aspect="panel aspect-[4/3] md:aspect-[16/9]"
+                          sizes="(max-width: 1024px) 100vw, 66vw"
+                          preload={i === 0}
+                          label={`Reveal before or after, ${service.title}`}
+                        />
+                      </Reveal>
+                    ) : (
+                      <Reveal variant="image" delay={120} className="mt-9">
+                        <div className="panel relative aspect-[16/9]">
+                          <Image
+                            src={img.src}
+                            alt={img.alt}
+                            fill
+                            sizes="(max-width: 1024px) 100vw, 66vw"
+                            priority={i === 0}
+                            className="object-cover"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-canvas-dark/35 via-transparent to-transparent" />
+                        </div>
+                      </Reveal>
+                    )}
+                    {service.scope.length > 0 && (
+                      <Reveal delay={80} className="mt-9 grid md:grid-cols-[10rem_1fr] gap-x-10 gap-y-4">
+                        <p className="text-[0.62rem] font-bold text-accent uppercase tracking-[0.2em] pt-1.5">
+                          Fact Sheet
+                        </p>
+                        <ul className="grid sm:grid-cols-2 gap-x-8">
+                          {service.scope.map((item) => (
+                            <li key={item} className="flex items-start gap-2.5 py-3 border-b border-line text-[0.95rem] text-ink-secondary leading-snug">
+                              <span className="w-1 h-1 rounded-full bg-accent/60 mt-2.5 flex-shrink-0" />
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
+                      </Reveal>
+                    )}
+                  </article>
+                )
+              })}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* 3. Process */}
-      <section className="bg-canvas sec">
+      {/* 3. Process. Hybrid: the v3 process index on a navy band. */}
+      <section className="dark-band on-dark sec">
         <div className="wrap">
-          <Reveal className="mb-[clamp(2.5rem,4vw,3.5rem)]">
-            <p className="eye">Process</p>
-            <h2 className="t-h1 text-ink mt-6">How TMPC Works</h2>
-          </Reveal>
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {processSteps.map((step, i) => (
-              <Reveal key={step.title} delay={i * 80} className="flex">
-                <div className="card card-hover press-sm flex-1 p-8">
-                  <p className="font-display font-bold text-[2rem] text-accent/25 mb-6 tabular-nums leading-none tracking-[-0.04em]">
-                    {step.number}
-                  </p>
-                  <h3 className="t-h4 text-ink mb-3">{step.title}</h3>
-                  <p className="text-[0.92rem] text-ink-muted leading-relaxed">{step.description}</p>
+          <ProcessTimeline
+            steps={PROCESS}
+            heading={
+              <>
+                <div>
+                  <p className="eye">Process</p>
+                  <SplitHeading className="t-h1 text-white mt-6 max-w-[14ch]">
+                    How TMPC <em>works</em>
+                  </SplitHeading>
                 </div>
-              </Reveal>
-            ))}
-          </div>
+                <Reveal delay={120}>
+                  <p className="t-lead">
+                    Each stage of a project, and the service that covers it. Join at any point; the earlier, the more we can protect.
+                  </p>
+                </Reveal>
+              </>
+            }
+          />
         </div>
       </section>
 

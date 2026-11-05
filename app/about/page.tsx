@@ -6,6 +6,9 @@ import { siteConfig } from '@/lib/data'
 import { createClient } from '@/lib/supabase/server'
 import { getSeoRow } from '@/lib/seo'
 import type { TeamMember } from '@/lib/types'
+import { COMPARE } from '@/lib/compare-slots'
+import { CompareScrub } from '@/components/compare/compare-scrub'
+import { CompareLens } from '@/components/compare/compare-lens'
 
 const FALLBACK_TITLE = 'About TMPC | Project Consultants & Development Managers in Thailand'
 const FALLBACK_DESCRIPTION = `${siteConfig.name} is a Thailand-based project consulting and development management company supporting clients across commercial, industrial, hospitality, wellness, and real estate projects.`
@@ -106,6 +109,17 @@ export default async function AboutPage() {
         </div>
       </section>
 
+      {/* Hybrid: v3's scroll-scrubbed before/after. The section pins while the
+          scroll wipes the site from day one to opening day. */}
+      <CompareScrub
+        before={COMPARE['about-scrub'].before}
+        after={COMPARE['about-scrub'].after}
+        labels={COMPARE['about-scrub'].labels}
+        heading={COMPARE['about-scrub'].heading}
+        days={COMPARE['about-scrub'].days}
+        captions={COMPARE['about-scrub'].captions}
+      />
+
       {/* 3. Our Approach */}
       <section className="bg-canvas-subtle sec">
         <div className="wrap grid lg:grid-cols-2 gap-14 lg:gap-20 items-center">
@@ -123,17 +137,16 @@ export default async function AboutPage() {
               are involved or how far the owner is from the ground.
             </p>
           </Reveal>
+          {/* Hybrid: v3's before/after lens. Hover shows the after photograph
+              through a square lens; touch and keyboard use the switch on it. */}
           <Reveal variant="image" delay={120}>
-            <div className="panel relative aspect-[4/3]">
-              <Image
-                src="/images/scenario-commercial.jpg"
-                alt="A completed commercial interior in Thailand"
-                fill
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                className="object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-canvas-dark/40 via-transparent to-transparent" />
-            </div>
+            <CompareLens
+              before={COMPARE['about-lens'].before}
+              after={COMPARE['about-lens'].after}
+              labels={COMPARE['about-lens'].labels}
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              className="panel aspect-[4/5] lg:aspect-square"
+            />
           </Reveal>
         </div>
       </section>

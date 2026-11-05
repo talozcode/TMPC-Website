@@ -8,6 +8,9 @@ import { getSeoRow } from '@/lib/seo'
 import { HeroBeforeAfter } from '@/components/hero-before-after'
 import { Testimonials } from '@/components/testimonials'
 import { CoordinationFlow } from '@/components/coordination-flow'
+import { ProcessTimeline } from '@/components/sections/process-timeline'
+import { SplitHeading } from '@/components/anim/split-heading'
+import { PROCESS } from '@/lib/service-meta'
 import type { HeroBeforeAfter as HeroBeforeAfterRow, Testimonial } from '@/lib/types'
 
 const FALLBACK_TITLE = `${siteConfig.shortName} - Project Consulting and Development Management in Thailand`
@@ -216,6 +219,30 @@ export default async function HomePage() {
               </Reveal>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* ── PROCESS (hybrid: the v3 process index, on a navy band) ── */}
+      <section className="dark-band on-dark sec">
+        <div className="wrap">
+          <ProcessTimeline
+            steps={PROCESS}
+            heading={
+              <>
+                <div>
+                  <p className="eye">How It Works</p>
+                  <SplitHeading className="t-h1 text-white mt-6 max-w-[16ch]">
+                    One team, from first conversation <em>to opening day.</em>
+                  </SplitHeading>
+                </div>
+                <Reveal delay={120}>
+                  <p className="t-lead">
+                    Bring us in at any stage. The earlier we start, the more of the cost and risk we can take out.
+                  </p>
+                </Reveal>
+              </>
+            }
+          />
         </div>
       </section>
 

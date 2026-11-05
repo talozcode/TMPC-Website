@@ -699,3 +699,289 @@
     border-color: var(--color-ink);
   }
 }
+
+/* ==========================================================================
+   Hybrid: v3 sections
+   The before/after compare stage (components/compare/), the projects card
+   stream (components/ui/scanner-card-stream.tsx), the process index
+   (components/sections/process-timeline.tsx) and the services rail
+   (components/sections/service-index.tsx) were drawn for the v3 redesign.
+   They live here in the 22/09 design, so their tokens are mapped onto this
+   palette rather than v3's: v3's "signal" orange becomes the petrol teal,
+   its ink-deep bands become the navy canvas-dark, its fog becomes paper, and
+   its rules become the warm sand lines. On a navy band the signal lifts to
+   accent-light so a 1px rule and the handle still read against it.
+   ========================================================================== */
+@theme {
+  --color-signal:     #0D7186;
+  --color-signal-hi:  #57BACE;
+  --color-signal-ink: #0A5A6B;
+  --color-ink-deep:   #0B2137;
+  --color-ink-soft:   #3B4651;
+  --color-fog:        #FBF9F4;
+  --color-fog-muted:  #A9B5C1;
+  --color-paper:      #FBF9F4;
+  --color-concrete:   #F0EBE1;
+  --color-rule:       #E0D9CB;
+  --color-rule-soft:  #EDE8DC;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+:root {
+  /* The sticky header's height (.hdr is h-[4.4rem]); the services rail and
+     the pinned compare section sit under it. */
+  --hdr-h: 4.4rem;
+}
+
+@layer components {
+  /* A navy band, as the 22/09 CTA bands are. Pair with .on-dark. */
+  .dark-band {
+    background: var(--color-canvas-dark);
+    color: var(--color-fog);
+    --color-signal: #57BACE;
+  }
+  .dark-band .t-lead, .dark-band .t-body { color: var(--color-fog-muted); }
+
+  /* v3's mono fact line, set in this design's small-caps voice (.t-micro),
+     a touch larger and with tabular figures for numbers and days. */
+  .t-meta {
+    font-size: 0.72rem;
+    line-height: 1.4;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* v3 headlines carry a lighter second half in <em>. Here it is the same
+     face a step lighter (Outfit is loaded from 500), never italic. */
+  .t-display em, .t-h1 em, .t-h2 em, .t-h3 em { font-style: normal; font-weight: 500; }
+
+  .rule-t { border-top: 1px solid var(--color-rule); }
+  .dark-band .rule-t { border-color: rgb(251 249 244 / 0.12); }
+
+  /* SplitHeading: lines rise out of their own masks. Hidden only until the
+     split is ready, with a failsafe so a heading never stays hidden. */
+  .js [data-split]:not([data-split-ready]) { visibility: hidden; animation: split-failsafe 0s 2.5s forwards; }
+  .split-line { padding-bottom: 0.08em; margin-bottom: -0.08em; }
+
+  /* The compare handle and the stream's active chip: white glyphs on teal. */
+  .cmp-knob { color: #fff; border-radius: 9999px; box-shadow: var(--shadow-soft); }
+
+  /* ---------- Process (ruled index + plate) ----------
+     The stages as a ruled index. Where there is room beside it, one small plate
+     holds still and changes to the row being read; elsewhere each row carries a
+     short strip. The plate query matches VIEWER in process-timeline.tsx. */
+  .proc-body { margin-top: clamp(3rem, 2rem + 4vw, 6rem); }
+  .proc-aside { display: none; }
+  .proc-list { border-bottom: 1px solid rgb(251 249 244 / 0.14); }
+  .pr-row {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas: 'num when' 'body body' 'svc svc';
+    column-gap: 1.1rem;
+    align-items: baseline;
+    align-content: start;
+    padding-block: 1.6rem 3rem;
+  }
+  .pr-rule { position: absolute; left: 0; right: 0; top: 0; height: 1px; background: rgb(251 249 244 / 0.14); }
+  .pr-fill { position: absolute; inset: 0; background: var(--color-signal); transform-origin: left; transform: scaleX(var(--f, 0)); transition: background-color 0.6s var(--ease-out-expo); }
+  .pr-row[data-state='done'] .pr-fill { background: rgb(251 249 244 / 0.4); }
+  .pr-num {
+    grid-area: num;
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(2.2rem, 1.7rem + 1.7vw, 3.5rem);
+    line-height: 0.8;
+    letter-spacing: -0.03em;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-fog);
+    opacity: 0.5;
+    transition: opacity 0.6s var(--ease-out-expo);
+  }
+  .js .pr-num { opacity: 0.4; }
+  .js .pr-row[data-state='now'] .pr-num { opacity: 1; }
+  .js .pr-row[data-state='done'] .pr-num { opacity: 0.58; }
+  .pr-when { grid-area: when; color: var(--color-fog-muted); transition: color 0.6s var(--ease-out-expo); }
+  .pr-row[data-state='now'] .pr-when { color: var(--color-fog); }
+  .pr-svc { grid-area: svc; margin-top: 1.25rem; display: flex; align-items: center; gap: 0.75rem; color: var(--color-fog-muted); }
+  .pr-svc::before { content: ''; flex: none; width: 1.5rem; height: 1px; background: rgb(251 249 244 / 0.3); }
+  .pr-body { grid-area: body; margin-top: 1rem; }
+  .pr-title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(1.45rem, 1.15rem + 1vw, 2.1rem);
+    line-height: 1.1;
+    letter-spacing: -0.018em;
+    color: var(--color-fog);
+    text-wrap: balance;
+  }
+  .pr-desc { margin-top: 0.9rem; max-width: 44ch; }
+  @media (min-width: 640px) {
+    .pr-row {
+      grid-template-columns: clamp(4.75rem, 7.5vw, 7.5rem) minmax(0, 1fr) auto;
+      grid-template-areas: 'num when svc' 'num body body';
+      column-gap: 0;
+      align-items: start;
+      padding-block: 2rem 4rem;
+    }
+    .pr-svc { margin: 0 0 0 1.5rem; white-space: nowrap; }
+    .pr-body { margin-top: 0.7rem; }
+  }
+  /* The strip each row carries where the plate is not shown. */
+  .pr-photo { position: relative; margin-top: 1.4rem; max-width: 26rem; }
+  .pr-frame { position: relative; aspect-ratio: 16 / 7; overflow: hidden; background: rgb(251 249 244 / 0.04); clip-path: inset(calc((1 - var(--r, 1)) * 100%) 0 0 0); }
+  .pr-img { object-fit: cover; filter: saturate(0.8) contrast(1.04); transform: translate3d(0, calc(var(--y, 0) * 1%), 0) scale(calc(1.07 + (1 - var(--r, 1)) * 0.08)); will-change: transform; }
+  .pr-veil { position: absolute; inset: 0; background: linear-gradient(to top, rgb(11 33 55 / 0.9), rgb(11 33 55 / 0.5)); opacity: calc(0.42 + (1 - var(--v, 1)) * 0.45); pointer-events: none; }
+  .pr-photo .pv-marks i { transform: scale(var(--r, 1)); }
+  .pr-row[data-state='now'] .pr-photo .pv-marks i:nth-child(1) { border-color: var(--color-signal); }
+  @media (min-width: 640px) { .pr-frame { aspect-ratio: 2 / 1; } }
+  /* The plate. Each slot is one photograph; the first is the ground, and every
+     later one is built up over it from the bottom (--w), behind a teal edge. */
+  .pv { position: relative; margin: 0; }
+  .pv-frame { position: relative; aspect-ratio: 4 / 3; overflow: hidden; background: var(--color-ink); }
+  .pv-slot { position: absolute; inset: 0; --w: 0; }
+  .pv-slot:first-child { --w: 1; }
+  .pv-layer { position: absolute; inset: 0; clip-path: inset(calc((1 - var(--w)) * 100%) 0 0 0); }
+  .pv-img { object-fit: cover; filter: saturate(0.8) contrast(1.04); transform: translate3d(0, calc(var(--d, 0) * 1%), 0) scale(calc(1.07 + (1 - var(--w)) * 0.08)); will-change: transform; }
+  .pv-veil { position: absolute; inset: 0; background: linear-gradient(to top, rgb(11 33 55 / 0.9), rgb(11 33 55 / 0.5)); opacity: calc(0.42 + (1 - var(--w)) * 0.45); pointer-events: none; }
+  .pv-edge { position: absolute; inset: 0; transform: translate3d(0, calc((1 - var(--w)) * 100%), 0); opacity: clamp(0, min(var(--w) * 30, (1 - var(--w)) * 30), 1); pointer-events: none; }
+  .pv-edge::before { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 1px; background: var(--color-signal); box-shadow: 0 0 14px 1px rgb(87 186 206 / 0.5); }
+  .pv-slot:first-child .pv-edge { display: none; }
+  .pv-slot[data-on] { --w: 1; }
+  .pv-slot[data-on] .pv-layer { clip-path: none; opacity: 0; transition: opacity 0.5s; }
+  .pv-slot[data-on='true'] .pv-layer { opacity: 1; }
+  .pv-marks i { position: absolute; width: 12px; height: 12px; border: 0 solid rgb(251 249 244 / 0.38); transition: border-color 0.6s var(--ease-out-expo); }
+  .pv-marks i:nth-child(1) { top: -7px; left: -7px; border-top-width: 1px; border-left-width: 1px; transform-origin: 0 0; }
+  .pv-marks i:nth-child(2) { top: -7px; right: -7px; border-top-width: 1px; border-right-width: 1px; transform-origin: 100% 0; }
+  .pv-marks i:nth-child(3) { bottom: -7px; left: -7px; border-bottom-width: 1px; border-left-width: 1px; transform-origin: 0 100%; }
+  .pv-marks i:nth-child(4) { bottom: -7px; right: -7px; border-bottom-width: 1px; border-right-width: 1px; transform-origin: 100% 100%; }
+  .pv > .pv-marks i:nth-child(1) { border-color: var(--color-signal); }
+  @media (min-width: 1024px) {
+    .proc-head { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 2.5rem; align-items: end; }
+    .proc-head > :first-child { grid-column: 1 / span 7; }
+    .proc-head > :nth-child(2) { grid-column: 9 / span 4; }
+    .proc-body { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 2.5rem; }
+    .proc-list { grid-column: 6 / span 7; }
+  }
+  @media (min-width: 1024px) and (min-height: 560px) {
+    .proc-aside { display: block; grid-column: 1 / span 4; }
+    .pv { position: sticky; top: max(calc(var(--hdr-h) + 1.5rem), calc(52svh - var(--ph, 9rem))); }
+    .pr-photo { display: none; }
+    .pr-row { min-height: clamp(15rem, 32svh, 22rem); }
+  }
+  
+  /* ---------- Before / after compare ----------
+     One stage for every variant (components/compare/). Two photographs stack;
+     the top one is clipped by a shape driven by one number, --pos (0 to 100),
+     which the engine writes straight onto the stage. Only clip-path, opacity and
+     transform ever change, and the server-rendered --pos is the no-JS state. */
+  .cmp { position: relative; overflow: hidden; background: var(--color-ink); --pos: 50; user-select: none; -webkit-user-select: none; }
+  .cmp-layer { position: absolute; inset: 0; }
+  .cmp[data-shape='x'] .cmp-top { clip-path: inset(0 calc(100% - var(--pos) * 1%) 0 0); }
+  .cmp[data-shape='y'] .cmp-top { clip-path: inset(0 0 calc(100% - var(--pos) * 1%) 0); }
+  .cmp[data-shape='diagonal'] .cmp-top { clip-path: polygon(0 0, calc(var(--pos) * 1.35%) 0, calc(var(--pos) * 1.35% - 35%) 100%, 0 100%); }
+  .cmp[data-shape='fade'] .cmp-top { opacity: calc(var(--pos) / 100); }
+  /* Square lens: --lx/--ly is the centre, --ls the side, all in px. Zero side shows nothing. */
+  .cmp[data-shape='lens'] .cmp-top {
+    clip-path: inset(
+      calc(var(--ly, 0px) - var(--ls, 0px) / 2)
+      calc(100% - var(--lx, 0px) - var(--ls, 0px) / 2)
+      calc(100% - var(--ly, 0px) - var(--ls, 0px) / 2)
+      calc(var(--lx, 0px) - var(--ls, 0px) / 2)
+    );
+  }
+  .cmp-lens {
+    position: absolute; top: 0; left: 0; z-index: 2;
+    pointer-events: none;
+    box-shadow: inset 0 0 0 1px rgb(251 249 244 / 0.75);
+    transform: translate(calc(var(--lx, 0px) - 50%), calc(var(--ly, 0px) - 50%)) scale(var(--lk, 0));
+  }
+  .cmp:not([data-shape='lens']) .cmp-lens { display: none; }
+  /* The seam overlay spans the stage, so translating it by --pos% moves it by --pos% of the stage. */
+  .cmp-seam { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+  .cmp[data-shape='x'] .cmp-seam { transform: translateX(calc(var(--pos) * 1%)); }
+  .cmp[data-shape='y'] .cmp-seam { transform: translateY(calc(var(--pos) * 1%)); }
+  .cmp:not([data-shape='x']):not([data-shape='y']) .cmp-seam { display: none; }
+  /* A seam carried by the scroll: shown while it travels, gone when it rests on either edge. */
+  .cmp-seam-auto { opacity: clamp(0, min(var(--pos), 100 - var(--pos)) * 0.14, 1); }
+  /* The seam's soft edge: the photo being wiped in lies over the one beneath,
+     so it casts a short shadow onto it, on the side the seam is travelling. */
+  .cmp-edge::after {
+    content: ''; position: absolute; pointer-events: none;
+    top: 0; bottom: 0; left: 100%; width: clamp(16px, 2.2vw, 30px);
+    background: linear-gradient(to right, rgb(11 33 55 / 0.34), rgb(11 33 55 / 0));
+  }
+  .cmp[data-shape='y'] .cmp-edge::after {
+    top: 100%; bottom: auto; left: 0; right: 0; width: auto; height: clamp(16px, 2.2vw, 30px);
+    background: linear-gradient(to bottom, rgb(11 33 55 / 0.34), rgb(11 33 55 / 0));
+  }
+  /* The handle presses in and its chevrons part while a drag is held; nothing on hover. */
+  .cmp-knob, .cmp-chev-l, .cmp-chev-r { transition: transform 0.45s var(--ease-out-expo); }
+  [data-dragging='true'] .cmp-knob { transform: scale(0.9); }
+  [data-dragging='true'] .cmp-chev-l { transform: translateX(-1.75px); }
+  [data-dragging='true'] .cmp-chev-r { transform: translateX(1.75px); }
+  @media (prefers-reduced-motion: reduce) {
+    .cmp-knob, .cmp-chev-l, .cmp-chev-r { transition: none; }
+  }
+  /* The scroll-scrubbed section fills the viewport while it is pinned. Only
+     with JavaScript and motion allowed; otherwise it is an ordinary section. */
+  @media (prefers-reduced-motion: no-preference) {
+    .js .cmp-pin { min-height: 100svh; display: flex; align-items: center; padding-block: calc(var(--hdr-h) * 0.6) 2rem; }
+  }
+  
+  
+  /* Services rail: one marker that travels to the service you are reading. */
+  .svc-glide { position: absolute; left: 0; top: 0; width: 6px; height: 6px; background: var(--color-signal); opacity: 0; pointer-events: none; }
+  .js .svc-dot { display: none; }
+  
+  /* Scanner card stream (components/ui/scanner-card-stream.tsx), after the
+     21st.dev scanner: a glowing beam that pulses and lights up while a card is
+     being scanned. Chips sit on their own photo layer, so the wipe covers them. */
+  .scs-view:focus-visible { outline: 2px solid var(--color-signal); outline-offset: 4px; }
+  .scs-view { --scs-w: var(--scs-w-wide); }
+  @media (max-width: 639px) { .scs-view { --scs-w: var(--scs-w-phone); } }
+  .scs-scanner { width: 0; transform: translateX(-50%); z-index: 3; }
+  .scs-line {
+    position: absolute; left: -1px; top: 0; bottom: 0; width: 2px; border-radius: 9999px;
+    background: linear-gradient(to bottom, transparent, var(--color-signal-hi), transparent);
+    box-shadow: 0 0 10px #57BACE, 0 0 20px #57BACE, 0 0 30px #0D7186, 0 0 50px #0A5A6B;
+    opacity: 0; transition: opacity 0.3s ease;
+  }
+  [data-scanning='true'] .scs-line { opacity: 1; animation: scs-pulse 1.5s infinite alternate ease-in-out; }
+  .scs-chip {
+    position: absolute; left: 14px; bottom: 14px; display: flex;
+    font-family: var(--font-sans); font-size: 0.75rem; line-height: 1; letter-spacing: 0.08em; text-transform: uppercase;
+    background: rgb(11 33 55 / 0.82); color: var(--color-fog);
+  }
+  .scs-chip > span { padding: 0.55rem 0.7rem; }
+  .scs-chip > [data-on] { background: var(--color-signal); color: #fff; }
+  .scs-band { background: linear-gradient(to left, rgb(11 33 55 / 0.6), rgb(11 33 55 / 0)); pointer-events: none; }
+  .scs-band pre {
+    margin: 0; height: 100%; overflow: hidden; white-space: pre;
+    font-family: var(--font-sans); font-size: 11px; line-height: 13px; color: rgb(251 249 244 / 0.75);
+    mask-image: linear-gradient(to left, #000 0%, rgb(0 0 0 / 0.8) 30%, rgb(0 0 0 / 0.6) 50%, rgb(0 0 0 / 0.4) 80%, rgb(0 0 0 / 0.2) 100%);
+    animation: scs-glitch 0.1s infinite linear alternate-reverse;
+  }
+  .scs-btn {
+    font-family: var(--font-sans); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase;
+    min-height: 2.5rem; padding: 0 1rem; border: 1px solid rgb(251 249 244 / 0.3); color: var(--color-fog);
+    transition: border-color 0.3s var(--ease-out-expo), background-color 0.3s var(--ease-out-expo); cursor: pointer;
+  }
+  .scs-btn:hover { border-color: var(--color-fog); }
+  .scs-btn[aria-pressed='true'] { background: var(--color-signal); border-color: var(--color-signal); color: #fff; }
+  .scs-btn:focus-visible { outline: 2px solid var(--color-signal); outline-offset: 2px; }
+  
+}
+
+@keyframes split-failsafe { to { visibility: visible; } }
+@keyframes scs-pulse { from { opacity: 0.75; transform: scaleY(1); } to { opacity: 1; transform: scaleY(1.03); } }
+@keyframes scs-glitch { 0%, 16%, 50%, 100% { opacity: 1; } 15%, 99% { opacity: 0.9; } 49% { opacity: 0.8; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .js [data-split]:not([data-split-ready]) { visibility: visible; animation: none; }
+  .pr-row:is([data-state='now'], [data-state='done']) .pr-fill { transform: none; }
+}

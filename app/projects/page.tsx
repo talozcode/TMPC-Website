@@ -5,6 +5,9 @@ import { siteConfig } from '@/lib/data'
 import { createClient } from '@/lib/supabase/server'
 import { getSeoRow } from '@/lib/seo'
 import { ProjectsGallery, type GalleryProject } from '@/components/projects-gallery'
+import { COMPARE } from '@/lib/compare-slots'
+import { ScannerCardStream } from '@/components/ui/scanner-card-stream'
+import { SplitHeading } from '@/components/anim/split-heading'
 import { toPhaseGroups } from '@/lib/project-phases'
 import type { Project } from '@/lib/types'
 
@@ -92,6 +95,32 @@ export default async function ProjectsPage() {
         </div>
       </section>
       <HeroParallax targetId="proj-hero" amount={8} />
+
+      {/* Hybrid: v3's transformations stream. One before/after card per
+          sector slides through the scanner line, on a navy band that carries
+          on from the hero. The three.js particle layer is off (particles={false}). */}
+      <section className="dark-band on-dark pt-[clamp(1rem,3vw,2.5rem)] pb-[clamp(3rem,6vw,5rem)] overflow-hidden">
+        <div className="wrap">
+          <p className="eye">Transformations</p>
+          <SplitHeading className="t-h1 text-white mt-6 max-w-[16ch] mb-[clamp(2rem,4vw,3.5rem)]">
+            {COMPARE.projects.heading.lead} <em>{COMPARE.projects.heading.em}</em>
+          </SplitHeading>
+        </div>
+        <ScannerCardStream
+          interactive={false}
+          particles={false}
+          tone="dark"
+          ariaLabel="Before and after, one project per sector"
+          cardImages={COMPARE.projects.cards.map((card) => ({
+            before: card.before.src,
+            after: card.after.src,
+            beforeAlt: card.before.alt,
+            afterAlt: card.after.alt,
+            meta: `${card.sector} / ${card.location}`,
+            title: card.title,
+          }))}
+        />
+      </section>
 
       <ProjectsGallery projects={projects} categories={categories} />
     </>
